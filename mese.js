@@ -3,15 +3,11 @@
 var port = 63000;
 
 var fs = require('fs');
-var ffi = require('ffi');
 var domain = require('domain');
 var http = require('http'); // TODO: https?
 var io = require('socket.io');
-// var querystring = require('querystring');
-// var Cookies = require('cookies');
 
-var filePage = fs.readFileSync('./page.html');
-var fileSocket = fs.readFileSync('./page.html');
+var page = fs.readFileSync('./page.html');
 
 var server = http.createServer(function (req, res) {
     var d = domain.create();
@@ -25,7 +21,7 @@ var server = http.createServer(function (req, res) {
 
     d.run(function () {
         res.writeHead(200);
-        res.end(filePage);
+        res.end(page);
     });
 }).listen(port);
 

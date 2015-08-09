@@ -7,5 +7,14 @@
     hello
 
     <script src='/socket.io/socket.io.js'></script>
+    <script>
+        'use strict';
+
+        var socket = io(window.location.origin);
+
+        // socket.on(???)
+
+        socket.emit('login', {});
+</script>
 </body>
 </html>

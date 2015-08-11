@@ -40,23 +40,67 @@ io(server).on('connection', function (socket) {
 
     d.run(function () {
         socket.on('login', function (data) {
+            // name, password
+
             if (typeof data.name != 'string') {
                 return;
             }
             if (typeof data.password != 'string') {
                 return;
             }
-            if (!/^[A-Za-z0-9_ ]+$/i.test(name)) {
+            if (!/^[A-Za-z0-9_ ]+$/.test(data.name)) {
                 return;
             }
 
             console.log('login ' + data.name);
 
             socket.on('submit', function (data) {
-                //
+                // price, prod, mk, ci, rd
+
+                if (typeof data.price != 'string') {
+                    return;
+                }
+                if (typeof data.prod != 'string') {
+                    return;
+                }
+                if (typeof data.mk != 'string') {
+                    return;
+                }
+                if (typeof data.ci != 'string') {
+                    return;
+                }
+                if (typeof data.rd != 'string') {
+                    return;
+                }
+                if (!/^[0-9]+$/.test(data.price)) {
+                    return;
+                }
+                if (!/^[0-9]+$/.test(data.prod)) {
+                    return;
+                }
+                if (!/^[0-9]+$/.test(data.mk)) {
+                    return;
+                }
+                if (!/^[0-9]+$/.test(data.ci)) {
+                    return;
+                }
+                if (!/^[0-9]+$/.test(data.rd)) {
+                    return;
+                }
+
+                // TODO
             });
             socket.on('password', function (data) {
-                //
+                // password, new_password
+
+                if (typeof data.password != 'string') {
+                    return;
+                }
+                if (typeof data.new_password != 'string') {
+                    return;
+                }
+
+                // TODO
             });
         });
     });

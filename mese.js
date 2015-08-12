@@ -27,6 +27,9 @@ var server = http.createServer(function (req, res) {
     });
 }).listen(port);
 
+var socketList = [];
+var socketNext = 0;
+
 io(server).on('connection', function (socket) {
     console.log('socket ' + socket.conn.remoteAddress);
 
@@ -39,6 +42,12 @@ io(server).on('connection', function (socket) {
     d.add(socket);
 
     d.run(function () {
+        socketList[socketNext] = socket;
+        socketNext += 1;
+        if (socketNext >= 4096) { // buffer size
+            socketNext = 0;
+        }
+
         socket.on('login', function (data) {
             // name, password
 
@@ -91,12 +100,12 @@ io(server).on('connection', function (socket) {
                 // TODO
             });
             socket.on('password', function (data) {
-                // password, new_password
+                // password, newPassword
 
                 if (typeof data.password != 'string') {
                     return;
                 }
-                if (typeof data.new_password != 'string') {
+                if (typeof data.newPassword != 'string') {
                     return;
                 }
 

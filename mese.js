@@ -6,6 +6,7 @@ var fs = require('fs');
 var domain = require('domain');
 var http = require('http'); // TODO: https?
 var io = require('socket.io');
+
 var util = require('./mese.util');
 var core = require('./mese.core');
 var db = require('./mese.db');
@@ -82,7 +83,28 @@ io(server).on('connection', function (socket) {
                         return;
                     }
 
-                    // TODO
+                    core.exec(
+                        [
+                            'submit', ???,
+                            data.price, data.prod, data.mk, data.ci, data.rd
+                        ],
+                        function (code, output) {
+                            // TODO
+                            if (code) {
+                                // decision not accepted
+                            }
+
+                            core.exec(
+                                ['close'],
+                                function (code, output) {
+                                    if (code) {
+                                        // TODO
+                                        return;
+                                    }
+                                }
+                            );
+                        }
+                    );
                 });
                 socket.on('password', function (data) {
                     // password, newPassword

@@ -6,6 +6,8 @@ var fs = require('fs');
 var domain = require('domain');
 var http = require('http'); // TODO: https?
 var io = require('socket.io');
+var util = require('./mese.util');
+var core = require('./mese.core');
 var db = require('./mese.db');
 
 var page = fs.readFileSync('./page.html');
@@ -14,14 +16,14 @@ var server = http.createServer(function (req, res) {
     var d = domain.create();
 
     d.on('error', function (e) {
-        console.log(e);
+        util.log(e);
     });
 
     d.add(req);
     d.add(res);
 
     d.run(function () {
-        console.log('web ' + req.connection.remoteAddress);
+        util.log('web ' + req.connection.remoteAddress);
 
         res.writeHead(200);
         res.end(page);
@@ -32,12 +34,12 @@ var socketList = [];
 var socketNext = 0;
 
 io(server).on('connection', function (socket) {
-    console.log('socket ' + socket.conn.remoteAddress);
+    util.log('socket ' + socket.conn.remoteAddress);
 
     var d = domain.create();
 
     d.on('error', function (e) {
-        console.log(e);
+        util.log(e);
     });
 
     d.add(socket);
@@ -52,17 +54,14 @@ io(server).on('connection', function (socket) {
         socket.on('login', function (auth) {
             // name, password
 
-            if (typeof auth.name != 'string') {
-                return;
-            }
-            if (typeof auth.password != 'string') {
-                return;
-            }
-            if (!/^[A-Za-z0-9_ ]+$/.test(auth.name)) {
+            if (
+                !util.verify(/^[A-Za-z0-9_ ]+$/, auth.name)
+                || !util.verify(/^.+$/, auth.password)
+            ) {
                 return;
             }
 
-            console.log('login ' + auth.name);
+            util.log('login ' + auth.name);
 
             var storage = db.access('users', auth.name);
             storage.staticGet('password', function (password) {
@@ -73,34 +72,13 @@ io(server).on('connection', function (socket) {
                 socket.on('submit', function (data) {
                     // price, prod, mk, ci, rd
 
-                    if (typeof data.price != 'string') {
-                        return;
-                    }
-                    if (typeof data.prod != 'string') {
-                        return;
-                    }
-                    if (typeof data.mk != 'string') {
-                        return;
-                    }
-                    if (typeof data.ci != 'string') {
-                        return;
-                    }
-                    if (typeof data.rd != 'string') {
-                        return;
-                    }
-                    if (!/^[0-9]+$/.test(data.price)) {
-                        return;
-                    }
-                    if (!/^[0-9]+$/.test(data.prod)) {
-                        return;
-                    }
-                    if (!/^[0-9]+$/.test(data.mk)) {
-                        return;
-                    }
-                    if (!/^[0-9]+$/.test(data.ci)) {
-                        return;
-                    }
-                    if (!/^[0-9]+$/.test(data.rd)) {
+                    if (
+                        !util.verify(/^[0-9]+$/, data.price)
+                        || !util.verify(/^[0-9]+$/, data.prod)
+                        || !util.verify(/^[0-9]+$/, data.mk)
+                        || !util.verify(/^[0-9]+$/, data.ci)
+                        || !util.verify(/^[0-9]+$/, data.rd)
+                    ) {
                         return;
                     }
 
@@ -109,16 +87,17 @@ io(server).on('connection', function (socket) {
                 socket.on('password', function (data) {
                     // password, newPassword
 
-                    if (typeof data.password != 'string') {
-                        return;
-                    }
-                    if (typeof data.newPassword != 'string') {
+                    if (
+                        !util.verify(/^[A-Za-z0-9_ ]+$/, data.password)
+                        || !util.verify(/^.+$/, data.newPassword)
+                    ) {
                         return;
                     }
 
                     if (data.password !== password) {
                         return;
                     }
+
                     storage.staticSet(
                         'password', data.newPassword,
                         function (doc) {

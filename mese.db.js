@@ -2,26 +2,29 @@
 
 var mongodb = require('mongodb').MongoClient;
 
-var dbStorage = undefined;
-var memStorage = {};
+var dbStorage = {};
+var memStorage = {
+    users: {},
+    games: {},
+};
 
 module.exports.init = function (callback) {
     mongodb.connect('mongodb://localhost/mese', function (err, db) {
         if (err) {
             throw err;
         } else {
-            dbStorage = db.collection('users');
+            dbStorage.users = db.collection('users');
+            dbStorage.games = db.collection('games');
             callback();
         }
     });
 };
 
-var genStorageAccess = function (user) {
+module.exports.access = function (lv1, lv2) {
     return {
-        user: user,
         staticGet: function (key, callback) {
-            dbStorage.find({
-                user: user
+            dbStorage[lv1].find({
+                id: lv2
             }).toArray(function (err, docs) {
                 if (err) {
                     throw err;
@@ -36,8 +39,8 @@ var genStorageAccess = function (user) {
             var op = {$set: {}};
             op.$set[key] = value;
 
-            dbStorage.updateOne({
-                user: user
+            dbStorage[lv1].updateOne({
+                id: lv2
             }, op, {upsert: true}, function (err, doc) {
                 if (err) {
                     throw err;
@@ -47,36 +50,18 @@ var genStorageAccess = function (user) {
             });
         },
         dynamicGet: function (key) {
-            if (!memStorage[user]) {
+            if (!memStorage[lv1][lv2]) {
                 return;
             }
 
-            return memStorage[user][key];
+            return memStorage[lv1][lv2][key];
         },
         dynamicSet: function (key, value) {
-            if (!memStorage[user]) {
-                memStorage[user] = {};
+            if (!memStorage[lv1][lv2]) {
+                memStorage[lv1][lv2] = {};
             }
 
-            memStorage[user][key] = value;
+            memStorage[lv1][lv2][key] = value;
         },
     };
-};
-
-module.exports.auth = function (user, password, callback, fail) {
-    var session = genStorageAccess(user);
-
-    session.staticGet('password', function (data) {
-        if (password && password === data) {
-            callback(session);
-        } else {
-            fail();
-        }
-    });
-};
-
-module.exports.reg = function (user, password, callback) {
-    var session = genStorageAccess(user);
-
-    session.staticSet('password', password, callback);
 };

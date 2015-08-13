@@ -6,6 +6,7 @@ var fs = require('fs');
 var domain = require('domain');
 var http = require('http'); // TODO: https?
 var io = require('socket.io');
+var db = require('./mese.db');
 
 var page = fs.readFileSync('./page.html');
 
@@ -48,68 +49,83 @@ io(server).on('connection', function (socket) {
             socketNext = 0;
         }
 
-        socket.on('login', function (data) {
+        socket.on('login', function (auth) {
             // name, password
 
-            if (typeof data.name != 'string') {
+            if (typeof auth.name != 'string') {
                 return;
             }
-            if (typeof data.password != 'string') {
+            if (typeof auth.password != 'string') {
                 return;
             }
-            if (!/^[A-Za-z0-9_ ]+$/.test(data.name)) {
+            if (!/^[A-Za-z0-9_ ]+$/.test(auth.name)) {
                 return;
             }
 
-            console.log('login ' + data.name);
+            console.log('login ' + auth.name);
 
-            socket.on('submit', function (data) {
-                // price, prod, mk, ci, rd
-
-                if (typeof data.price != 'string') {
-                    return;
-                }
-                if (typeof data.prod != 'string') {
-                    return;
-                }
-                if (typeof data.mk != 'string') {
-                    return;
-                }
-                if (typeof data.ci != 'string') {
-                    return;
-                }
-                if (typeof data.rd != 'string') {
-                    return;
-                }
-                if (!/^[0-9]+$/.test(data.price)) {
-                    return;
-                }
-                if (!/^[0-9]+$/.test(data.prod)) {
-                    return;
-                }
-                if (!/^[0-9]+$/.test(data.mk)) {
-                    return;
-                }
-                if (!/^[0-9]+$/.test(data.ci)) {
-                    return;
-                }
-                if (!/^[0-9]+$/.test(data.rd)) {
+            var storage = db.access('users', auth.name);
+            storage.staticGet('password', function (password) {
+                if (password !== undefined && password !== auth.password) {
                     return;
                 }
 
-                // TODO
-            });
-            socket.on('password', function (data) {
-                // password, newPassword
+                socket.on('submit', function (data) {
+                    // price, prod, mk, ci, rd
 
-                if (typeof data.password != 'string') {
-                    return;
-                }
-                if (typeof data.newPassword != 'string') {
-                    return;
-                }
+                    if (typeof data.price != 'string') {
+                        return;
+                    }
+                    if (typeof data.prod != 'string') {
+                        return;
+                    }
+                    if (typeof data.mk != 'string') {
+                        return;
+                    }
+                    if (typeof data.ci != 'string') {
+                        return;
+                    }
+                    if (typeof data.rd != 'string') {
+                        return;
+                    }
+                    if (!/^[0-9]+$/.test(data.price)) {
+                        return;
+                    }
+                    if (!/^[0-9]+$/.test(data.prod)) {
+                        return;
+                    }
+                    if (!/^[0-9]+$/.test(data.mk)) {
+                        return;
+                    }
+                    if (!/^[0-9]+$/.test(data.ci)) {
+                        return;
+                    }
+                    if (!/^[0-9]+$/.test(data.rd)) {
+                        return;
+                    }
 
-                // TODO
+                    // TODO
+                });
+                socket.on('password', function (data) {
+                    // password, newPassword
+
+                    if (typeof data.password != 'string') {
+                        return;
+                    }
+                    if (typeof data.newPassword != 'string') {
+                        return;
+                    }
+
+                    if (data.password !== password) {
+                        return;
+                    }
+                    storage.staticSet(
+                        'password', data.newPassword,
+                        function (doc) {
+                            // TODO
+                        }
+                    );
+                });
             });
         });
     });

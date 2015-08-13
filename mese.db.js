@@ -2,7 +2,7 @@
 
 var mongodb = require('mongodb').MongoClient;
 
-var dbStorage = {};
+var dbStorage = undefined;
 var memStorage = {
     users: {},
     games: {},
@@ -13,8 +13,10 @@ module.exports.init = function (callback) {
         if (err) {
             throw err;
         } else {
-            dbStorage.users = db.collection('users');
-            dbStorage.games = db.collection('games');
+            dbStorage = {
+                users: db.collection('users'),
+                games: db.collection('games'),
+            };
             callback();
         }
     });

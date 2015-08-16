@@ -173,4 +173,29 @@ db.init(function () {
             });
         });
     });
+
+    var test = function () {
+        var size = 0;
+
+        var doAlloc = function (code, output) {
+            if (size >= 7) {
+                console.log(output); // TODO
+            } else {
+                size += 1;
+                core.exec(
+                    ['alloc'],
+                    output,
+                    doAlloc
+                );
+            }
+        };
+
+        core.exec(
+            ['init', 1, 'modern'],
+            '',
+            doAlloc
+        );
+    };
+
+    test();
 });

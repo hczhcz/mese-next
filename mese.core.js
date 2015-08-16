@@ -8,9 +8,11 @@ module.exports.exec = function (args, input, callback) {
     var proc = childProcess.spawn('./mese', args);
     var output = '';
 
-    proc.stdin.write(input);
+    if (input) {
+        proc.stdin.write(input);
+    }
 
-    proc.on('data', function (data) {
+    proc.stdout.on('data', function (data) {
         output += data;
     });
     proc.on('close', function (code) {

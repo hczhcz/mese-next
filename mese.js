@@ -120,6 +120,7 @@ db.init(function () {
                         'submit', 1 /* TODO */,
                         data.price, data.prod, data.mk, data.ci, data.rd
                     ],
+                    '', // TODO
                     function (code, output) {
                         // TODO
                         if (code) {
@@ -128,6 +129,7 @@ db.init(function () {
 
                         core.exec(
                             ['close'],
+                            '', // TODO
                             function (code, output) {
                                 if (code) {
                                     // TODO

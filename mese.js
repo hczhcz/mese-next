@@ -119,30 +119,41 @@ db.init(function () {
                 var players = gameStorage.staticGet('players');
                 var gameData = gameStorage.staticGet('data');
 
-                core.exec(
-                    [
-                        'submit', 1 /* TODO */,
-                        data.price, data.prod, data.mk, data.ci, data.rd
-                    ],
-                    gameStorage.staticGet('data'),
-                    function (code, output) {
-                        // TODO
-                        if (code) {
-                            // decision not accepted
-                        }
-
-                        core.exec(
-                            ['close'],
-                            output,
-                            function (code, output) {
-                                if (code) {
-                                    // TODO
-                                    return;
-                                }
-                            }
-                        );
+                var player = -1;
+                for (var i in players) {
+                    if (players[i] === authName) {
+                        player = i;
                     }
-                );
+                }
+
+                if (player >= 0) {
+                    core.execSync( // TODO: protection?
+                        [
+                            'submit', player,
+                            data.price, data.prod, data.mk, data.ci, data.rd
+                        ],
+                        gameStorage.staticGet('data'),
+                        function (status, output) {
+                            if (status) {
+                                socket.emit('submit_decline');
+                            } else {
+                                core.execSync(
+                                    ['close'],
+                                    output,
+                                    function (status, output) {
+                                        if (status) {
+                                            // TODO
+
+                                            return;
+                                        }
+                                    }
+                                );
+                            }
+                        }
+                    );
+                } else {
+                    socket.emit('submit_fail')
+                }
             });
 
             socket.on('password', function (data) {
@@ -188,7 +199,7 @@ db.init(function () {
                 gameStorage.staticSet(
                     'data', output,
                     function (doc) {
-                        // TODO
+                        // nothing
                     }
                 );
                 gameStorage.staticSet(
@@ -198,7 +209,7 @@ db.init(function () {
                         'test0005', 'test0006', 'test0007', 'test0008',
                     ],
                     function (doc) {
-                        // TODO
+                        // nothing
                     }
                 );
             } else {

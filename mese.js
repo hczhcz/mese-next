@@ -115,12 +115,16 @@ db.init(function () {
                     return;
                 }
 
+                var gameStorage = db.access('games', 'test');
+                var players = gameStorage.staticGet('players');
+                var gameData = gameStorage.staticGet('data');
+
                 core.exec(
                     [
                         'submit', 1 /* TODO */,
                         data.price, data.prod, data.mk, data.ci, data.rd
                     ],
-                    '', // TODO
+                    gameStorage.staticGet('data'),
                     function (code, output) {
                         // TODO
                         if (code) {
@@ -129,7 +133,7 @@ db.init(function () {
 
                         core.exec(
                             ['close'],
-                            '', // TODO
+                            output,
                             function (code, output) {
                                 if (code) {
                                     // TODO
@@ -179,9 +183,27 @@ db.init(function () {
 
         var doAlloc = function (code, output) {
             if (size >= 7) {
-                console.log(output); // TODO
+                var gameStorage = db.access('games', 'test');
+
+                gameStorage.staticSet(
+                    'data', output,
+                    function (doc) {
+                        // TODO
+                    }
+                );
+                gameStorage.staticSet(
+                    'players',
+                    [
+                        'test0001', 'test0002', 'test0003', 'test0004',
+                        'test0005', 'test0006', 'test0007', 'test0008',
+                    ],
+                    function (doc) {
+                        // TODO
+                    }
+                );
             } else {
                 size += 1;
+
                 core.exec(
                     ['alloc'],
                     output,
@@ -191,7 +213,7 @@ db.init(function () {
         };
 
         core.exec(
-            ['init', 1, 'modern'],
+            ['init', 8, 'modern'],
             '',
             doAlloc
         );

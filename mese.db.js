@@ -26,7 +26,7 @@ module.exports.access = function (lv1, lv2) {
     return {
         staticGet: function (key, callback) {
             dbStorage[lv1].find({
-                id: lv2
+                _id: lv2
             }).toArray(function (err, docs) {
                 if (err) {
                     throw err;
@@ -42,7 +42,7 @@ module.exports.access = function (lv1, lv2) {
             op.$set[key] = value;
 
             dbStorage[lv1].updateOne({
-                id: lv2
+                _id: lv2
             }, op, {upsert: true}, function (err, doc) {
                 if (err) {
                     throw err;

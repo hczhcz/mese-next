@@ -181,7 +181,7 @@ db.init(function () {
     var test = function () {
         var size = 0;
 
-        var doAlloc = function (code, output) {
+        var doAlloc = function (status, output) {
             if (size >= 7) {
                 var gameStorage = db.access('games', 'test');
 
@@ -204,7 +204,7 @@ db.init(function () {
             } else {
                 size += 1;
 
-                core.exec(
+                core.execSync(
                     ['alloc'],
                     output,
                     doAlloc
@@ -212,7 +212,7 @@ db.init(function () {
             }
         };
 
-        core.exec(
+        core.execSync(
             ['init', 8, 'modern'],
             '',
             doAlloc

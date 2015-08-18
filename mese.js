@@ -127,32 +127,30 @@ db.init(function () {
                 }
 
                 if (player >= 0) {
-                    core.execSync( // TODO: protection?
-                        [
-                            'submit', player,
-                            data.price, data.prod, data.mk, data.ci, data.rd
-                        ],
-                        gameStorage.staticGet('data'),
-                        function (status, output) {
-                            if (status) {
-                                socket.emit('submit_decline');
-                            } else {
-                                core.execSync(
-                                    ['close'],
-                                    output,
-                                    function (status, output) {
-                                        if (status) {
-                                            // TODO
+                    core.submit( // TODO: protection?
+                        gameData, player,
+                        data.price, data.prod, data.mk, data.ci, data.rd,
+                        function (output) {
+                            // submit ok
 
-                                            return;
-                                        }
-                                    }
-                                );
-                            }
+                            core.close(
+                                output,
+                                function (output) {
+                                    // closed
+                                },
+                                function (output) {
+                                    // not closed, ignore
+                                }
+                            );
+                        },
+                        function (output) {
+                            // submit declined
+
+                            socket.emit('submit_decline');
                         }
                     );
                 } else {
-                    socket.emit('submit_fail')
+                    socket.emit('submit_fail');
                 }
             });
 
@@ -192,7 +190,7 @@ db.init(function () {
     var test = function () {
         var size = 0;
 
-        var doAlloc = function (status, output) {
+        var doAlloc = function (output) {
             if (size >= 7) {
                 var gameStorage = db.access('games', 'test');
 
@@ -215,19 +213,11 @@ db.init(function () {
             } else {
                 size += 1;
 
-                core.execSync(
-                    ['alloc'],
-                    output,
-                    doAlloc
-                );
+                core.alloc(output, [], doAlloc);
             }
         };
 
-        core.execSync(
-            ['init', 8, 'modern'],
-            '',
-            doAlloc
-        );
+        core.init(8, 'modern', [], doAlloc);
     };
 
     test();

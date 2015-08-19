@@ -12,11 +12,50 @@
 
         var socket = io(window.location.origin);
 
-        // socket.on(???)
-
         socket.emit('login', {
             name: 'test0001',
             password: 'test',
+        });
+
+        socket.on('login_new', function (data) {
+            document.writeln('login_new<br>');
+        });
+
+        socket.on('login_ok', function (data) {
+            //document.writeln('login_ok<br>');
+
+            socket.emit('submit', {
+                game: 'test',
+                price: '70',
+                prod: '500',
+                mk: '3000',
+                ci: '10000',
+                rd: '5000',
+            });
+        });
+
+        socket.on('login_fail', function (data) {
+            document.writeln('login_fail<br>');
+        });
+
+        socket.on('submit_ok', function (data) {
+            document.writeln(JSON.stringify(data));
+        });
+
+        socket.on('submit_decline', function (data) {
+            document.writeln(JSON.stringify(data));
+        });
+
+        socket.on('submit_fail', function (data) {
+            document.writeln('submit_fail<br>');
+        });
+
+        socket.on('password_ok', function (data) {
+            document.writeln('password_ok<br>');
+        });
+
+        socket.on('password_fail', function (data) {
+            document.writeln('password_fail<br>');
         });
 </script>
 </body>

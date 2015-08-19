@@ -123,7 +123,31 @@ db.init(function () {
                     }
 
                     if (player !== undefined) {
-                        game.submit(player, price, prod, mk, ci, rd); // TODO
+                        var afterSubmit = function (gameData) {
+                            core.printPlayerEarly(
+                                gameData,
+                                player,
+                                function (output) {
+                                    socket.emit(
+                                        'report_early',
+                                        eval('(' + output + ')')
+                                    );
+                                }
+                            );
+                        };
+
+                        game.submit(
+                            gameStorage, player,
+                            data.price, data.prod, data.mk, data.ci, data.rd,
+                            function (gameData) {
+                                socket.emit('submit_ok');
+                                afterSubmit(gameData);
+                            },
+                            function (gameData) {
+                                socket.emit('submit_decline');
+                                afterSubmit(gameData);
+                            }
+                        );
                     } else {
                         socket.emit('submit_fail');
                     }

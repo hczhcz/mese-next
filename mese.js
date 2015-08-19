@@ -18,6 +18,7 @@ var server = http.createServer(function (req, res) {
 
     d.on('error', function (e) {
         util.log(e);
+        console.log(e.stack);
     });
 
     d.add(req);
@@ -43,6 +44,7 @@ db.init(function () {
 
         d.on('error', function (e) {
             util.log(e);
+            console.log(e.stack);
         });
 
         d.add(socket);
@@ -105,7 +107,7 @@ db.init(function () {
 
                 if (
                     !authName
-                    || !util.verify(/^[0-9]+$/, data.game)
+                    || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
                     || !util.verify(/^[0-9]+$/, data.price)
                     || !util.verify(/^[0-9]+$/, data.prod)
                     || !util.verify(/^[0-9]+$/, data.mk)
@@ -115,7 +117,7 @@ db.init(function () {
                     return;
                 }
 
-                var gameStorage = db.access('games', 'test');
+                var gameStorage = db.access('games', data.game);
                 var players = gameStorage.staticGet('players');
                 var gameData = gameStorage.staticGet('data');
 
@@ -179,7 +181,7 @@ db.init(function () {
 
                 if (
                     !authName
-                    || !util.verify(/^[A-Za-z0-9_ ]+$/, data.password)
+                    || !util.verify(/^.+$/, data.password)
                     || !util.verify(/^.+$/, data.newPassword)
                 ) {
                     return;

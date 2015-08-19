@@ -54,20 +54,20 @@ module.exports.init = function (count, preset, settings, callback) {
     );
 };
 
-module.exports.alloc = function (game, settings, callback) {
+module.exports.alloc = function (gameData, settings, callback) {
     // TODO: settings?
     module.exports.execSync(
         ['alloc'],
-        game,
+        gameData,
         callback,
         stdFail
     );
 };
 
-module.exports.submit = function (game, player, price, prod, mk, ci, rd, callback, fail) {
+module.exports.submit = function (gameData, player, price, prod, mk, ci, rd, callback, fail) {
     module.exports.execSync(
         ['submit', player, price, prod, mk, ci, rd],
-        game,
+        gameData,
         callback,
         function (status, output) {
             if (status == 1) {
@@ -79,10 +79,10 @@ module.exports.submit = function (game, player, price, prod, mk, ci, rd, callbac
     );
 };
 
-module.exports.close = function (game, callback, fail) {
+module.exports.close = function (gameData, callback, fail) {
     module.exports.execSync(
         ['close'],
-        game,
+        gameData,
         callback,
         function (status, output) {
             if (status == 1) {
@@ -94,37 +94,37 @@ module.exports.close = function (game, callback, fail) {
     );
 };
 
-module.exports.printFull = function (game, callback) {
+module.exports.printFull = function (gameData, callback) {
     module.exports.exec(
         ['print_full'],
-        game,
+        gameData,
         callback,
         stdFail
     );
 };
 
-module.exports.printPlayerEarly = function (game, player, callback) {
+module.exports.printPlayerEarly = function (gameData, player, callback) {
     module.exports.exec(
         ['print_player_early', player],
-        game,
+        gameData,
         callback,
         stdFail
     );
 };
 
-module.exports.printPlayer = function (game, player, callback) {
+module.exports.printPlayer = function (gameData, player, callback) {
     module.exports.exec(
         ['print_player', player],
-        game,
+        gameData,
         callback,
         stdFail
     );
 };
 
-module.exports.printPublic = function (game, callback) {
+module.exports.printPublic = function (gameData, callback) {
     module.exports.exec(
         ['print_public'],
-        game,
+        gameData,
         callback,
         stdFail
     );

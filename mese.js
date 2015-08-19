@@ -9,6 +9,7 @@ var io = require('socket.io');
 
 var util = require('./mese.util');
 var core = require('./mese.core');
+var game = require('./mese.game');
 var db = require('./mese.db');
 
 var page = fs.readFileSync('./page.html');
@@ -34,9 +35,6 @@ var server = http.createServer(function (req, res) {
 }).listen(port);
 
 db.init(function () {
-    var socketList = [];
-    var socketNext = 0;
-
     io(server).on('connection', function (socket) {
         util.log('socket ' + socket.conn.remoteAddress);
 
@@ -50,15 +48,9 @@ db.init(function () {
         d.add(socket);
 
         d.run(function () {
-            socketList[socketNext] = socket;
-            socketNext += 1;
-            if (socketNext >= 4096) { // buffer size
-                socketNext = 0;
-            }
-
-            var authName = undefined;
-            var authPassword = undefined;
-            var authStorage = undefined;
+            var authName;
+            var authPassword;
+            var authStorage;
 
             socket.on('login', function (data) {
                 // name, password
@@ -118,62 +110,22 @@ db.init(function () {
                 }
 
                 var gameStorage = db.access('games', data.game);
-                var players = gameStorage.staticGet('players');
-                var gameData = gameStorage.staticGet('data');
 
-                var player = -1;
-                for (var i in players) {
-                    if (players[i] === authName) {
-                        player = i;
-                    }
-                }
+                gameStorage.staticGet('players', function (players) {
+                    var player;
 
-                if (player >= 0) {
-                    core.submit( // TODO: protection?
-                        gameData, player,
-                        data.price, data.prod, data.mk, data.ci, data.rd,
-                        function (output) {
-                            // submit ok
-
-                            core.printPlayerEarly(
-                                output,
-                                player,
-                                function (output) {
-                                    socket.emit(
-                                        'submit_ok',
-                                        eval('(' + output + ')')
-                                    );
-                                }
-                            );
-
-                            core.close(
-                                output,
-                                function (output) {
-                                    // closed
-                                },
-                                function (output) {
-                                    // not closed, ignore
-                                }
-                            );
-                        },
-                        function (output) {
-                            // submit declined
-
-                            core.printPlayerEarly(
-                                output,
-                                player,
-                                function (output) {
-                                    socket.emit(
-                                        'submit_decline',
-                                        eval('(' + output + ')')
-                                    );
-                                }
-                            );
+                    for (var i in players) {
+                        if (players[i] === authName) {
+                            player = i;
                         }
-                    );
-                } else {
-                    socket.emit('submit_fail');
-                }
+                    }
+
+                    if (player !== undefined) {
+                        game.submit(player, price, prod, mk, ci, rd); // TODO
+                    } else {
+                        socket.emit('submit_fail');
+                    }
+                });
             });
 
             socket.on('password', function (data) {

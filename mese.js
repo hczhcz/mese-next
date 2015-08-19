@@ -133,6 +133,17 @@ db.init(function () {
                         function (output) {
                             // submit ok
 
+                            core.printPlayerEarly(
+                                output,
+                                player,
+                                function (output) {
+                                    socket.emit(
+                                        'submit_ok',
+                                        eval('(' + output + ')')
+                                    );
+                                }
+                            );
+
                             core.close(
                                 output,
                                 function (output) {
@@ -146,7 +157,16 @@ db.init(function () {
                         function (output) {
                             // submit declined
 
-                            socket.emit('submit_decline');
+                            core.printPlayerEarly(
+                                output,
+                                player,
+                                function (output) {
+                                    socket.emit(
+                                        'submit_decline',
+                                        eval('(' + output + ')')
+                                    );
+                                }
+                            );
                         }
                     );
                 } else {

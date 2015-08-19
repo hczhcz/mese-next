@@ -108,11 +108,11 @@ db.init(function () {
                 if (
                     !authName
                     || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
-                    || !util.verify(/^[0-9]+$/, data.price)
-                    || !util.verify(/^[0-9]+$/, data.prod)
-                    || !util.verify(/^[0-9]+$/, data.mk)
-                    || !util.verify(/^[0-9]+$/, data.ci)
-                    || !util.verify(/^[0-9]+$/, data.rd)
+                    || !util.verifyInt(data.price)
+                    || !util.verifyInt(data.prod)
+                    || !util.verifyInt(data.mk)
+                    || !util.verifyInt(data.ci)
+                    || !util.verifyInt(data.rd)
                 ) {
                     return;
                 }

@@ -20,3 +20,7 @@ module.exports.log = function (info) {
 module.exports.verify = function (re, str) {
     return typeof str == 'string' && str.length <= 32 && re.test(str);
 };
+
+module.exports.verifyInt = function (num) {
+    return typeof num == 'number' && (0 | num) == num;
+};

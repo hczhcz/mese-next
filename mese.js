@@ -109,6 +109,8 @@ db.init(function () {
                     return;
                 }
 
+                util.log('submit ' + authName + ' ' + data.game);
+
                 var gameStorage = db.access('games', data.game);
 
                 gameStorage.staticGet('players', function (players) {
@@ -139,7 +141,7 @@ db.init(function () {
                     return;
                 }
 
-                util.log('change password ' + data.name);
+                util.log('change password ' + authName);
 
                 if (data.password === authPassword) {
                     authStorage.staticSet(
@@ -151,7 +153,7 @@ db.init(function () {
                         }
                     );
                 } else {
-                    util.log('wrong password ' + data.name);
+                    util.log('wrong password ' + authName);
 
                     socket.emit('password_fail');
 

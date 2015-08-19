@@ -64,7 +64,11 @@ module.exports.alloc = function (gameData, settings, callback) {
     );
 };
 
-module.exports.submit = function (gameData, player, price, prod, mk, ci, rd, callback, fail) {
+module.exports.submit = function (
+    gameData, player,
+    price, prod, mk, ci, rd,
+    callback, fail
+) {
     module.exports.execSync(
         ['submit', player, price, prod, mk, ci, rd],
         gameData,

@@ -127,10 +127,10 @@ db.init(function () {
                             core.printPlayerEarly(
                                 gameData,
                                 player,
-                                function (output) {
+                                function (report) {
                                     socket.emit(
                                         'report_early',
-                                        eval('(' + output + ')')
+                                        eval('(' + report + ')')
                                     );
                                 }
                             );
@@ -190,12 +190,12 @@ db.init(function () {
     var test = function () {
         var size = 0;
 
-        var doAlloc = function (output) {
+        var doAlloc = function (gameData) {
             if (size >= 7) {
                 var gameStorage = db.access('games', 'test');
 
                 gameStorage.staticSet(
-                    'data', output,
+                    'data', gameData,
                     function (doc) {
                         // nothing
                     }
@@ -213,7 +213,7 @@ db.init(function () {
             } else {
                 size += 1;
 
-                core.alloc(output, [], doAlloc);
+                core.alloc(gameData, [], doAlloc);
             }
         };
 

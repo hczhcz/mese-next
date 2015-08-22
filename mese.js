@@ -118,7 +118,7 @@ db.init(function () {
 
                     for (var i in players) {
                         if (players[i] === authName) {
-                            player = i;
+                            player = parseInt(i);
                         }
                     }
 
@@ -151,6 +151,61 @@ db.init(function () {
                     } else {
                         socket.emit('submit_fail');
                     }
+                });
+            });
+
+            socket.on('report', function (data) {
+                // game
+
+                if (
+                    !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
+                ) {
+                    return;
+                }
+
+                util.log('report ' + (authName ? authName : socket.conn.remoteAddress));
+
+                var gameStorage = db.access('games', data.game);
+
+                gameStorage.staticGet('players', function (players) {
+                    var player;
+
+                    for (var i in players) {
+                        if (players[i] === authName) {
+                            player = parseInt(i);
+                        }
+                    }
+
+                    gameStorage.staticGet('data', function (data) {
+                        var gameData = data.buffer;
+
+                        if (player !== undefined) {
+                            // as player
+
+                            core.printPlayer(
+                                gameData,
+                                player,
+                                function (report) {
+                                    socket.emit(
+                                        'report_player',
+                                        eval('(' + report + ')')
+                                    );
+                                }
+                            );
+                        } else {
+                            // as guest
+
+                            core.printPublic(
+                                gameData,
+                                function (report) {
+                                    socket.emit(
+                                        'report_public',
+                                        eval('(' + report + ')')
+                                    );
+                                }
+                            );
+                        }
+                    });
                 });
             });
 

@@ -24,13 +24,16 @@
         socket.on('login_ok', function (data) {
             //document.writeln('login_ok<br>');
 
-            socket.emit('submit', {
+            // socket.emit('submit', {
+            //     game: 'test',
+            //     price: 70,
+            //     prod: 500,
+            //     mk: 3000,
+            //     ci: 10000,
+            //     rd: 5000,
+            // });
+            socket.emit('report', {
                 game: 'test',
-                price: 70,
-                prod: 500,
-                mk: 3000,
-                ci: 10000,
-                rd: 5000,
             });
         });
 
@@ -39,10 +42,22 @@
         });
 
         socket.on('submit_ok', function (data) {
-            document.writeln(JSON.stringify(data));
+            // document.writeln(JSON.stringify(data));
         });
 
         socket.on('submit_decline', function (data) {
+            // document.writeln(JSON.stringify(data));
+        });
+
+        socket.on('report_early', function (data) {
+            document.writeln(JSON.stringify(data));
+        });
+
+        socket.on('report_player', function (data) {
+            document.writeln(JSON.stringify(data));
+        });
+
+        socket.on('report_public', function (data) {
             document.writeln(JSON.stringify(data));
         });
 

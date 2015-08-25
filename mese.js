@@ -53,7 +53,7 @@ db.init(function () {
             var authStorage;
 
             socket.on('login', function (data) {
-                // name, password
+                // args: name, password
 
                 if (
                     !util.verify(/^[A-Za-z0-9_ ]+$/, data.name)
@@ -62,7 +62,7 @@ db.init(function () {
                     return;
                 }
 
-                util.log('login ' + data.name);
+                util.log('login ' + socket.conn.remoteAddress + ' ' + data.name);
 
                 var storage = db.access('users', data.name);
 
@@ -95,7 +95,7 @@ db.init(function () {
             });
 
             socket.on('submit', function (data) {
-                // game, price, prod, mk, ci, rd
+                // args: game, price, prod, mk, ci, rd
 
                 if (
                     !authName
@@ -155,7 +155,7 @@ db.init(function () {
             });
 
             socket.on('report', function (data) {
-                // game
+                // args: game
 
                 if (
                     !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
@@ -163,7 +163,11 @@ db.init(function () {
                     return;
                 }
 
-                util.log('report ' + (authName ? authName : socket.conn.remoteAddress));
+                if (authName) {
+                    util.log('get report ' + authName + ' ' + data.game);
+                } else {
+                    util.log('get report ' + socket.conn.remoteAddress + data.game);
+                }
 
                 var gameStorage = db.access('games', data.game);
 
@@ -210,7 +214,7 @@ db.init(function () {
             });
 
             socket.on('password', function (data) {
-                // password, newPassword
+                // args: password, newPassword
 
                 if (
                     !authName

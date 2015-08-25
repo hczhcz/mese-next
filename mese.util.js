@@ -24,3 +24,7 @@ module.exports.verify = function (re, str) {
 module.exports.verifyInt = function (num) {
     return typeof num == 'number' && (0 | num) == num;
 };
+
+module.exports.verifyBool = function (bool) {
+    return typeof bool == 'boolean';
+};

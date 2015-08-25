@@ -49,7 +49,6 @@ db.init(function () {
 
         d.run(function () {
             var authName;
-            var authPassword;
             var authStorage;
 
             socket.on('login', function (data) {
@@ -74,7 +73,6 @@ db.init(function () {
                             'password', data.password,
                             function (doc) {
                                 authName = data.name;
-                                authPassword = data.password;
                                 authStorage = storage;
 
                                 socket.emit('login_new');
@@ -82,7 +80,6 @@ db.init(function () {
                         );
                     } else if (password === data.password) {
                         authName = data.name;
-                        authPassword = data.password;
                         authStorage = storage;
 
                         socket.emit('login_ok');
@@ -226,22 +223,20 @@ db.init(function () {
 
                 util.log('change password ' + authName);
 
-                if (data.password === authPassword) {
-                    authStorage.staticSet(
-                        'password', data.newPassword,
-                        function (doc) {
-                            authPassword = password;
+                authStorage.staticGet('password', function (password) {
+                    if (data.password === password) {
+                        authStorage.staticSet(
+                            'password', data.newPassword,
+                            function (doc) {
+                                socket.emit('password_ok');
+                            }
+                        );
+                    } else {
+                        util.log('wrong password ' + authName);
 
-                            socket.emit('password_ok');
-                        }
-                    );
-                } else {
-                    util.log('wrong password ' + authName);
-
-                    socket.emit('password_fail');
-
-                    return;
-                }
+                        socket.emit('password_fail');
+                    }
+                });
             });
         });
     });

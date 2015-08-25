@@ -91,6 +91,65 @@ db.init(function () {
                 });
             });
 
+            socket.on('list', function (data) {
+                // args: (nothing)
+
+                if (
+                    !authName
+                ) {
+                    return;
+                }
+
+                util.log('list ' + authName);
+
+                authStorage.staticGet('subscribes', function (subscribes) {
+                    if (subscribes === undefined) {
+                        subscribes = {};
+                    }
+
+                    socket.emit(
+                        'subscribe_list',
+                        subscribes
+                    );
+                });
+            });
+
+            socket.on('subscribe', function (data) {
+                // args: game, enabled
+
+                if (
+                    !authName
+                    || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
+                    || !util.verifyBool(data.enabled)
+                ) {
+                    return;
+                }
+
+                if (data.enabled) {
+                    util.log('subscribe ' + authName + ' ' + data.game);
+                } else {
+                    util.log('unsubscribe ' + authName + ' ' + data.game);
+                }
+
+                authStorage.staticGet('subscribes', function (subscribes) {
+                    if (subscribes === undefined) {
+                        subscribes = {};
+                    }
+
+                    subscribes[data.game] = data.enabled;
+
+                    authStorage.staticSet(
+                        'subscribes', subscribes,
+                        function (doc) {
+                            socket.emit(
+                                'subscribe_update',
+                                subscribes
+                            );
+                        }
+                    );
+                });
+            });
+
             socket.on('submit', function (data) {
                 // args: game, price, prod, mk, ci, rd
 

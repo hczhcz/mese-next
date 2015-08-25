@@ -98,6 +98,8 @@ module.exports.submit = function (
 
     if (typeof decisions != 'array') {
         decisions = [];
+
+        storage.dynamicSet('decisions', decisions);
     }
 
     // insert into queue
@@ -111,8 +113,6 @@ module.exports.submit = function (
         callback: callback,
         fail: fail,
     });
-
-    storage.dynamicSet('decisions', decisions);
 
     module.exports.action(storage);
 };

@@ -33,6 +33,7 @@ module.exports.action = function (storage) {
             if (decisions.length > 0) {
                 // submit
 
+                // get decision from queue
                 var decision = decisions.shift();
 
                 core.submit(
@@ -99,6 +100,7 @@ module.exports.submit = function (
         decisions = [];
     }
 
+    // insert into queue
     decisions.push({
         player: player,
         price: price,
@@ -114,5 +116,3 @@ module.exports.submit = function (
 
     module.exports.action(storage);
 };
-
-// TODO: handle 'decisions' buffer, close period, execute callbacks

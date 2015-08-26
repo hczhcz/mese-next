@@ -10,6 +10,7 @@
         <p>Password: <input id='login_password' type='password' /></p>
         <p><input id='login_go' type='submit' value='Go!' /></p>
     </div>
+
     <div id='user' style='display: none'>
         <p>Login user: <span id='user_name'></span></p>
         <hr>
@@ -17,11 +18,27 @@
         <p>New password: <input id='user_new_password' type='password' /></p>
         <p><input id='user_change_password' type='submit' value='Change password' /></p>
     </div>
-    <div id='list'></div>
-    <div id='game'></div>
+
+    <div id='list' style='display: none'>
+    </div>
+
+    <div id='game' style='display: none'>
+        <p>Game: <span id='game_name'></span></p>
+        <hr>
+        <!-- TODO: table view -->
+        <div id='game_report'></div>
+        <hr>
+        <p>Price: <input id='game_price' type='number' /></p>
+        <p>Production: <input id='game_price' type='number' /></p>
+        <p>Marketing: <input id='game_price' type='number' /></p>
+        <p>Investment: <input id='game_price' type='number' /></p>
+        <p>R &amp; D: <input id='game_price' type='number' /></p>
+        <p><input id='game_submit' type='submit' value='Submit' /></p>
+    </div>
 
     <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
+
     <script>
         'use strict';
 
@@ -54,11 +71,15 @@
             socket.on('login_new', function (data) {
                 $('#user_name').text(name + ' (new user)');
                 $('#user').css('display', 'block');
+
+                socket.emit('list');
             });
 
             socket.on('login_ok', function (data) {
                 $('#user_name').text(name);
                 $('#user').css('display', 'block');
+
+                socket.emit('list');
             });
 
             socket.on('login_fail', function (data) {
@@ -103,40 +124,34 @@
             });
         });
 
+        // list
+
+        var updateList = function (data) {
+            $('#list').css('display', 'none');
+            $('#list').empty();
+
+            for (var i in data) {
+                if (data[i]) {
+                    $('<input type="button" />')
+                        .addClass('list_member')
+                        .val(i)
+                        .click(function () {
+                            // TODO
+                        })
+                        .appendTo('#list');
+                }
+            }
+
+            $('#list').css('display', 'block');
+        };
+
+        socket.on('subscribe_list', updateList);
+        socket.on('subscribe_update', updateList);
 
 
 
 
-        // socket.on('login_new', function (data) {
-        //     document.writeln('login_new<br>');
-        // });
 
-        // socket.on('login_ok', function (data) {
-        //     //document.writeln('login_ok<br>');
-
-        //     // socket.emit('list', {
-        //     // });
-        //     socket.emit('subscribe', {
-        //         game: 'test',
-        //         enabled: true,
-        //     });
-
-        //     // socket.emit('submit', {
-        //     //     game: 'test',
-        //     //     price: 70,
-        //     //     prod: 500,
-        //     //     mk: 3000,
-        //     //     ci: 10000,
-        //     //     rd: 5000,
-        //     // });
-        //     // socket.emit('report', {
-        //     //     game: 'test',
-        //     // });
-        // });
-
-        // socket.on('login_fail', function (data) {
-        //     document.writeln('login_fail<br>');
-        // });
 
         // socket.on('submit_ok', function (data) {
         //     // document.writeln(JSON.stringify(data));
@@ -146,12 +161,8 @@
         //     // document.writeln(JSON.stringify(data));
         // });
 
-        // socket.on('subscribe_list', function (data) {
-        //     document.writeln(JSON.stringify(data));
-        // });
-
-        // socket.on('subscribe_update', function (data) {
-        //     document.writeln(JSON.stringify(data));
+        // socket.on('submit_fail', function (data) {
+        //     document.writeln('submit_fail<br>');
         // });
 
         // socket.on('report_early', function (data) {
@@ -164,10 +175,6 @@
 
         // socket.on('report_public', function (data) {
         //     document.writeln(JSON.stringify(data));
-        // });
-
-        // socket.on('submit_fail', function (data) {
-        //     document.writeln('submit_fail<br>');
         // });
 </script>
 </body>

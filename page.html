@@ -22,18 +22,20 @@
     <div id='list' style='display: none'>
     </div>
 
-    <div id='game' style='display: none'>
-        <p>Game: <span id='game_name'></span></p>
+    <div id='report' style='display: none'>
+        <p>Game: <span id='report_name'></span></p>
         <hr>
         <!-- TODO: table view -->
-        <div id='game_report'></div>
-        <hr>
-        <p>Price: <input id='game_price' type='number' /></p>
-        <p>Production: <input id='game_price' type='number' /></p>
-        <p>Marketing: <input id='game_price' type='number' /></p>
-        <p>Investment: <input id='game_price' type='number' /></p>
-        <p>R &amp; D: <input id='game_price' type='number' /></p>
-        <p><input id='game_submit' type='submit' value='Submit' /></p>
+        <div id='report_data'></div>
+    </div>
+
+    <div id='submit' style='display: none'>
+        <p>Price: <input id='submit_price' type='number' /></p>
+        <p>Production: <input id='submit_prod' type='number' /></p>
+        <p>Marketing: <input id='submit_mk' type='number' /></p>
+        <p>Investment: <input id='submit_ci' type='number' /></p>
+        <p>R &amp; D: <input id='submit_rd' type='number' /></p>
+        <p><input id='submit_submit' type='submit' value='Submit' /></p>
     </div>
 
     <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
@@ -43,6 +45,9 @@
         'use strict';
 
         var socket = io(window.location.origin);
+
+        var currentName = undefined;
+        var currentGame = undefined;
 
         // login
 
@@ -63,29 +68,31 @@
             var password = $('#login_password').val();
             $('#login_password').val('');
 
+            currentName = name;
+
             socket.emit('login', {
                 name: name,
                 password: password, // TODO: hash?
             });
+        });
 
-            socket.on('login_new', function (data) {
-                $('#user_name').text(name + ' (new user)');
-                $('#user').css('display', 'block');
+        socket.on('login_new', function (data) {
+            $('#user_name').text(currentName + ' (new user)');
+            $('#user').css('display', 'block');
 
-                socket.emit('list');
-            });
+            socket.emit('list');
+        });
 
-            socket.on('login_ok', function (data) {
-                $('#user_name').text(name);
-                $('#user').css('display', 'block');
+        socket.on('login_ok', function (data) {
+            $('#user_name').text(currentName);
+            $('#user').css('display', 'block');
 
-                socket.emit('list');
-            });
+            socket.emit('list');
+        });
 
-            socket.on('login_fail', function (data) {
-                // TODO
-                console.log('Wrong password!');
-            });
+        socket.on('login_fail', function (data) {
+            // TODO
+            console.log('Wrong password!');
         });
 
         // user
@@ -112,16 +119,16 @@
                 password: password, // TODO: hash?
                 newPassword: newPassword, // TODO: hash?
             });
+        });
 
-            socket.on('password_ok', function (data) {
-                // TODO
-                console.log('Password changed!');
-            });
+        socket.on('password_ok', function (data) {
+            // TODO
+            console.log('Password changed!');
+        });
 
-            socket.on('password_fail', function (data) {
-                // TODO
-                console.log('Wrong password!');
-            });
+        socket.on('password_fail', function (data) {
+            // TODO
+            console.log('Wrong password!');
         });
 
         // list
@@ -135,9 +142,15 @@
                     $('<input type="button" />')
                         .addClass('list_member')
                         .val(i)
-                        .click(function () {
-                            // TODO
-                        })
+                        .click(function (game) {
+                            return function () {
+                                currentGame = game;
+
+                                socket.emit('report', {
+                                    game: game,
+                                });
+                            }
+                        } (i))
                         .appendTo('#list');
                 }
             }
@@ -146,36 +159,60 @@
         };
 
         socket.on('subscribe_list', updateList);
+
         socket.on('subscribe_update', updateList);
 
+        // TODO: subscribe changes
 
+        // report
 
+        socket.on('report_early', function (data) {
+            $('#report_data').text(JSON.stringify(data)); // TODO
+        });
 
+        socket.on('report_player', function (data) {
+            $('#report_name').text(currentGame);
+            $('#report_data').text(JSON.stringify(data)); // TODO
 
+            $('#report').css('display', 'block');
+            $('#submit').css('display', 'block');
+        });
 
-        // socket.on('submit_ok', function (data) {
-        //     // document.writeln(JSON.stringify(data));
-        // });
+        socket.on('report_public', function (data) {
+            $('#report_name').text(currentGame);
+            $('#report_data').text(JSON.stringify(data)); // TODO
 
-        // socket.on('submit_decline', function (data) {
-        //     // document.writeln(JSON.stringify(data));
-        // });
+            $('#report').css('display', 'block');
+            $('#submit').css('display', 'none');
+        });
 
-        // socket.on('submit_fail', function (data) {
-        //     document.writeln('submit_fail<br>');
-        // });
+        // submit
 
-        // socket.on('report_early', function (data) {
-        //     document.writeln(JSON.stringify(data));
-        // });
+        $('#submit_submit').click(function () {
+            socket.emit('submit', {
+                game: currentGame,
+                price: parseInt($('#submit_price').val()),
+                prod: parseInt($('#submit_prod').val()),
+                mk: parseInt($('#submit_mk').val()),
+                ci: parseInt($('#submit_ci').val()),
+                rd: parseInt($('#submit_rd').val()),
+            });
+        });
 
-        // socket.on('report_player', function (data) {
-        //     document.writeln(JSON.stringify(data));
-        // });
+        socket.on('submit_ok', function (data) {
+            // TODO
+            console.log('Submit ok!');
+        });
 
-        // socket.on('report_public', function (data) {
-        //     document.writeln(JSON.stringify(data));
-        // });
+        socket.on('submit_decline', function (data) {
+            // TODO
+            console.log('Submit decline!');
+        });
+
+        socket.on('submit_fail', function (data) {
+            // TODO
+            console.log('Submit fail!');
+        });
 </script>
 </body>
 </html>

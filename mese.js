@@ -179,6 +179,65 @@ db.init(function () {
                 });
             });
 
+            socket.on('report', function (data) {
+                // args: game
+
+                if (
+                    !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
+                ) {
+                    return;
+                }
+
+                if (authName) {
+                    util.log('get report ' + authName + ' ' + data.game);
+                } else {
+                    util.log('get report ' + socket.conn.remoteAddress + data.game);
+                }
+
+                var gameStorage = db.access('games', data.game);
+
+                gameStorage.staticGet('players', function (players) {
+                    var player;
+
+                    for (var i in players) {
+                        if (players[i] === authName) {
+                            player = parseInt(i);
+                        }
+                    }
+
+                    gameStorage.staticGet('data', function (data) {
+                        var gameData = data.buffer;
+
+                        if (player !== undefined) {
+                            // as player
+
+                            core.printPlayer(
+                                gameData,
+                                player,
+                                function (report) {
+                                    socket.emit(
+                                        'report_player',
+                                        eval('(' + report + ')')
+                                    );
+                                }
+                            );
+                        } else {
+                            // as guest
+
+                            core.printPublic(
+                                gameData,
+                                function (report) {
+                                    socket.emit(
+                                        'report_public',
+                                        eval('(' + report + ')')
+                                    );
+                                }
+                            );
+                        }
+                    });
+                });
+            });
+
             socket.on('submit', function (data) {
                 // args: game, price, prod, mk, ci, rd
 
@@ -236,65 +295,6 @@ db.init(function () {
                     } else {
                         socket.emit('submit_fail');
                     }
-                });
-            });
-
-            socket.on('report', function (data) {
-                // args: game
-
-                if (
-                    !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
-                ) {
-                    return;
-                }
-
-                if (authName) {
-                    util.log('get report ' + authName + ' ' + data.game);
-                } else {
-                    util.log('get report ' + socket.conn.remoteAddress + data.game);
-                }
-
-                var gameStorage = db.access('games', data.game);
-
-                gameStorage.staticGet('players', function (players) {
-                    var player;
-
-                    for (var i in players) {
-                        if (players[i] === authName) {
-                            player = parseInt(i);
-                        }
-                    }
-
-                    gameStorage.staticGet('data', function (data) {
-                        var gameData = data.buffer;
-
-                        if (player !== undefined) {
-                            // as player
-
-                            core.printPlayer(
-                                gameData,
-                                player,
-                                function (report) {
-                                    socket.emit(
-                                        'report_player',
-                                        eval('(' + report + ')')
-                                    );
-                                }
-                            );
-                        } else {
-                            // as guest
-
-                            core.printPublic(
-                                gameData,
-                                function (report) {
-                                    socket.emit(
-                                        'report_public',
-                                        eval('(' + report + ')')
-                                    );
-                                }
-                            );
-                        }
-                    });
                 });
             });
         });

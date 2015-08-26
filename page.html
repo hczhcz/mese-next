@@ -15,7 +15,7 @@
         <hr>
         <p>Password: <input id='user_password' type='password' /></p>
         <p>New password: <input id='user_new_password' type='password' /></p>
-        <p><input id='login_go' type='submit' value='Change password' /></p>
+        <p><input id='user_change_password' type='submit' value='Change password' /></p>
     </div>
     <div id='list'></div>
     <div id='game'></div>
@@ -62,6 +62,42 @@
             });
 
             socket.on('login_fail', function (data) {
+                // TODO
+                console.log('Wrong password!');
+            });
+        });
+
+        // user
+
+        $('#user_password').keypress(function (event) {
+            if (event.which === 13) {
+                $('#user_new_password').focus();
+            }
+        });
+
+        $('#user_new_password').keypress(function (event) {
+            if (event.which === 13) {
+                $('#user_change_password').click();
+            }
+        });
+
+        $('#user_change_password').click(function () {
+            var password = $('#user_password').val();
+            var newPassword = $('#user_new_password').val();
+            $('#user_password').val('');
+            $('#user_new_password').val('');
+
+            socket.emit('password', {
+                password: password, // TODO: hash?
+                newPassword: newPassword, // TODO: hash?
+            });
+
+            socket.on('password_ok', function (data) {
+                // TODO
+                console.log('Password changed!');
+            });
+
+            socket.on('password_fail', function (data) {
                 // TODO
                 console.log('Wrong password!');
             });
@@ -133,14 +169,6 @@
         // socket.on('submit_fail', function (data) {
         //     document.writeln('submit_fail<br>');
         // });
-
-        socket.on('password_ok', function (data) {
-            document.writeln('password_ok<br>');
-        });
-
-        socket.on('password_fail', function (data) {
-            document.writeln('password_fail<br>');
-        });
 </script>
 </body>
 </html>

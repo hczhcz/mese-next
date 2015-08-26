@@ -1,84 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>MESE-Next</title>
     <meta charset='utf-8' />
 </head>
 <body>
-    hello<br>
+    <div id='login'>
+        <p>Name: <input id='login_name' type='text' /></p>
+        <p>Password: <input id='login_password' type='password' /></p>
+        <p><input id='login_go' type='submit' value='Go!' /></p>
+    </div>
 
+    <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
     <script>
         'use strict';
 
         var socket = io(window.location.origin);
 
-        socket.emit('login', {
-            name: 'test0001',
-            password: 'test',
+        // login
+
+        $('#login_name').keypress(function (event) {
+            if (event.which === 13) {
+                $('#login_password').focus();
+            }
         });
 
-        socket.on('login_new', function (data) {
-            document.writeln('login_new<br>');
+        $('#login_password').keypress(function (event) {
+            if (event.which === 13) {
+                $('#login_go').click();
+            }
         });
 
-        socket.on('login_ok', function (data) {
-            //document.writeln('login_ok<br>');
-
-            // socket.emit('list', {
-            // });
-            socket.emit('subscribe', {
-                game: 'test',
-                enabled: true,
-            });
-
-            // socket.emit('submit', {
-            //     game: 'test',
-            //     price: 70,
-            //     prod: 500,
-            //     mk: 3000,
-            //     ci: 10000,
-            //     rd: 5000,
-            // });
-            // socket.emit('report', {
-            //     game: 'test',
-            // });
+        $('#login_go').click(function () {
+            socket.emit('login', {
+                name: $('#login_name').val(),
+                password: $('#login_password').val(),
+            })
         });
 
-        socket.on('login_fail', function (data) {
-            document.writeln('login_fail<br>');
-        });
 
-        socket.on('submit_ok', function (data) {
-            // document.writeln(JSON.stringify(data));
-        });
 
-        socket.on('submit_decline', function (data) {
-            // document.writeln(JSON.stringify(data));
-        });
 
-        socket.on('subscribe_list', function (data) {
-            document.writeln(JSON.stringify(data));
-        });
 
-        socket.on('subscribe_update', function (data) {
-            document.writeln(JSON.stringify(data));
-        });
+        // socket.on('login_new', function (data) {
+        //     document.writeln('login_new<br>');
+        // });
 
-        socket.on('report_early', function (data) {
-            document.writeln(JSON.stringify(data));
-        });
+        // socket.on('login_ok', function (data) {
+        //     //document.writeln('login_ok<br>');
 
-        socket.on('report_player', function (data) {
-            document.writeln(JSON.stringify(data));
-        });
+        //     // socket.emit('list', {
+        //     // });
+        //     socket.emit('subscribe', {
+        //         game: 'test',
+        //         enabled: true,
+        //     });
 
-        socket.on('report_public', function (data) {
-            document.writeln(JSON.stringify(data));
-        });
+        //     // socket.emit('submit', {
+        //     //     game: 'test',
+        //     //     price: 70,
+        //     //     prod: 500,
+        //     //     mk: 3000,
+        //     //     ci: 10000,
+        //     //     rd: 5000,
+        //     // });
+        //     // socket.emit('report', {
+        //     //     game: 'test',
+        //     // });
+        // });
 
-        socket.on('submit_fail', function (data) {
-            document.writeln('submit_fail<br>');
-        });
+        // socket.on('login_fail', function (data) {
+        //     document.writeln('login_fail<br>');
+        // });
+
+        // socket.on('submit_ok', function (data) {
+        //     // document.writeln(JSON.stringify(data));
+        // });
+
+        // socket.on('submit_decline', function (data) {
+        //     // document.writeln(JSON.stringify(data));
+        // });
+
+        // socket.on('subscribe_list', function (data) {
+        //     document.writeln(JSON.stringify(data));
+        // });
+
+        // socket.on('subscribe_update', function (data) {
+        //     document.writeln(JSON.stringify(data));
+        // });
+
+        // socket.on('report_early', function (data) {
+        //     document.writeln(JSON.stringify(data));
+        // });
+
+        // socket.on('report_player', function (data) {
+        //     document.writeln(JSON.stringify(data));
+        // });
+
+        // socket.on('report_public', function (data) {
+        //     document.writeln(JSON.stringify(data));
+        // });
+
+        // socket.on('submit_fail', function (data) {
+        //     document.writeln('submit_fail<br>');
+        // });
 
         socket.on('password_ok', function (data) {
             document.writeln('password_ok<br>');

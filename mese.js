@@ -91,6 +91,35 @@ db.init(function () {
                 });
             });
 
+            socket.on('password', function (data) {
+                // args: password, newPassword
+
+                if (
+                    !authName
+                    || !util.verify(/^.+$/, data.password)
+                    || !util.verify(/^.+$/, data.newPassword)
+                ) {
+                    return;
+                }
+
+                util.log('change password ' + authName);
+
+                authStorage.staticGet('password', function (password) {
+                    if (data.password === password) {
+                        authStorage.staticSet(
+                            'password', data.newPassword,
+                            function (doc) {
+                                socket.emit('password_ok');
+                            }
+                        );
+                    } else {
+                        util.log('wrong password ' + authName);
+
+                        socket.emit('password_fail');
+                    }
+                });
+            });
+
             socket.on('list', function (data) {
                 // args: (nothing)
 
@@ -266,35 +295,6 @@ db.init(function () {
                             );
                         }
                     });
-                });
-            });
-
-            socket.on('password', function (data) {
-                // args: password, newPassword
-
-                if (
-                    !authName
-                    || !util.verify(/^.+$/, data.password)
-                    || !util.verify(/^.+$/, data.newPassword)
-                ) {
-                    return;
-                }
-
-                util.log('change password ' + authName);
-
-                authStorage.staticGet('password', function (password) {
-                    if (data.password === password) {
-                        authStorage.staticSet(
-                            'password', data.newPassword,
-                            function (doc) {
-                                socket.emit('password_ok');
-                            }
-                        );
-                    } else {
-                        util.log('wrong password ' + authName);
-
-                        socket.emit('password_fail');
-                    }
                 });
             });
         });

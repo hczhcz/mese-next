@@ -37,7 +37,7 @@ module.exports.action = function (storage) {
                 var decision = decisions.shift();
 
                 core.submit(
-                    gameData, decision.player,
+                    gameData, decision.player, decision.period,
                     decision.price,
                     decision.prod,
                     decision.mk,
@@ -90,7 +90,7 @@ module.exports.action = function (storage) {
 };
 
 module.exports.submit = function (
-    storage, player,
+    storage, player, period,
     price, prod, mk, ci, rd,
     callback, fail
 ) {
@@ -105,6 +105,7 @@ module.exports.submit = function (
     // insert into queue
     decisions.push({
         player: player,
+        period: period,
         price: price,
         prod: prod,
         mk: mk,

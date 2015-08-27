@@ -239,11 +239,12 @@ db.init(function () {
             });
 
             socket.on('submit', function (data) {
-                // args: game, price, prod, mk, ci, rd
+                // args: game, period, price, prod, mk, ci, rd
 
                 if (
                     !authName
                     || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
+                    || !util.verifyInt(data.period)
                     || !util.verifyInt(data.price)
                     || !util.verifyInt(data.prod)
                     || !util.verifyInt(data.mk)
@@ -281,7 +282,7 @@ db.init(function () {
                         };
 
                         game.submit(
-                            gameStorage, player,
+                            gameStorage, player, data.period,
                             data.price, data.prod, data.mk, data.ci, data.rd,
                             function (gameData) {
                                 socket.emit('submit_ok');

@@ -46,7 +46,6 @@
 
         var socket = io(window.location.origin);
 
-        var currentName = undefined;
         var currentGame = undefined;
 
         // login
@@ -68,8 +67,6 @@
             var password = $('#login_password').val();
             $('#login_password').val('');
 
-            currentName = name;
-
             socket.emit('login', {
                 name: name,
                 password: password, // TODO: hash?
@@ -77,14 +74,14 @@
         });
 
         socket.on('login_new', function (data) {
-            $('#user_name').text(currentName + ' (new user)');
+            $('#user_name').text(data.name + ' (new user)');
             $('#user').css('display', 'block');
 
             socket.emit('list');
         });
 
         socket.on('login_ok', function (data) {
-            $('#user_name').text(currentName);
+            $('#user_name').text(data.name);
             $('#user').css('display', 'block');
 
             socket.emit('list');
@@ -144,8 +141,6 @@
                         .val(i)
                         .click(function (game) {
                             return function () {
-                                currentGame = game;
-
                                 socket.emit('report', {
                                     game: game,
                                 });
@@ -171,6 +166,8 @@
         });
 
         socket.on('report_player', function (data) {
+            currentGame = data.game;
+
             $('#report_name').text(currentGame);
             $('#report_data').text(JSON.stringify(data)); // TODO
 
@@ -179,6 +176,8 @@
         });
 
         socket.on('report_public', function (data) {
+            currentGame = data.game;
+
             $('#report_name').text(currentGame);
             $('#report_data').text(JSON.stringify(data)); // TODO
 

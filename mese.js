@@ -75,14 +75,14 @@ db.init(function () {
                                 authName = data.name;
                                 authStorage = storage;
 
-                                socket.emit('login_new');
+                                socket.emit('login_new', {name: authName});
                             }
                         );
                     } else if (password === data.password) {
                         authName = data.name;
                         authStorage = storage;
 
-                        socket.emit('login_ok');
+                        socket.emit('login_ok', {name: authName});
                     } else {
                         util.log('wrong password ' + data.name);
 
@@ -194,7 +194,8 @@ db.init(function () {
                     util.log('get report ' + socket.conn.remoteAddress + data.game);
                 }
 
-                var gameStorage = db.access('games', data.game);
+                var gameName = data.game;
+                var gameStorage = db.access('games', gameName);
 
                 gameStorage.staticGet('players', function (players) {
                     var player;
@@ -215,9 +216,13 @@ db.init(function () {
                                 gameData,
                                 player,
                                 function (report) {
+                                    var result = eval('(' + report + ')');
+                                    result.game = gameName;
+                                    result.players = players;
+
                                     socket.emit(
                                         'report_player',
-                                        eval('(' + report + ')')
+                                        result
                                     );
                                 }
                             );
@@ -227,9 +232,13 @@ db.init(function () {
                             core.printPublic(
                                 gameData,
                                 function (report) {
+                                    var result = eval('(' + report + ')');
+                                    result.game = gameName;
+                                    result.players = players;
+
                                     socket.emit(
                                         'report_public',
-                                        eval('(' + report + ')')
+                                        result
                                     );
                                 }
                             );
@@ -334,5 +343,5 @@ db.init(function () {
         core.init(8, 'modern', [], doAlloc);
     };
 
-    test();
+    // test();
 });

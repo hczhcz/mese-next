@@ -47,6 +47,7 @@
         var socket = io(window.location.origin);
 
         var currentGame = undefined;
+        var currentPeriod = undefined;
 
         // login
 
@@ -161,15 +162,32 @@
 
         // report
 
+        var initReport = function () {
+            $('#report span').text('');
+        };
+
+        var showReport = function (head, data, tail) {
+            for (var i in data) {
+                var nextHead = head + ' [bind=' + i + ']';
+
+                if (typeof data[i] == 'string' || typeof data[i] == 'number') {
+                    $(tail ? nextHead + ' ' + tail : nextHead).text(data[i]);
+                } else if (typeof data[i] == 'object') {
+                    showReport(nextHead, data[i], tail);
+                }
+            }
+        };
+
         socket.on('report_early', function (data) {
-            $('#report_data').text(JSON.stringify(data)); // TODO
+            showReport('#report', data, undefined); // TODO
         });
 
         socket.on('report_player', function (data) {
             currentGame = data.game;
+            currentPeriod = data.now_period;
 
-            $('#report_name').text(currentGame);
-            $('#report_data').text(JSON.stringify(data)); // TODO
+            initReport();
+            showReport('#report', data, undefined);
 
             $('#report').css('display', 'block');
             $('#submit').css('display', 'block');
@@ -178,8 +196,8 @@
         socket.on('report_public', function (data) {
             currentGame = data.game;
 
-            $('#report_name').text(currentGame);
-            $('#report_data').text(JSON.stringify(data)); // TODO
+            initReport();
+            showReport('#report', data, undefined);
 
             $('#report').css('display', 'block');
             $('#submit').css('display', 'none');

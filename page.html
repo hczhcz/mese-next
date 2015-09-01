@@ -23,10 +23,38 @@
     </div>
 
     <div id='report' style='display: none'>
-        <p>Game: <span id='report_name'></span></p>
+        <h1>Game: <span bind='game'></span></h1>
         <hr>
-        <!-- TODO: table view -->
-        <div id='report_data'></div>
+        <div bind='settings'>
+            <h2>Settings</h2>
+            <div bind='limits'>
+                <h3>Limits</h3>
+                <p>Price: <span bind='price_min'></span> - <span bind='price_max'></span></p>
+                <p>MK: 0 - <span bind='mk_limit'></span></p>
+                <p>CI: 0 - <span bind='ci_limit'></span></p>
+                <p>RD: 0 - <span bind='rd_limit'></span></p>
+                <p>Loan: 0 - <span bind='loan_limit'></span></p>
+            </div>
+            <div bind='production'>
+                <h3>Production</h3>
+                <p>Balanced production rate: <span bind='prod_rate_balanced'></span></p>
+                <!-- <p>prod_rate_pow: <span bind='prod_rate_pow'></span></p>
+                <p>prod_cost_factor_rate_over: <span bind='prod_cost_factor_rate_over'></span></p>
+                <p>prod_cost_factor_rate_under: <span bind='prod_cost_factor_rate_under'></span></p>
+                <p>prod_cost_factor_size: <span bind='prod_cost_factor_size'></span></p>
+                <p>prod_cost_factor_const: <span bind='prod_cost_factor_const'></span></p> -->
+
+                <p>Unit fee: <span bind='unit_fee'></span></p>
+                <p>Deprecation rate: <span bind='deprecation_rate'></span></p>
+            </div>
+            <div bind='balance'>
+                <h3>Balance</h3>
+                <p>Interest rate (cash): <span bind='interest_rate_cash'></span></p>
+                <p>Interest rate (loan): <span bind='interest_rate_loan'></span></p>
+                <p>Inventory fee: <span bind='inventory_fee'></span></p>
+                <p>Tax rate: <span bind='tax_rate'></span></p>
+            </div>
+        </div>
     </div>
 
     <div id='submit' style='display: none'>

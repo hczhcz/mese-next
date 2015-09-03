@@ -121,7 +121,7 @@
             </table>
             <table bind='mpi'>
                 <tr><th>MPI</th></tr>
-                <tr><td><span bind='mpi'></span></td></tr>
+                <tr><td>MPI</td><td><span bind='mpi'></span></td></tr>
             </table>
         </div>
         <!-- <div bind='data_public'>
@@ -146,16 +146,17 @@
         #report [target=last] {
             color: gray;
         }
-
         #report [target=now] {
         }
-
         #report [target=next] {
             color: blue;
         }
 
-        #report th {
-            text-align: left;
+        #report tr {
+            text-align: right;
+        }
+        #report tr :first-child {
+            text-align: left !important;
         }
     </style>
 

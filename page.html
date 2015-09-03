@@ -289,21 +289,13 @@
 
         $('#report span[bind]')
             .append(
-                $('<span />')
-                    .text('last: ')
-                    .attr('target', 'last')
-                    .append('<span />')
+                $('<span target="last">(Last: <span></span>) </span>')
             )
             .append(
-                $('<span />')
-                    .attr('target', 'now')
-                    .append('<span />')
+                $('<span target="now"><span></span></span>')
             )
             .append(
-                $('<span />')
-                    .text('next: ')
-                    .attr('target', 'next')
-                    .append('<span />')
+                $('<span target="next"> (Next: <span></span>)</span>')
             );
 
         var initReport = function () {

@@ -279,13 +279,11 @@
         };
 
         var showReport = function (head, data, tail) {
-            for (var i in data) {
-                var nextHead = head + ' [bind=' + i + ']';
-
-                if (typeof data[i] == 'string' || typeof data[i] == 'number') {
-                    $(tail ? nextHead + ' ' + tail : nextHead).text(data[i]);
-                } else if (typeof data[i] == 'object') {
-                    showReport(nextHead, data[i], tail);
+            if (typeof data == 'string' || typeof data == 'number') {
+                $(tail ? head + ' ' + tail : head).text(data);
+            } else if (typeof data == 'object') {
+                for (var i in data) {
+                    showReport(head + ' [bind=' + i + ']', data[i], tail);
                 }
             }
         };

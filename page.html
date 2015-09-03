@@ -154,14 +154,14 @@
     <script src='/socket.io/socket.io.js'></script>
 
     <style>
-        #report span[target=last] {
+        #report [target=last] {
             color: gray;
         }
 
-        #report span[target=now] {
+        #report [target=now] {
         }
 
-        #report span[target=next] {
+        #report [target=next] {
             color: blue;
         }
     </style>
@@ -299,13 +299,13 @@
             );
 
         var initReport = function () {
-            $('#report span[target]').css('display', 'none');
+            $('#report [target]').css('display', 'none');
         };
 
         var showReport = function (head, data, tail) {
             if (typeof data == 'string' || typeof data == 'number') {
-                $(head + ' ' + tail + ' span').text(data);
-                $(head + ' ' + tail).css('display', 'inline');
+                $(head + ' [target=' + tail + '] span').text(data);
+                $(head + ' [target=' + tail + ']').css('display', 'inline');
             } else if (typeof data == 'object') {
                 for (var i in data) {
                     showReport(head + ' [bind=' + i + ']', data[i], tail);
@@ -314,8 +314,8 @@
         };
 
         socket.on('report_early', function (data) {
-            showReport('#report [bind=decisions]', data.decisions, '[target=next]');
-            showReport('#report [bind=data_early]', data.data_early, '[target=next]');
+            showReport('#report [bind=decisions]', data.decisions, 'next');
+            showReport('#report [bind=data_early]', data.data_early, 'next');
         });
 
         socket.on('report_player', function (data) {
@@ -323,16 +323,16 @@
             currentPeriod = data.now_period;
 
             initReport();
-            showReport('#report [bind=decisions]', data.last_decisions, '[target=last]');
-            showReport('#report [bind=data_early]', data.last_data_early, '[target=last]');
-            showReport('#report [bind=data]', data.last_data, '[target=last]');
-            showReport('#report [bind=data_public]', data.last_data_public, '[target=last]');
-            showReport('#report [bind=settings]', data.settings, '[target=now]');
-            showReport('#report [bind=decisions]', data.decisions, '[target=now]');
-            showReport('#report [bind=data_early]', data.data_early, '[target=now]');
-            showReport('#report [bind=data]', data.data, '[target=now]');
-            showReport('#report [bind=data_public]', data.data_public, '[target=now]');
-            showReport('#report [bind=settings]', data.next_settings, '[target=next]');
+            showReport('#report [bind=decisions]', data.last_decisions, 'last');
+            showReport('#report [bind=data_early]', data.last_data_early, 'last');
+            showReport('#report [bind=data]', data.last_data, 'last');
+            showReport('#report [bind=data_public]', data.last_data_public, 'last');
+            showReport('#report [bind=settings]', data.settings, 'now');
+            showReport('#report [bind=decisions]', data.decisions, 'now');
+            showReport('#report [bind=data_early]', data.data_early, 'now');
+            showReport('#report [bind=data]', data.data, 'now');
+            showReport('#report [bind=data_public]', data.data_public, 'now');
+            showReport('#report [bind=settings]', data.next_settings, 'next');
 
             $('#report').css('display', 'block');
             $('#submit').css('display', 'block');
@@ -342,10 +342,10 @@
             currentGame = data.game;
 
             initReport();
-            showReport('#report [bind=data_public]', data.last_data_public, '[target=last]');
-            showReport('#report [bind=settings]', data.settings, '[target=now]');
-            showReport('#report [bind=data_public]', data.data_public, '[target=now]');
-            showReport('#report [bind=settings]', data.next_settings, '[target=next]');
+            showReport('#report [bind=data_public]', data.last_data_public, 'last');
+            showReport('#report [bind=settings]', data.settings, 'now');
+            showReport('#report [bind=data_public]', data.data_public, 'now');
+            showReport('#report [bind=settings]', data.next_settings, 'next');
 
             $('#report').css('display', 'block');
             $('#submit').css('display', 'none');

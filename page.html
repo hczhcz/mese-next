@@ -274,13 +274,33 @@
 
         // report
 
+        $('#report span[bind]')
+            .append(
+                $('<span />')
+                    .text('last: ')
+                    .attr('target', 'last')
+                    .append('<span />')
+            )
+            .append(
+                $('<span />')
+                    .attr('target', 'now')
+                    .append('<span />')
+            )
+            .append(
+                $('<span />')
+                    .text('next: ')
+                    .attr('target', 'next')
+                    .append('<span />')
+            );
+
         var initReport = function () {
-            $('#report span').text('');
+            $('#report span[target]').css('display', 'none');
         };
 
         var showReport = function (head, data, tail) {
             if (typeof data == 'string' || typeof data == 'number') {
-                $(tail ? head + ' ' + tail : head).text(data);
+                $(head + ' ' + tail + ' span').text(data);
+                $(head + ' ' + tail).css('display', 'inline');
             } else if (typeof data == 'object') {
                 for (var i in data) {
                     showReport(head + ' [bind=' + i + ']', data[i], tail);

@@ -309,7 +309,8 @@
         };
 
         socket.on('report_early', function (data) {
-            showReport('#report', data, undefined); // TODO
+            showReport('#report [bind=decisions]', data.decisions, '[target=next]');
+            showReport('#report [bind=data_early]', data.data_early, '[target=next]');
         });
 
         socket.on('report_player', function (data) {
@@ -317,7 +318,16 @@
             currentPeriod = data.now_period;
 
             initReport();
-            showReport('#report', data, undefined);
+            showReport('#report [bind=decisions]', data.last_decisions, '[target=last]');
+            showReport('#report [bind=data_early]', data.last_data_early, '[target=last]');
+            showReport('#report [bind=data]', data.last_data, '[target=last]');
+            showReport('#report [bind=data_public]', data.last_data_public, '[target=last]');
+            showReport('#report [bind=settings]', data.settings, '[target=now]');
+            showReport('#report [bind=decisions]', data.decisions, '[target=now]');
+            showReport('#report [bind=data_early]', data.data_early, '[target=now]');
+            showReport('#report [bind=data]', data.data, '[target=now]');
+            showReport('#report [bind=data_public]', data.data_public, '[target=now]');
+            showReport('#report [bind=settings]', data.next_settings, '[target=next]');
 
             $('#report').css('display', 'block');
             $('#submit').css('display', 'block');
@@ -327,7 +337,10 @@
             currentGame = data.game;
 
             initReport();
-            showReport('#report', data, undefined);
+            showReport('#report [bind=data_public]', data.last_data_public, '[target=last]');
+            showReport('#report [bind=settings]', data.settings, '[target=now]');
+            showReport('#report [bind=data_public]', data.data_public, '[target=now]');
+            showReport('#report [bind=settings]', data.next_settings, '[target=next]');
 
             $('#report').css('display', 'block');
             $('#submit').css('display', 'none');

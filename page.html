@@ -27,33 +27,33 @@
         <hr>
         <div bind='settings'>
             <h2>Settings</h2>
-            <div bind='limits'>
-                <h3>Limits</h3>
-                <p>Price: <span bind='price_min'></span> - <span bind='price_max'></span></p>
-                <p>MK: 0 - <span bind='mk_limit'></span></p>
-                <p>CI: 0 - <span bind='ci_limit'></span></p>
-                <p>RD: 0 - <span bind='rd_limit'></span></p>
-                <p>Loan: 0 - <span bind='loan_limit'></span></p>
-            </div>
-            <div bind='production'>
-                <h3>Production</h3>
-                <p>Balanced production rate: <span bind='prod_rate_balanced'></span></p>
-                <!-- <p>prod_rate_pow: <span bind='prod_rate_pow'></span></p>
-                <p>prod_cost_factor_rate_over: <span bind='prod_cost_factor_rate_over'></span></p>
-                <p>prod_cost_factor_rate_under: <span bind='prod_cost_factor_rate_under'></span></p>
-                <p>prod_cost_factor_size: <span bind='prod_cost_factor_size'></span></p>
-                <p>prod_cost_factor_const: <span bind='prod_cost_factor_const'></span></p> -->
+            <table bind='limits'>
+                <tr><th>Limits</th></tr>
+                <tr><td>Price</td><td><span bind='price_min'></span> - <span bind='price_max'></span></td></tr>
+                <tr><td>MK</td><td>0 - <span bind='mk_limit'></span></td></tr>
+                <tr><td>CI</td><td>0 - <span bind='ci_limit'></span></td></tr>
+                <tr><td>RD</td><td>0 - <span bind='rd_limit'></span></td></tr>
+                <tr><td>Loan</td><td>0 - <span bind='loan_limit'></span></td></tr>
+            </table>
+            <table bind='production'>
+                <tr><th>Production</th></tr>
+                <tr><td>Balanced production rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
+                <!-- <tr><td>prod_rate_pow</td><td><span bind='prod_rate_pow'></span></td></tr>
+                <tr><td>prod_cost_factor_rate_over</td><td><span bind='prod_cost_factor_rate_over'></span></td></tr>
+                <tr><td>prod_cost_factor_rate_under</td><td><span bind='prod_cost_factor_rate_under'></span></td></tr>
+                <tr><td>prod_cost_factor_size</td><td><span bind='prod_cost_factor_size'></span></td></tr>
+                <tr><td>prod_cost_factor_const</td><td><span bind='prod_cost_factor_const'></span></td></tr> -->
 
-                <p>Unit fee: <span bind='unit_fee'></span></p>
-                <p>Deprecation rate: <span bind='deprecation_rate'></span></p>
-            </div>
-            <div bind='balance'>
-                <h3>Balance</h3>
-                <p>Interest rate (cash): <span bind='interest_rate_cash'></span></p>
-                <p>Interest rate (loan): <span bind='interest_rate_loan'></span></p>
-                <p>Inventory fee: <span bind='inventory_fee'></span></p>
-                <p>Tax rate: <span bind='tax_rate'></span></p>
-            </div>
+                <tr><td>Unit fee</td><td><span bind='unit_fee'></span></td></tr>
+                <tr><td>Deprecation rate</td><td><span bind='deprecation_rate'></span></td></tr>
+            </table>
+            <table bind='balance'>
+                <tr><th>Balance</th></tr>
+                <tr><td>Interest rate (cash)</td><td><span bind='interest_rate_cash'></span></td></tr>
+                <tr><td>Interest rate (loan)</td><td><span bind='interest_rate_loan'></span></td></tr>
+                <tr><td>Inventory fee</td><td><span bind='inventory_fee'></span></td></tr>
+                <tr><td>Tax rate</td><td><span bind='tax_rate'></span></td></tr>
+            </table>
         </div>
         <div bind='decisions'>
             <h2>Decisions</h2>
@@ -67,77 +67,66 @@
         </div>
         <div bind='data_early'>
             <h2>Player report</h2>
-            <div bind='production'>
-                <h3>Production</h3>
-                <p>Production rate: <span bind='prod_rate'></span> (<span bind='prod_over'></span>)</p>
-                <p>Unit production cost: <span bind='prod_cost_unit'></span></p>
-                <p>Marginal production cost: <span bind='prod_cost_marginal'></span></p>
-                <p>Total production cost: <span bind='prod_cost'></span></p>
-            </div>
-            <div bind='balance'>
-                <h3>Balance</h3>
-                <p>Deprecation: <span bind='deprecation'></span></p>
-                <p>Capital: <span bind='capital'></span></p>
-                <p>Size: <span bind='size'></span></p>
-                <p>Spending: <span bind='spending'></span></p>
-                <p>Balance before period: <span bind='balance_early'></span></p>
-                <p>Loan before period: <span bind='loan_early'></span></p>
-                <p>Interest: <span bind='interest'></span></p>
+            <table bind='production'>
+                <tr><th>Production</th></tr>
+                <tr><td>Production rate</td><td><span bind='prod_rate'></span> (<span bind='prod_over'></span>)</td></tr>
+                <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td></tr>
+                <tr><td>Marginal production cost</td><td><span bind='prod_cost_marginal'></span></td></tr>
+                <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td></tr>
+            </table>
+            <table bind='balance'>
+                <tr><th>Balance</th></tr>
+                <tr><td>Deprecation</td><td><span bind='deprecation'></span></td></tr>
+                <tr><td>Capital</td><td><span bind='capital'></span></td></tr>
+                <tr><td>Size</td><td><span bind='size'></span></td></tr>
+                <tr><td>Spending</td><td><span bind='spending'></span></td></tr>
+                <tr><td>Balance before period</td><td><span bind='balance_early'></span></td></tr>
+                <tr><td>Loan before period</td><td><span bind='loan_early'></span></td></tr>
+                <tr><td>Interest</td><td><span bind='interest'></span></td></tr>
 
-                <p>Goods: <span bind='goods'></span></p>
-                <p>Cost of goods: <span bind='goods_cost'></span></p>
-                <p>Ideal sales of goods: <span bind='goods_max_sales'></span></p>
-            </div>
-            <div bind='history'>
-                <h3>History</h3>
-                <p>Total MK: <span bind='history_mk'></span></p>
-                <p>Total RD: <span bind='history_rd'></span></p>
-            </div>
+                <tr><td>Goods</td><td><span bind='goods'></span></td></tr>
+                <tr><td>Cost of goods</td><td><span bind='goods_cost'></span></td></tr>
+                <tr><td>Ideal sales of goods</td><td><span bind='goods_max_sales'></span></td></tr>
+            </table>
+            <table bind='history'>
+                <tr><th>History</th></tr>
+                <tr><td>Total MK</td><td><span bind='history_mk'></span></td></tr>
+                <tr><td>Total RD</td><td><span bind='history_rd'></span></td></tr>
+            </table>
         </div>
         <div bind='data'>
-            <div bind='orders'>
-                <h3>Units</h3>
-                <p>Orders: <span bind='orders'></span></p>
-                <p>Sold: <span bind='sold'></span></p>
-                <p>Inventory: <span bind='inventory'></span></p>
-                <p>Unfilled: <span bind='unfilled'></span></p>
-            </div>
-            <div bind='balance'>
-                <h3>Balance</h3>
-                <p>Cost of goods sold: <span bind='goods_cost_sold'></span></p>
-                <p>Cost of inventory: <span bind='goods_cost_inventory'></span></p>
+            <table bind='orders'>
+                <tr><th>Units</th></tr>
+                <tr><td>Orders</td><td><span bind='orders'></span></td></tr>
+                <tr><td>Sold</td><td><span bind='sold'></span></td></tr>
+                <tr><td>Inventory</td><td><span bind='inventory'></span></td></tr>
+                <tr><td>Unfilled</td><td><span bind='unfilled'></span></td></tr>
+            </table>
+            <table bind='balance'>
+                <tr><th>Balance</th></tr>
+                <tr><td>Cost of goods sold</td><td><span bind='goods_cost_sold'></span></td></tr>
+                <tr><td>Cost of inventory</td><td><span bind='goods_cost_inventory'></span></td></tr>
 
-                <p>Sales: <span bind='sales'></span></p>
-                <p>Inventory charge: <span bind='inventory_charge'></span></p>
-                <p>Cost before tax: <span bind='cost_before_tax'></span></p>
-                <p>Profit before tax: <span bind='profit_before_tax'></span></p>
-                <p>Tax charge: <span bind='tax_charge'></span></p>
-                <p>Profit: <span bind='profit'></span></p>
+                <tr><td>Sales</td><td><span bind='sales'></span></td></tr>
+                <tr><td>Inventory charge</td><td><span bind='inventory_charge'></span></td></tr>
+                <tr><td>Cost before tax</td><td><span bind='cost_before_tax'></span></td></tr>
+                <tr><td>Profit before tax</td><td><span bind='profit_before_tax'></span></td></tr>
+                <tr><td>Tax charge</td><td><span bind='tax_charge'></span></td></tr>
+                <tr><td>Profit</td><td><span bind='profit'></span></td></tr>
 
-                <p>Balance: <span bind='balance'></span></p>
-                <p>Loan: <span bind='loan'></span></p>
-                <p>Cash: <span bind='cash'></span></p>
-                <p>Retained earning: <span bind='retern'></span></p>
-            </div>
-            <div bind='mpi'>
-                <h3>MPI</h3>
-                <p><span bind='mpi'></span></p>
-            </div>
+                <tr><td>Balance</td><td><span bind='balance'></span></td></tr>
+                <tr><td>Loan</td><td><span bind='loan'></span></td></tr>
+                <tr><td>Cash</td><td><span bind='cash'></span></td></tr>
+                <tr><td>Retained earning</td><td><span bind='retern'></span></td></tr>
+            </table>
+            <table bind='mpi'>
+                <tr><th>MPI</th></tr>
+                <tr><td><span bind='mpi'></span></td></tr>
+            </table>
         </div>
         <!-- <div bind='data_public'>
             <h2>Public report</h2>
-            <div bind='???'>
-                <h3>???</h3>
-                <p>???: <span bind='???'></span></p>
-            </div>
-            <div bind='???'>
-                <h3>???</h3>
-                <p>???: <span bind='???'></span></p>
-            </div>
-            <div bind='???'>
-                <h3>???</h3>
-                <p>???: <span bind='???'></span></p>
-            </div>
+            ???
         </div> -->
     </div>
 
@@ -163,6 +152,10 @@
 
         #report [target=next] {
             color: blue;
+        }
+
+        #report th {
+            text-align: left;
         }
     </style>
 

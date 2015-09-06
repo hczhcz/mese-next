@@ -64,27 +64,31 @@
                 <span bind='ci'></span>,
                 <span bind='rd'></span>
             </p>
+            <table>
+                <tr><td>Average price (given): </td><td><span bind='average_price_given'></span></td></tr>
+                <tr><td>Average price (sold): </td><td><span bind='average_price'></span></td></tr>
+            </table>
         </div>
         <div bind='data_early'>
             <h3>Early report</h3>
             <table bind='production'>
-                <tr><th>Production</th></tr>
+                <tr><th>Production</th><td>You</td><td>Average</td></tr>
                 <tr><td>Production rate</td><td><span bind='prod_rate'></span> (<span bind='prod_over'></span>)</td></tr>
-                <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td><td>Average: <span bind='average_prod_cost_unit'></span></td></tr>
+                <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td><td><span bind='average_prod_cost_unit'></span></td></tr>
                 <tr><td>Marginal production cost</td><td><span bind='prod_cost_marginal'></span></td></tr>
-                <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td><td>Average: <span bind='average_prod_cost'></span></td></tr>
+                <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td><td><span bind='average_prod_cost'></span></td></tr>
             </table>
             <table bind='balance'>
-                <tr><th>Balance</th></tr>
+                <tr><th>Balance</th><td>You</td><td>Average</td></tr>
                 <tr><td>Deprecation</td><td><span bind='deprecation'></span></td></tr>
-                <tr><td>Capital</td><td><span bind='capital'></span></td><td>Average: <span bind='average_capital'></span></td></tr>
-                <tr><td>Size</td><td><span bind='size'></span></td><td>Average: <span bind='average_size'></span></td></tr>
+                <tr><td>Capital</td><td><span bind='capital'></span></td><td><span bind='average_capital'></span></td></tr>
+                <tr><td>Size</td><td><span bind='size'></span></td><td><span bind='average_size'></span></td></tr>
                 <tr><td>Spending</td><td><span bind='spending'></span></td></tr>
                 <tr><td>Balance before period</td><td><span bind='balance_early'></span></td></tr>
                 <tr><td>Loan before period</td><td><span bind='loan_early'></span></td></tr>
                 <tr><td>Interest</td><td><span bind='interest'></span></td></tr>
 
-                <tr><td>Goods</td><td><span bind='goods'></span></td><td>Average: <span bind='average_goods'></span></td></tr>
+                <tr><td>Goods</td><td><span bind='goods'></span></td><td><span bind='average_goods'></span></td></tr>
                 <tr><td>Cost of goods</td><td><span bind='goods_cost'></span></td></tr>
                 <tr><td>Ideal sales of goods</td><td><span bind='goods_max_sales'></span></td></tr>
             </table>
@@ -97,32 +101,32 @@
         <div bind='data'>
             <h3>Result report</h3>
             <table bind='orders'>
-                <tr><th>Units</th></tr>
-                <tr><td>Orders</td><td><span bind='orders'></span></td><td>Average: <span bind='average_orders'></span></td></tr>
-                <tr><td>Sold</td><td><span bind='sold'></span></td><td>Average: <span bind='average_sold'></span></td></tr>
-                <tr><td>Inventory</td><td><span bind='inventory'></span></td><td>Average: <span bind='average_inventory'></span></td></tr>
-                <tr><td>Unfilled</td><td><span bind='unfilled'></span></td><td>Average: <span bind='average_unfilled'></span></td></tr>
+                <tr><th>Units</th><td>You</td><td>Average</td></tr>
+                <tr><td>Orders</td><td><span bind='orders'></span></td><td><span bind='average_orders'></span></td></tr>
+                <tr><td>Sold</td><td><span bind='sold'></span></td><td><span bind='average_sold'></span></td></tr>
+                <tr><td>Inventory</td><td><span bind='inventory'></span></td><td><span bind='average_inventory'></span></td></tr>
+                <tr><td>Unfilled</td><td><span bind='unfilled'></span></td><td><span bind='average_unfilled'></span></td></tr>
             </table>
             <table bind='balance'>
-                <tr><th>Balance</th></tr>
-                <tr><td>Cost of goods sold</td><td><span bind='goods_cost_sold'></span></td><td>Average: <span bind='average_goods_cost_sold'></span></td></tr>
+                <tr><th>Balance</th><td>You</td><td>Average</td></tr>
+                <tr><td>Cost of goods sold</td><td><span bind='goods_cost_sold'></span></td><td><span bind='average_goods_cost_sold'></span></td></tr>
                 <tr><td>Cost of inventory</td><td><span bind='goods_cost_inventory'></span></td></tr>
 
-                <tr><td>Sales</td><td><span bind='sales'></span></td><td>Average: <span bind='average_sales'></span></td></tr>
+                <tr><td>Sales</td><td><span bind='sales'></span></td><td><span bind='average_sales'></span></td></tr>
                 <tr><td>Inventory charge</td><td><span bind='inventory_charge'></span></td></tr>
-                <tr><td>Cost before tax</td><td><span bind='cost_before_tax'></span></td><td>Average: <span bind='average_cost_before_tax'></span></td></tr>
-                <tr><td>Profit before tax</td><td><span bind='profit_before_tax'></span></td><td>Average: <span bind='average_profit_before_tax'></span></td></tr>
-                <tr><td>Tax charge</td><td><span bind='tax_charge'></span></td><td>Average: <span bind='average_tax_charge'></span></td></tr>
-                <tr><td>Profit</td><td><span bind='profit'></span></td><td>Average: <span bind='average_profit'></span></td></tr>
+                <tr><td>Cost before tax</td><td><span bind='cost_before_tax'></span></td><td><span bind='average_cost_before_tax'></span></td></tr>
+                <tr><td>Profit before tax</td><td><span bind='profit_before_tax'></span></td><td><span bind='average_profit_before_tax'></span></td></tr>
+                <tr><td>Tax charge</td><td><span bind='tax_charge'></span></td><td><span bind='average_tax_charge'></span></td></tr>
+                <tr><td>Profit</td><td><span bind='profit'></span></td><td><span bind='average_profit'></span></td></tr>
 
                 <tr><td>Balance</td><td><span bind='balance'></span></td></tr>
                 <tr><td>Loan</td><td><span bind='loan'></span></td></tr>
                 <tr><td>Cash</td><td><span bind='cash'></span></td></tr>
-                <tr><td>Retained earning</td><td><span bind='retern'></span></td><td>Average: <span bind='average_retern'></span></td></tr>
+                <tr><td>Retained earning</td><td><span bind='retern'></span></td><td><span bind='average_retern'></span></td></tr>
             </table>
             <table bind='mpi'>
-                <tr><th>MPI</th></tr>
-                <tr><td>MPI</td><td><span bind='mpi'></span></td><td>Average: <span bind='average_mpi'></span></td></tr>
+                <tr><th>MPI</th><td>You</td><td>Average</td></tr>
+                <tr><td>MPI</td><td><span bind='mpi'></span></td><td><span bind='average_mpi'></span></td></tr>
             </table>
         </div>
         <!-- <div bind='data_public'>

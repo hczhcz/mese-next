@@ -26,7 +26,7 @@
         <h1>Game: <span bind='game'></span></h1>
         <hr>
         <div bind='settings'>
-            <h2>Settings</h2>
+            <h3>Settings</h3>
             <table bind='limits'>
                 <tr><th>Limits</th></tr>
                 <tr><td>Price</td><td><span bind='price_min'></span> - <span bind='price_max'></span></td></tr>
@@ -56,7 +56,7 @@
             </table>
         </div>
         <div bind='decisions'>
-            <h2>Decisions</h2>
+            <h3>Decisions</h3>
             <p>
                 <span bind='price'></span>,
                 <span bind='prod'></span>,
@@ -66,7 +66,7 @@
             </p>
         </div>
         <div bind='data_early'>
-            <h2>Player report</h2>
+            <h3>Early report</h3>
             <table bind='production'>
                 <tr><th>Production</th></tr>
                 <tr><td>Production rate</td><td><span bind='prod_rate'></span> (<span bind='prod_over'></span>)</td></tr>
@@ -95,6 +95,7 @@
             </table>
         </div>
         <div bind='data'>
+            <h3>Result report</h3>
             <table bind='orders'>
                 <tr><th>Units</th></tr>
                 <tr><td>Orders</td><td><span bind='orders'></span></td><td>Average: <span bind='average_orders'></span></td></tr>
@@ -125,7 +126,7 @@
             </table>
         </div>
         <!-- <div bind='data_public'>
-            <h2>Public report</h2>
+            <h3>Public report</h3>
             ???
         </div> -->
     </div>
@@ -143,6 +144,10 @@
     <script src='/socket.io/socket.io.js'></script>
 
     <style>
+        #report {
+            font-family: monospace;
+        }
+
         #report [target=last] {
             color: gray;
         }

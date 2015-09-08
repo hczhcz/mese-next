@@ -8,6 +8,7 @@
     <div id='login'>
         <p>Name: <input id='login_name' type='text' /></p>
         <p>Password: <input id='login_password' type='password' /></p>
+        <p><input id='login_remember' type='checkbox' checked />Remember me</p>
         <p><input id='login_go' type='submit' value='Go!' /></p>
     </div>
 
@@ -179,6 +180,12 @@
 
         // login
 
+        // auto login
+        var loginInfo = localStorage.getItem('MESE_login');
+        if (loginInfo) {
+            socket.emit('login', JSON.parse(loginInfo));
+        }
+
         $('#login_name').keypress(function (event) {
             if (event.which === 13) {
                 $('#login_password').focus();
@@ -195,6 +202,19 @@
             var name = $('#login_name').val();
             var password = $('#login_password').val();
             $('#login_password').val('');
+
+            // auto login
+            if ($('#login_remember').prop('checked')) {
+                localStorage.setItem(
+                    'MESE_login',
+                    JSON.stringify({
+                        name: name,
+                        password: password, // TODO: hash?
+                    })
+                );
+            } else {
+                localStorage.removeItem('MESE_login');
+            }
 
             socket.emit('login', {
                 name: name,
@@ -240,6 +260,18 @@
             var newPassword = $('#user_new_password').val();
             $('#user_password').val('');
             $('#user_new_password').val('');
+
+            // auto login
+            var loginInfo = localStorage.getItem('MESE_login');
+            if (loginInfo) {
+                localStorage.setItem(
+                    'MESE_login',
+                    JSON.stringify({
+                        name: JSON.parse(loginInfo).name,
+                        password: newPassword, // TODO: hash?
+                    })
+                );
+            }
 
             socket.emit('password', {
                 password: password, // TODO: hash?

@@ -130,10 +130,6 @@
                 <tr><td>MPI</td><td><span bind='mpi'></span></td><td><span bind='average_mpi'></span></td></tr>
             </table>
         </div>
-        <!-- <div bind='data_public'>
-            <h3>Public report</h3>
-            ???
-        </div> -->
     </div>
 
     <div id='submit' style='display: none'>
@@ -323,15 +319,9 @@
         // report
 
         $('#report span[bind]')
-            .append(
-                $('<span target="last">(Last: <span></span>) </span>')
-            )
-            .append(
-                $('<span target="now"><span></span></span>')
-            )
-            .append(
-                $('<span target="next"> (Next: <span></span>)</span>')
-            );
+            .append('<span target="last">(Last: <span></span>) </span>')
+            .append('<span target="now"><span></span></span>')
+            .append('<span target="next"> (Next: <span></span>)</span>');
 
         var initReport = function () {
             $('#report [target]').css('display', 'none');
@@ -358,6 +348,8 @@
             currentPeriod = data.now_period;
 
             initReport();
+
+            showReport('#report_players', data.players, 'now');
 
             if (data.now_period >= 3) {
                 showReport('#report [bind=decisions]', data.last_decisions, 'last');
@@ -386,6 +378,8 @@
             currentGame = data.game;
 
             initReport();
+
+            showReport('#report_players', data.players, 'now');
 
             if (data.now_period >= 3) {
                 showReport('#report [bind=decisions]', data.last_data_public.decisions, 'last');

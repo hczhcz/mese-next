@@ -164,13 +164,9 @@
             font-family: monospace;
         }
 
-        #report [target=last] {
-            color: gray;
-        }
-        #report [target=now] {
-        }
-        #report [target=next] {
-            color: blue;
+        #report div {
+            display: inline-block;
+            vertical-align: top;
         }
 
         #report tr {
@@ -178,6 +174,15 @@
         }
         #report tr>:first-child {
             text-align: left !important;
+        }
+
+        #report [target=last] {
+            color: gray;
+        }
+        #report [target=now] {
+        }
+        #report [target=next] {
+            color: blue;
         }
     </style>
 
@@ -382,9 +387,9 @@
             showReport('#report_players', data.players, 'now');
 
             if (data.now_period >= 3) {
-                showReport('#report [bind=decisions]', data.last_decisions, 'last');
-                showReport('#report [bind=data_early]', data.last_data_early, 'last');
-                showReport('#report [bind=data]', data.last_data, 'last');
+                // showReport('#report [bind=decisions]', data.last_decisions, 'last');
+                // showReport('#report [bind=data_early]', data.last_data_early, 'last');
+                // showReport('#report [bind=data]', data.last_data, 'last');
                 showReport('#report [bind=decisions]', data.last_data_public.decisions, 'last');
                 showReport('#report [bind=data_early]', data.last_data_public.data_early, 'last');
                 showReport('#report [bind=data]', data.last_data_public.data, 'last');

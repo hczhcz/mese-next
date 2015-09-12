@@ -24,7 +24,7 @@
     </div>
 
     <div id='report' style='display: none'>
-        <h1>Game: <span bind='game'></span></h1>
+        <h1>Game: <span bind='game'></span></h1><!-- TODO -->
         <hr>
         <div bind='settings'>
             <h3>Settings</h3>
@@ -176,7 +176,7 @@
         #report tr {
             text-align: right;
         }
-        #report tr :first-child {
+        #report tr>:first-child {
             text-align: left !important;
         }
     </style>
@@ -347,21 +347,23 @@
             $('#report [target]').css('display', 'none');
         };
 
-        var showReport = function (head, data, tail) {
+        var showReport = function (head, data, tail, xbind /* patch */) {
             if (typeof data == 'string' || typeof data == 'number') {
-                $(head + ' [target=' + tail + '] span').text(data);
-                $(head + ' [target=' + tail + ']').css('display', 'inline');
+                var target = $(head + ' [target=' + tail + ']');
+
+                if (target.length == 1) {
+                    target.find('span').text(data);
+                    target.css('display', 'inline');
+                }
             } else if (typeof data == 'object') {
                 for (var i in data) {
                     // top-level bind
-                    if ($('#report [xbind=' + i + ']').length > 0) {
-                        showReport('#report [xbind=' + i + ']', data[i], tail);
+                    if (!xbind && $('#report [xbind=' + i + ']').length == 1) {
+                        showReport('#report [xbind=' + i + ']', data[i], tail, true);
                     }
 
                     // path-based bind
-                    if ($(head + ' [bind=' + i + ']').length > 0) {
-                        showReport(head + ' [bind=' + i + ']', data[i], tail);
-                    }
+                    showReport(head + ' [bind=' + i + ']', data[i], tail);
                 }
             }
         };

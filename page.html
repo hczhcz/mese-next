@@ -12,7 +12,7 @@
         <p><input id='login_go' type='submit' value='Go!' /></p>
     </div>
 
-    <div id='user' style='display: none'>
+    <div id='user' class='hide'>
         <p>Login user: <span id='user_name'></span></p>
         <hr>
         <p>Password: <input id='user_password' type='password' /></p>
@@ -20,10 +20,10 @@
         <p><input id='user_change_password' type='submit' value='Change password' /></p>
     </div>
 
-    <div id='list' style='display: none'>
+    <div id='list' class='hide'>
     </div>
 
-    <div id='report' style='display: none'>
+    <div id='report' class='hide'>
         <h1>Game: <span bind='game'></span></h1><!-- TODO -->
         <hr>
         <div class='report_div' bind='settings'>
@@ -160,6 +160,10 @@
     <script src='/socket.io/socket.io.js'></script>
 
     <style>
+        .hide {
+            display: none;
+        }
+
         .report_div {
             display: inline-block;
             vertical-align: top;
@@ -254,14 +258,20 @@
 
         socket.on('login_new', function (data) {
             $('#user_name').text(data.name + ' (new user)');
-            $('#user').css('display', 'block');
+
+            $('#user').removeClass('hide');
+            $('#list').addClass('hide');
+            $('#report').addClass('hide');
 
             socket.emit('list');
         });
 
         socket.on('login_ok', function (data) {
             $('#user_name').text(data.name);
-            $('#user').css('display', 'block');
+
+            $('#user').removeClass('hide');
+            $('#list').addClass('hide');
+            $('#report').addClass('hide');
 
             socket.emit('list');
         });
@@ -322,7 +332,6 @@
         // list
 
         var updateList = function (data) {
-            $('#list').css('display', 'none');
             $('#list').empty();
 
             for (var i in data) {
@@ -340,7 +349,8 @@
                 }
             }
 
-            $('#list').css('display', 'block');
+            $('#list').removeClass('hide');
+            $('#report').addClass('hide');
         };
 
         socket.on('subscribe_list', updateList);
@@ -362,7 +372,7 @@
             .append('<span target="next"> (Next: <span></span>)</span>');
 
         var initReport = function () {
-            $('#report [target]').css('display', 'none');
+            $('#report [target]').addClass('hide');
         };
 
         var showReport = function (head, data, tail, xbind /* patch */) {
@@ -371,7 +381,7 @@
 
                 if (target.length == 1) {
                     target.find('span').text(data);
-                    target.css('display', 'inline');
+                    target.removeClass('hide');
                 }
             } else if (typeof data == 'object') {
                 for (var i in data) {
@@ -418,8 +428,8 @@
 
             showReport('#report [bind=settings]', data.next_settings, 'next');
 
-            $('#report').css('display', 'block');
-            $('#submit').css('display', 'block');
+            $('#report').removeClass('hide');
+            $('#submit').removeClass('hide');
         });
 
         socket.on('report_public', function (data) {
@@ -442,8 +452,8 @@
 
             showReport('#report [bind=settings]', data.next_settings, 'next');
 
-            $('#report').css('display', 'block');
-            $('#submit').css('display', 'none');
+            $('#report').removeClass('hide');
+            $('#submit').addClass('hide');
         });
 
         // submit

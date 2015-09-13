@@ -26,7 +26,7 @@
     <div id='report' style='display: none'>
         <h1>Game: <span bind='game'></span></h1><!-- TODO -->
         <hr>
-        <div bind='settings'>
+        <div class='report_div' bind='settings'>
             <h3>Settings</h3>
             <table bind='limits'>
                 <tr><th>Limits</th></tr>
@@ -56,7 +56,7 @@
                 <tr><td>Tax rate</td><td><span bind='tax_rate'></span></td></tr>
             </table>
         </div>
-        <div bind='decisions'>
+        <div class='report_div' bind='decisions'>
             <h3>Decisions</h3>
             <p>
                 <span bind='price'></span>,
@@ -70,7 +70,7 @@
                 <tr><td>Average price (sold): </td><td><span bind='average_price'></span></td></tr>
             </table>
         </div>
-        <div bind='data_early'>
+        <div class='report_div' bind='data_early'>
             <h3>Early report</h3>
             <table bind='production'>
                 <tr><th>Production</th><td>You</td><td>Average</td></tr>
@@ -99,7 +99,7 @@
                 <tr><td>Total RD</td><td><span bind='history_rd'></span></td></tr>
             </table>
         </div>
-        <div bind='data'>
+        <div class='report_div' bind='data'>
             <h3>Result report</h3>
             <table bind='orders'>
                 <tr><th>Units</th><td>You</td><td>Average</td></tr>
@@ -130,7 +130,7 @@
                 <tr><td>MPI</td><td><span bind='mpi'></span></td><td><span bind='average_mpi'></span></td></tr>
             </table>
         </div>
-        <div id='report_list_div'>
+        <div class='report_div report_list_div'>
             <h3>Players' detail</h3>
             <table id='report_list'>
                 <tr id='report_players'><th></th></tr>
@@ -160,41 +160,42 @@
     <script src='/socket.io/socket.io.js'></script>
 
     <style>
-        #report {
-            font-family: monospace;
-        }
-
-        #report>div[bind] {
+        .report_div {
             display: inline-block;
             vertical-align: top;
 
             width: 40%;
             min-width: 32em;
+
+            font-family: monospace;
         }
-        #report_list_div {
-            width: 80%;
-            min-width: 64em;
+        .report_list_div {
+            width: 80% !important;
+            min-width: 64em !important;
         }
 
-        #report table {
+        .report_div table {
             width: 100%;
         }
 
-        #report tr>* {
+        .report_div tr>* {
             text-align: right;
         }
-        #report tr>:first-child {
+        .report_div tr>:first-child {
             text-align: left !important;
 
             width: 50%;
         }
+        .report_list_div tr>:first-child {
+            width: 25% !important;
+        }
 
-        #report [target=last] {
+        .report_div [target=last] {
             color: gray;
         }
-        #report [target=now] {
+        .report_div [target=now] {
         }
-        #report [target=next] {
+        .report_div [target=next] {
             color: blue;
         }
     </style>

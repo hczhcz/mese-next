@@ -29,7 +29,7 @@
         <div class='report_div' bind='data_early'>
             <h3>Early report</h3>
             <table bind='production'>
-                <tr><th>Production</th><td>You</td><td>Average</td></tr>
+                <tr><th>Production</th><th>You</th><th>Average</th></tr>
                 <tr><td>Production rate</td><td><span bind='prod_rate'></span></td></tr>
                 <tr><td></td><td>[<span bind='prod_over'></span>]</td></tr>
                 <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td><td><span bind='average_prod_cost_unit'></span></td></tr>
@@ -37,7 +37,7 @@
                 <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td><td><span bind='average_prod_cost'></span></td></tr>
             </table>
             <table bind='balance'>
-                <tr><th>Balance</th><td>You</td><td>Average</td></tr>
+                <tr><th>Balance</th><th>You</th><th>Average</th></tr>
                 <tr><td>Deprecation</td><td><span bind='deprecation'></span></td></tr>
                 <tr><td>Capital</td><td><span bind='capital'></span></td><td><span bind='average_capital'></span></td></tr>
                 <tr><td>Size</td><td><span bind='size'></span></td><td><span bind='average_size'></span></td></tr>
@@ -59,14 +59,14 @@
         <div class='report_div' bind='data'>
             <h3>Result report</h3>
             <table bind='orders'>
-                <tr><th>Units</th><td>You</td><td>Average</td></tr>
+                <tr><th>Units</th><th>You</th><th>Average</th></tr>
                 <tr><td>Orders</td><td><span bind='orders'></span></td><td><span bind='average_orders'></span></td></tr>
                 <tr><td>Sold</td><td><span bind='sold'></span></td><td><span bind='average_sold'></span></td></tr>
                 <tr><td>Inventory</td><td><span bind='inventory'></span></td><td><span bind='average_inventory'></span></td></tr>
                 <tr><td>Unfilled</td><td><span bind='unfilled'></span></td><td><span bind='average_unfilled'></span></td></tr>
             </table>
             <table bind='balance'>
-                <tr><th>Balance</th><td>You</td><td>Average</td></tr>
+                <tr><th>Balance</th><th>You</th><th>Average</th></tr>
                 <tr><td>Cost of goods sold</td><td><span bind='goods_cost_sold'></span></td><td><span bind='average_goods_cost_sold'></span></td></tr>
                 <tr><td>Cost of inventory</td><td><span bind='goods_cost_inventory'></span></td></tr>
 
@@ -83,7 +83,7 @@
                 <tr><td>Retained earning</td><td><span bind='retern'></span></td><td><span bind='average_retern'></span></td></tr>
             </table>
             <table bind='mpi'>
-                <tr><th>MPI</th><td>You</td><td>Average</td></tr>
+                <tr><th>MPI</th><th>You</th><th>Average</th></tr>
                 <tr><td>MPI</td><td><span bind='mpi'></span></td><td><span bind='average_mpi'></span></td></tr>
             </table>
         </div>
@@ -143,6 +143,7 @@
                 <span bind='rd'></span>
             </p>
             <table>
+                <tr><th>Prices</th></tr>
                 <tr><td>Average price (given)</td><td><span bind='average_price_given'></span></td></tr>
                 <tr><td>Average price (sold)</td><td><span bind='average_price'></span></td></tr>
             </table>
@@ -364,7 +365,9 @@
         // report
 
         for (var i = 0; i < 16; ++i) { // max = 16
-            $('#report_list tr')
+            $('#report_players')
+                .append('<th><span bind="' + i + '"></span></th>');
+            $('#report_list [xbind]')
                 .append('<td><span bind="' + i + '"></span></td>');
         }
 

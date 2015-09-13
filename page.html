@@ -26,55 +26,12 @@
     <div id='report' class='hide'>
         <h1>Game: <span bind='game'></span></h1><!-- TODO -->
         <hr>
-        <div class='report_div' bind='settings'>
-            <h3>Settings</h3>
-            <table bind='limits'>
-                <tr><th>Limits</th></tr>
-                <tr><td>Price</td><td><span bind='price_min'></span> - <span bind='price_max'></span></td></tr>
-                <tr><td>MK</td><td>0 - <span bind='mk_limit'></span></td></tr>
-                <tr><td>CI</td><td>0 - <span bind='ci_limit'></span></td></tr>
-                <tr><td>RD</td><td>0 - <span bind='rd_limit'></span></td></tr>
-                <tr><td>Loan</td><td>0 - <span bind='loan_limit'></span></td></tr>
-            </table>
-            <table bind='production'>
-                <tr><th>Production</th></tr>
-                <tr><td>Balanced production rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
-                <!-- <tr><td>prod_rate_pow</td><td><span bind='prod_rate_pow'></span></td></tr>
-                <tr><td>prod_cost_factor_rate_over</td><td><span bind='prod_cost_factor_rate_over'></span></td></tr>
-                <tr><td>prod_cost_factor_rate_under</td><td><span bind='prod_cost_factor_rate_under'></span></td></tr>
-                <tr><td>prod_cost_factor_size</td><td><span bind='prod_cost_factor_size'></span></td></tr>
-                <tr><td>prod_cost_factor_const</td><td><span bind='prod_cost_factor_const'></span></td></tr> -->
-
-                <tr><td>Unit fee</td><td><span bind='unit_fee'></span></td></tr>
-                <tr><td>Deprecation rate</td><td><span bind='deprecation_rate'></span></td></tr>
-            </table>
-            <table bind='balance'>
-                <tr><th>Balance</th></tr>
-                <tr><td>Interest rate (cash)</td><td><span bind='interest_rate_cash'></span></td></tr>
-                <tr><td>Interest rate (loan)</td><td><span bind='interest_rate_loan'></span></td></tr>
-                <tr><td>Inventory fee</td><td><span bind='inventory_fee'></span></td></tr>
-                <tr><td>Tax rate</td><td><span bind='tax_rate'></span></td></tr>
-            </table>
-        </div>
-        <div class='report_div' bind='decisions'>
-            <h3>Decisions</h3>
-            <p>
-                <span bind='price'></span>,
-                <span bind='prod'></span>,
-                <span bind='mk'></span>,
-                <span bind='ci'></span>,
-                <span bind='rd'></span>
-            </p>
-            <table>
-                <tr><td>Average price (given): </td><td><span bind='average_price_given'></span></td></tr>
-                <tr><td>Average price (sold): </td><td><span bind='average_price'></span></td></tr>
-            </table>
-        </div>
         <div class='report_div' bind='data_early'>
             <h3>Early report</h3>
             <table bind='production'>
                 <tr><th>Production</th><td>You</td><td>Average</td></tr>
-                <tr><td>Production rate</td><td><span bind='prod_rate'></span> (<span bind='prod_over'></span>)</td></tr>
+                <tr><td>Production rate</td><td><span bind='prod_rate'></span></td></tr>
+                <tr><td></td><td>[<span bind='prod_over'></span>]</td></tr>
                 <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td><td><span bind='average_prod_cost_unit'></span></td></tr>
                 <tr><td>Marginal production cost</td><td><span bind='prod_cost_marginal'></span></td></tr>
                 <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td><td><span bind='average_prod_cost'></span></td></tr>
@@ -145,15 +102,60 @@
                 <tr xbind='mpi'><td>MPI</td></tr>
             </table>
         </div>
-    </div>
+        <div class='report_div' bind='settings'>
+            <h3>Settings</h3>
+            <table bind='limits'>
+                <tr><th>Limits</th></tr>
+                <tr><td>Min price</td><td><span bind='price_min'></span></td></tr>
+                <tr><td>Max price</td><td><span bind='price_max'></span></td></tr>
+                <tr><td>Max MK</td><td><span bind='mk_limit'></span></td></tr>
+                <tr><td>Max CI</td><td><span bind='ci_limit'></span></td></tr>
+                <tr><td>Max RD</td><td><span bind='rd_limit'></span></td></tr>
+                <tr><td>Max loan</td><td><span bind='loan_limit'></span></td></tr>
+            </table>
+            <table bind='production'>
+                <tr><th>Production</th></tr>
+                <tr><td>Balanced production rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
+                <!-- <tr><td>prod_rate_pow</td><td><span bind='prod_rate_pow'></span></td></tr>
+                <tr><td>prod_cost_factor_rate_over</td><td><span bind='prod_cost_factor_rate_over'></span></td></tr>
+                <tr><td>prod_cost_factor_rate_under</td><td><span bind='prod_cost_factor_rate_under'></span></td></tr>
+                <tr><td>prod_cost_factor_size</td><td><span bind='prod_cost_factor_size'></span></td></tr>
+                <tr><td>prod_cost_factor_const</td><td><span bind='prod_cost_factor_const'></span></td></tr> -->
 
-    <div id='submit' style='display: none'>
-        <p>Price: <input id='submit_price' type='number' /></p>
-        <p>Production: <input id='submit_prod' type='number' /></p>
-        <p>Marketing: <input id='submit_mk' type='number' /></p>
-        <p>Investment: <input id='submit_ci' type='number' /></p>
-        <p>R &amp; D: <input id='submit_rd' type='number' /></p>
-        <p><input id='submit_submit' type='submit' value='Submit' /></p>
+                <tr><td>Unit fee</td><td><span bind='unit_fee'></span></td></tr>
+                <tr><td>Deprecation rate</td><td><span bind='deprecation_rate'></span></td></tr>
+            </table>
+            <table bind='balance'>
+                <tr><th>Balance</th></tr>
+                <tr><td>Interest rate (cash)</td><td><span bind='interest_rate_cash'></span></td></tr>
+                <tr><td>Interest rate (loan)</td><td><span bind='interest_rate_loan'></span></td></tr>
+                <tr><td>Inventory fee</td><td><span bind='inventory_fee'></span></td></tr>
+                <tr><td>Tax rate</td><td><span bind='tax_rate'></span></td></tr>
+            </table>
+        </div>
+        <div class='report_div' bind='decisions'>
+            <h3>Decisions</h3>
+            <p>
+                <span bind='price'></span>,
+                <span bind='prod'></span>,
+                <span bind='mk'></span>,
+                <span bind='ci'></span>,
+                <span bind='rd'></span>
+            </p>
+            <table>
+                <tr><td>Average price (given)</td><td><span bind='average_price_given'></span></td></tr>
+                <tr><td>Average price (sold)</td><td><span bind='average_price'></span></td></tr>
+            </table>
+            <!-- notice: special unit -->
+            <table id='submit'>
+                <tr><td>Price</td><td><input id='submit_price' type='number' /></td></tr>
+                <tr><td>Production</td><td><input id='submit_prod' type='number' /></td></tr>
+                <tr><td>Marketing</td><td><input id='submit_mk' type='number' /></td></tr>
+                <tr><td>Investment</td><td><input id='submit_ci' type='number' /></td></tr>
+                <tr><td>R &amp; D</td><td><input id='submit_rd' type='number' /></td></tr>
+                <tr><td></td><td><input id='submit_submit' type='submit' value='Submit' /></td></tr>
+            </table>
+        </div>
     </div>
 
     <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
@@ -461,6 +463,7 @@
         $('#submit_submit').click(function () {
             socket.emit('submit', {
                 game: currentGame,
+                period: currentPeriod,
                 price: parseInt($('#submit_price').val()),
                 prod: parseInt($('#submit_prod').val()),
                 mk: parseInt($('#submit_mk').val()),

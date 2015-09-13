@@ -130,7 +130,7 @@
                 <tr><td>MPI</td><td><span bind='mpi'></span></td><td><span bind='average_mpi'></span></td></tr>
             </table>
         </div>
-        <div>
+        <div id='report_list_div'>
             <h3>Players' detail</h3>
             <table id='report_list'>
                 <tr id='report_players'><th></th></tr>
@@ -164,16 +164,29 @@
             font-family: monospace;
         }
 
-        #report div {
+        #report>div[bind] {
             display: inline-block;
             vertical-align: top;
+
+            width: 40%;
+            min-width: 32em;
+        }
+        #report_list_div {
+            width: 80%;
+            min-width: 64em;
         }
 
-        #report tr {
+        #report table {
+            width: 100%;
+        }
+
+        #report tr>* {
             text-align: right;
         }
         #report tr>:first-child {
             text-align: left !important;
+
+            width: 50%;
         }
 
         #report [target=last] {

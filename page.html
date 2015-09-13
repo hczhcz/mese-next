@@ -24,7 +24,7 @@
     </div>
 
     <div id='report' class='hide'>
-        <h1>Game: <span bind='game'></span></h1><!-- TODO -->
+        <h1 id='report_title'></h1><!-- TODO -->
         <hr>
         <div class='report_div' bind='data_early'>
             <h3>Early report</h3>
@@ -141,6 +141,12 @@
                 <tr><td>Average price (sold)</td><td><span bind='average_price'></span></td></tr>
             </table>
             <!-- notice: special unit -->
+            <table>
+                <tr><th>Status</th></tr>
+                <tr><td>Game</td><td></td><td id='submit_game'></td></tr>
+                <tr><td>Decision period</td><td></td><td id='submit_period'></td></tr>
+                <tr><td>Player name</td><td></td><td id='submit_name'></td></tr>
+            </table>
             <table>
                 <tr><th>Decisions</th></tr>
                 <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' type='number' /></td></tr>
@@ -376,7 +382,16 @@
             .append('<span target="now"><span></span></span>')
             .append('<span target="next"> (Next: <span></span>)</span>');
 
-        var initReport = function () {
+        var initReport = function (game, period) {
+            currentGame = game;
+            currentPeriod = period;
+
+            $('#report_title').text('Period ' + period + ' of Game "' + game + '"');
+
+            $('#submit_game').text(currentGame);
+            $('#submit_period').text(currentPeriod + 1);
+            $('#submit_name').text(currentName);
+
             $('#report [target]').addClass('hide');
         };
 
@@ -407,10 +422,7 @@
         });
 
         socket.on('report_player', function (data) {
-            currentGame = data.game;
-            currentPeriod = data.now_period;
-
-            initReport();
+            initReport(data.game, data.now_period);
 
             showReport('#report_players', data.players, 'now');
 
@@ -438,9 +450,7 @@
         });
 
         socket.on('report_public', function (data) {
-            currentGame = data.game;
-
-            initReport();
+            initReport(data.game, data.now_period);
 
             showReport('#report_players', data.players, 'now');
 

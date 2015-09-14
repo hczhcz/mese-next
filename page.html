@@ -167,6 +167,13 @@
             display: none;
         }
 
+        #login, #user {
+            display: inline-block;
+
+            width: 40%;
+            min-width: 32em;
+        }
+
         .report_div {
             display: inline-block;
             vertical-align: top;
@@ -378,9 +385,9 @@
         }
 
         $('#report span[bind]')
-            .append('<span target="last">(Last: <span></span>) </span>')
+            .append('<span target="last">(<span></span>) </span>')
             .append('<span target="now"><span></span></span>')
-            .append('<span target="next"> (Next: <span></span>)</span>');
+            .append('<span target="next"> (<span></span>)</span>');
 
         var initReport = function (game, period) {
             currentGame = game;

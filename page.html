@@ -23,135 +23,140 @@
     <div id='list' class='hide'>
     </div>
 
-    <div id='report' class='hide'>
-        <h1 id='report_title'></h1><!-- TODO -->
-        <hr>
-        <div class='report_div' bind='data_early'>
-            <h3>Early report</h3>
-            <table bind='production'>
-                <tr><th>Production</th><th>You</th><th>Average</th></tr>
-                <tr><td>Production rate</td><td><span bind='prod_rate'></span></td></tr>
-                <tr><td></td><td>[<span bind='prod_over'></span>]</td></tr>
-                <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td><td><span bind='average_prod_cost_unit'></span></td></tr>
-                <tr><td>Marginal production cost</td><td><span bind='prod_cost_marginal'></span></td></tr>
-                <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td><td><span bind='average_prod_cost'></span></td></tr>
-            </table>
-            <table bind='balance'>
-                <tr><th>Balance</th><th>You</th><th>Average</th></tr>
-                <tr><td>Deprecation</td><td><span bind='deprecation'></span></td></tr>
-                <tr><td>Capital</td><td><span bind='capital'></span></td><td><span bind='average_capital'></span></td></tr>
-                <tr><td>Size</td><td><span bind='size'></span></td><td><span bind='average_size'></span></td></tr>
-                <tr><td>Spending</td><td><span bind='spending'></span></td></tr>
-                <tr><td>Balance before period</td><td><span bind='balance_early'></span></td></tr>
-                <tr><td>Loan before period</td><td><span bind='loan_early'></span></td></tr>
-                <tr><td>Interest</td><td><span bind='interest'></span></td></tr>
+    <table id='report' class='hide'>
+        <h1 id='report_title'></h1>
+        <tr>
+            <td class='report_div' bind='data_early'>
+                <h3>Early report</h3>
+                <table bind='production'>
+                    <tr><th>Production</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Production rate</td><td><span bind='prod_rate'></span></td></tr>
+                    <tr><td></td><td>[<span bind='prod_over'></span>]</td></tr>
+                    <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td><td><span bind='average_prod_cost_unit'></span></td></tr>
+                    <tr><td>Marginal cost</td><td><span bind='prod_cost_marginal'></span></td></tr>
+                    <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td><td><span bind='average_prod_cost'></span></td></tr>
+                </table>
+                <table bind='balance'>
+                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Deprecation</td><td><span bind='deprecation'></span></td></tr>
+                    <tr><td>Capital</td><td><span bind='capital'></span></td><td><span bind='average_capital'></span></td></tr>
+                    <tr><td>Size</td><td><span bind='size'></span></td><td><span bind='average_size'></span></td></tr>
+                    <tr><td>Spending</td><td><span bind='spending'></span></td></tr>
+                    <tr><td>Early balance</td><td><span bind='balance_early'></span></td></tr>
+                    <tr><td>Early loan</td><td><span bind='loan_early'></span></td></tr>
+                    <tr><td>Interest</td><td><span bind='interest'></span></td></tr>
 
-                <tr><td>Goods</td><td><span bind='goods'></span></td><td><span bind='average_goods'></span></td></tr>
-                <tr><td>Cost of goods</td><td><span bind='goods_cost'></span></td></tr>
-                <tr><td>Ideal sales of goods</td><td><span bind='goods_max_sales'></span></td></tr>
-            </table>
-            <table bind='history'>
-                <tr><th>History</th></tr>
-                <tr><td>Total marketing</td><td><span bind='history_mk'></span></td></tr>
-                <tr><td>Total R &amp; D</td><td><span bind='history_rd'></span></td></tr>
-            </table>
-        </div>
-        <div class='report_div' bind='data'>
-            <h3>Result report</h3>
-            <table bind='orders'>
-                <tr><th>Units</th><th>You</th><th>Average</th></tr>
-                <tr><td>Orders</td><td><span bind='orders'></span></td><td><span bind='average_orders'></span></td></tr>
-                <tr><td>Sold</td><td><span bind='sold'></span></td><td><span bind='average_sold'></span></td></tr>
-                <tr><td>Inventory</td><td><span bind='inventory'></span></td><td><span bind='average_inventory'></span></td></tr>
-                <tr><td>Unfilled</td><td><span bind='unfilled'></span></td><td><span bind='average_unfilled'></span></td></tr>
-            </table>
-            <table bind='balance'>
-                <tr><th>Balance</th><th>You</th><th>Average</th></tr>
-                <tr><td>Cost of goods sold</td><td><span bind='goods_cost_sold'></span></td><td><span bind='average_goods_cost_sold'></span></td></tr>
-                <tr><td>Cost of inventory</td><td><span bind='goods_cost_inventory'></span></td></tr>
+                    <tr><td>Goods</td><td><span bind='goods'></span></td><td><span bind='average_goods'></span></td></tr>
+                    <tr><td>Cost of goods</td><td><span bind='goods_cost'></span></td></tr>
+                    <tr><td>Ideal sales of goods</td><td><span bind='goods_max_sales'></span></td></tr>
+                </table>
+                <table bind='history'>
+                    <tr><th>History</th></tr>
+                    <tr><td>Total marketing</td><td><span bind='history_mk'></span></td></tr>
+                    <tr><td>Total R &amp; D</td><td><span bind='history_rd'></span></td></tr>
+                </table>
+            </td>
+            <td class='report_div' bind='data'>
+                <h3>Result report</h3>
+                <table bind='orders'>
+                    <tr><th>Units</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Orders</td><td><span bind='orders'></span></td><td><span bind='average_orders'></span></td></tr>
+                    <tr><td>Sold</td><td><span bind='sold'></span></td><td><span bind='average_sold'></span></td></tr>
+                    <tr><td>Inventory</td><td><span bind='inventory'></span></td><td><span bind='average_inventory'></span></td></tr>
+                    <tr><td>Unfilled</td><td><span bind='unfilled'></span></td><td><span bind='average_unfilled'></span></td></tr>
+                </table>
+                <table bind='balance'>
+                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Cost of goods sold</td><td><span bind='goods_cost_sold'></span></td><td><span bind='average_goods_cost_sold'></span></td></tr>
+                    <tr><td>Cost of inventory</td><td><span bind='goods_cost_inventory'></span></td></tr>
 
-                <tr><td>Sales</td><td><span bind='sales'></span></td><td><span bind='average_sales'></span></td></tr>
-                <tr><td>Inventory charge</td><td><span bind='inventory_charge'></span></td></tr>
-                <tr><td>Cost before tax</td><td><span bind='cost_before_tax'></span></td><td><span bind='average_cost_before_tax'></span></td></tr>
-                <tr><td>Profit before tax</td><td><span bind='profit_before_tax'></span></td><td><span bind='average_profit_before_tax'></span></td></tr>
-                <tr><td>Tax charge</td><td><span bind='tax_charge'></span></td><td><span bind='average_tax_charge'></span></td></tr>
-                <tr><td>Profit</td><td><span bind='profit'></span></td><td><span bind='average_profit'></span></td></tr>
+                    <tr><td>Sales</td><td><span bind='sales'></span></td><td><span bind='average_sales'></span></td></tr>
+                    <tr><td>Inventory charge</td><td><span bind='inventory_charge'></span></td></tr>
+                    <tr><td>Cost before tax</td><td><span bind='cost_before_tax'></span></td><td><span bind='average_cost_before_tax'></span></td></tr>
+                    <tr><td>Profit before tax</td><td><span bind='profit_before_tax'></span></td><td><span bind='average_profit_before_tax'></span></td></tr>
+                    <tr><td>Tax charge</td><td><span bind='tax_charge'></span></td><td><span bind='average_tax_charge'></span></td></tr>
+                    <tr><td>Profit</td><td><span bind='profit'></span></td><td><span bind='average_profit'></span></td></tr>
 
-                <tr><td>Balance</td><td><span bind='balance'></span></td></tr>
-                <tr><td>Loan</td><td><span bind='loan'></span></td></tr>
-                <tr><td>Cash</td><td><span bind='cash'></span></td></tr>
-                <tr><td>Retained earning</td><td><span bind='retern'></span></td><td><span bind='average_retern'></span></td></tr>
-            </table>
-            <table bind='mpi'>
-                <tr><th>MPI</th><th>You</th><th>Average</th></tr>
-                <tr><td>MPI</td><td><span bind='mpi'></span></td><td><span bind='average_mpi'></span></td></tr>
-            </table>
-        </div>
-        <div class='report_div report_list_div'>
-            <h3>Players' detail</h3>
-            <table id='report_list'>
-                <tr id='report_players'><th></th></tr>
-                <tr xbind='price'><td>Price</td></tr>
-                <tr xbind='sold'><td>Sold</td></tr>
-                <tr xbind='sales'><td>Sales</td></tr>
-                <tr xbind='cost_before_tax'><td>Cost before tax</td></tr>
-                <tr xbind='profit_before_tax'><td>Profit before tax</td></tr>
-                <tr xbind='tax_charge'><td>Tax charge</td></tr>
-                <tr xbind='profit'><td>Profit</td></tr>
-                <tr xbind='retern'><td>Retained earning</td></tr>
-                <tr xbind='mpi'><td>MPI</td></tr>
-            </table>
-        </div>
-        <div class='report_div' bind='settings'>
-            <h3>Settings</h3>
-            <table bind='limits'>
-                <tr><th>Limits</th></tr>
-                <tr><td>Min price</td><td><span bind='price_min'></span></td></tr>
-                <tr><td>Max price</td><td><span bind='price_max'></span></td></tr>
-                <tr><td>Max marketing</td><td><span bind='mk_limit'></span></td></tr>
-                <tr><td>Max investment</td><td><span bind='ci_limit'></span></td></tr>
-                <tr><td>Max R &amp; D</td><td><span bind='rd_limit'></span></td></tr>
-                <tr><td>Max loan</td><td><span bind='loan_limit'></span></td></tr>
-            </table>
-            <table bind='production'>
-                <tr><th>Production</th></tr>
-                <tr><td>Balanced production rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
+                    <tr><td>Balance</td><td><span bind='balance'></span></td></tr>
+                    <tr><td>Loan</td><td><span bind='loan'></span></td></tr>
+                    <tr><td>Cash</td><td><span bind='cash'></span></td></tr>
+                    <tr><td>Retained earning</td><td><span bind='retern'></span></td><td><span bind='average_retern'></span></td></tr>
+                </table>
+                <table bind='mpi'>
+                    <tr><th>MPI</th><th>You</th><th>Average</th></tr>
+                    <tr><td>MPI</td><td><span bind='mpi'></span></td><td><span bind='average_mpi'></span></td></tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class='report_div report_list_div' colspan="2">
+                <h3>Players' detail</h3>
+                <table id='report_list'>
+                    <tr id='report_players'><th></th></tr>
+                    <tr xbind='price'><td>Price</td></tr>
+                    <tr xbind='sold'><td>Sold</td></tr>
+                    <tr xbind='sales'><td>Sales</td></tr>
+                    <tr xbind='cost_before_tax'><td>Cost before tax</td></tr>
+                    <tr xbind='profit_before_tax'><td>Profit before tax</td></tr>
+                    <tr xbind='tax_charge'><td>Tax charge</td></tr>
+                    <tr xbind='profit'><td>Profit</td></tr>
+                    <tr xbind='retern'><td>Retained earning</td></tr>
+                    <tr xbind='mpi'><td>MPI</td></tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class='report_div' bind='settings'>
+                <h3>Settings</h3>
+                <table bind='limits'>
+                    <tr><th>Limits</th></tr>
+                    <tr><td>Min price</td><td><span bind='price_min'></span></td></tr>
+                    <tr><td>Max price</td><td><span bind='price_max'></span></td></tr>
+                    <tr><td>Max marketing</td><td><span bind='mk_limit'></span></td></tr>
+                    <tr><td>Max investment</td><td><span bind='ci_limit'></span></td></tr>
+                    <tr><td>Max R &amp; D</td><td><span bind='rd_limit'></span></td></tr>
+                    <tr><td>Max loan</td><td><span bind='loan_limit'></span></td></tr>
+                </table>
+                <table bind='production'>
+                    <tr><th>Production</th></tr>
+                    <tr><td>Balanced production rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
 
-                <tr><td>Unit fee</td><td><span bind='unit_fee'></span></td></tr>
-                <tr><td>Deprecation rate</td><td><span bind='deprecation_rate'></span></td></tr>
-            </table>
-            <table bind='balance'>
-                <tr><th>Balance</th></tr>
-                <tr><td>Interest rate (cash)</td><td><span bind='interest_rate_cash'></span></td></tr>
-                <tr><td>Interest rate (loan)</td><td><span bind='interest_rate_loan'></span></td></tr>
-                <tr><td>Inventory fee</td><td><span bind='inventory_fee'></span></td></tr>
-                <tr><td>Tax rate</td><td><span bind='tax_rate'></span></td></tr>
-            </table>
-        </div>
-        <div class='report_div' bind='decisions'>
-            <h3>Decisions</h3>
-            <table>
-                <tr><th>Prices</th></tr>
-                <tr><td>Average price (given)</td><td><span bind='average_price_given'></span></td></tr>
-                <tr><td>Average price (sold)</td><td><span bind='average_price'></span></td></tr>
-            </table>
-            <!-- notice: special unit -->
-            <table>
-                <tr><th>Status</th></tr>
-                <tr><td>Game</td><td></td><td id='submit_game'></td></tr>
-                <tr><td>Decision period</td><td></td><td id='submit_period'></td></tr>
-                <tr><td>Player name</td><td></td><td id='submit_name'></td></tr>
-            </table>
-            <table>
-                <tr><th>Decisions</th></tr>
-                <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' type='number' step='any' /></td></tr>
-                <tr><td>Production</td><td><span bind='prod'></span></td><td><input id='submit_prod' type='number' step='any' /></td></tr>
-                <tr><td>Marketing</td><td><span bind='mk'></span></td><td><input id='submit_mk' type='number' step='any' /></td></tr>
-                <tr><td>Investment</td><td><span bind='ci'></span></td><td><input id='submit_ci' type='number' step='any' /></td></tr>
-                <tr><td>R &amp; D</td><td><span bind='rd'></span></td><td><input id='submit_rd' type='number' step='any' /></td></tr>
-                <tr><td></td><td></td><td><input id='submit_submit' type='submit' value='Submit' /></td></tr>
-            </table>
-        </div>
+                    <tr><td>Unit fee</td><td><span bind='unit_fee'></span></td></tr>
+                    <tr><td>Deprecation rate</td><td><span bind='deprecation_rate'></span></td></tr>
+                </table>
+                <table bind='balance'>
+                    <tr><th>Balance</th></tr>
+                    <tr><td>Interest rate (cash)</td><td><span bind='interest_rate_cash'></span></td></tr>
+                    <tr><td>Interest rate (loan)</td><td><span bind='interest_rate_loan'></span></td></tr>
+                    <tr><td>Inventory fee</td><td><span bind='inventory_fee'></span></td></tr>
+                    <tr><td>Tax rate</td><td><span bind='tax_rate'></span></td></tr>
+                </table>
+            </td>
+            <td class='report_div' bind='decisions'>
+                <h3>Decisions</h3>
+                <table>
+                    <tr><th>Prices</th></tr>
+                    <tr><td>Average price (given)</td><td><span bind='average_price_given'></span></td></tr>
+                    <tr><td>Average price (sold)</td><td><span bind='average_price'></span></td></tr>
+                </table>
+                <!-- notice: special unit -->
+                <table>
+                    <tr><th>Status</th></tr>
+                    <tr><td>Game</td><td></td><td id='submit_game'></td></tr>
+                    <tr><td>Decision period</td><td></td><td id='submit_period'></td></tr>
+                    <tr><td>Player name</td><td></td><td id='submit_name'></td></tr>
+                </table>
+                <table>
+                    <tr><th>Decisions</th></tr>
+                    <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' type='number' step='any' /></td></tr>
+                    <tr><td>Production</td><td><span bind='prod'></span></td><td><input id='submit_prod' type='number' step='any' /></td></tr>
+                    <tr><td>Marketing</td><td><span bind='mk'></span></td><td><input id='submit_mk' type='number' step='any' /></td></tr>
+                    <tr><td>Investment</td><td><span bind='ci'></span></td><td><input id='submit_ci' type='number' step='any' /></td></tr>
+                    <tr><td>R &amp; D</td><td><span bind='rd'></span></td><td><input id='submit_rd' type='number' step='any' /></td></tr>
+                    <tr><td></td><td></td><td><input id='submit_submit' type='submit' value='Submit' /></td></tr>
+                </table>
+            </td>
+        </tr>
     </div>
 
     <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>

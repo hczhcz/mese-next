@@ -30,8 +30,12 @@
         </tr>
     </table>
 
-    <h1 id='report_title'></h1>
     <table id='report' class='hide'>
+        <tr>
+            <td colspan='2'>
+                <h1 id='report_title'></h1>
+            </td>
+        </tr>
         <tr>
             <td class='report_div' bind='data_early'>
                 <h3>Early report</h3>
@@ -155,12 +159,41 @@
                 </table>
                 <table>
                     <tr><th>Decisions</th></tr>
-                    <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' type='number' step='any' /></td></tr>
-                    <tr><td>Production</td><td><span bind='prod'></span></td><td><input id='submit_prod' type='number' step='any' /></td></tr>
-                    <tr><td>Marketing</td><td><span bind='mk'></span></td><td><input id='submit_mk' type='number' step='any' /></td></tr>
-                    <tr><td>Investment</td><td><span bind='ci'></span></td><td><input id='submit_ci' type='number' step='any' /></td></tr>
-                    <tr><td>R &amp; D</td><td><span bind='rd'></span></td><td><input id='submit_rd' type='number' step='any' /></td></tr>
-                    <tr><td></td><td></td><td><input id='submit_submit' type='submit' value='Submit' /></td></tr>
+                    <tr>
+                        <td>Price</td>
+                        <td><span bind='price'></span></td>
+                        <td><input id='submit_price' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Production</td>
+                        <td><span bind='prod'></span></td>
+                        <td><input id='submit_prod' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Marketing</td>
+                        <td><span bind='mk'></span></td>
+                        <td><input id='submit_mk' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Investment</td>
+                        <td><span bind='ci'></span></td>
+                        <td><input id='submit_ci' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>R &amp; D</td>
+                        <td><span bind='rd'></span></td>
+                        <td><input id='submit_rd' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'>
+                            <i>
+                                <span id='report_hint_last'>(Last) </span>
+                                <span id='report_hint_now'>This period</span>
+                                <span id='report_hint_next'> (Next)</span>
+                            </i>
+                        </td>
+                        <td><input id='submit_submit' type='submit' value='Submit' /></td>
+                    </tr>
                 </table>
             </td>
         </tr>
@@ -207,12 +240,12 @@
             width: 20% !important;
         }
 
-        .report_div [target=last] {
+        .report_div [target=last], #report_hint_last {
             color: gray;
         }
-        .report_div [target=now] {
+        .report_div [target=now], #report_hint_now {
         }
-        .report_div [target=next] {
+        .report_div [target=next], #report_hint_next {
             color: blue;
         }
     </style>

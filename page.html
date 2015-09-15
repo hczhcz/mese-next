@@ -5,23 +5,30 @@
     <meta charset='utf-8' />
 </head>
 <body>
-    <div id='login'>
-        <p>Name: <input id='login_name' type='text' /></p>
-        <p>Password: <input id='login_password' type='password' /></p>
-        <p><input id='login_remember' type='checkbox' checked />Remember me</p>
-        <p><input id='login_go' type='submit' value='Go!' /></p>
-    </div>
-
-    <div id='user' class='hide'>
-        <p>Login user: <span id='user_name'></span></p>
-        <hr>
-        <p>Password: <input id='user_password' type='password' /></p>
-        <p>New password: <input id='user_new_password' type='password' /></p>
-        <p><input id='user_change_password' type='submit' value='Change password' /></p>
-    </div>
-
-    <div id='list' class='hide'>
-    </div>
+    <table id='util'>
+        <tr>
+            <td>Login user: <span id='user_name'></span></td>
+        </tr>
+        <tr>
+            <td id='login'>
+                <p>Name: <input id='login_name' type='text' /></p>
+                <p>Password: <input id='login_password' type='password' /></p>
+                <p><input id='login_remember' type='checkbox' checked />Remember me</p>
+                <p><input id='login_submit' type='submit' value='Go!' /></p>
+            </td>
+        </tr>
+        <tr>
+            <td id='password' class='hide'>
+                <p>Password: <input id='password_old' type='password' /></p>
+                <p>New password: <input id='password_new' type='password' /></p>
+                <p><input id='password_submit' type='submit' value='Change password' /></p>
+            </td>
+        </tr>
+        <tr>
+            <td id='list' class='hide'>
+            </td>
+        </tr>
+    </table>
 
     <table id='report' class='hide'>
         <h1 id='report_title'></h1>
@@ -167,7 +174,7 @@
             display: none;
         }
 
-        #login, #user {
+        #login, #password {
             display: inline-block;
 
             width: 32em;
@@ -233,11 +240,11 @@
 
         $('#login_password').keypress(function (event) {
             if (event.which === 13) {
-                $('#login_go').click();
+                $('#login_submit').click();
             }
         });
 
-        $('#login_go').click(function () {
+        $('#login_submit').click(function () {
             var name = $('#login_name').val();
             var password = $('#login_password').val();
             $('#login_password').val('');
@@ -266,7 +273,7 @@
 
             $('#user_name').text(currentName + ' (new user)');
 
-            $('#user').removeClass('hide');
+            $('#password').removeClass('hide');
             $('#list').addClass('hide');
             $('#report').addClass('hide');
 
@@ -278,7 +285,7 @@
 
             $('#user_name').text(currentName);
 
-            $('#user').removeClass('hide');
+            $('#password').removeClass('hide');
             $('#list').addClass('hide');
             $('#report').addClass('hide');
 
@@ -290,25 +297,25 @@
             console.log('Wrong password!');
         });
 
-        // user
+        // password
 
-        $('#user_password').keypress(function (event) {
+        $('#password_old').keypress(function (event) {
             if (event.which === 13) {
-                $('#user_new_password').focus();
+                $('#password_new').focus();
             }
         });
 
-        $('#user_new_password').keypress(function (event) {
+        $('#password_new').keypress(function (event) {
             if (event.which === 13) {
-                $('#user_change_password').click();
+                $('#password_submit').click();
             }
         });
 
-        $('#user_change_password').click(function () {
-            var password = $('#user_password').val();
-            var newPassword = $('#user_new_password').val();
-            $('#user_password').val('');
-            $('#user_new_password').val('');
+        $('#password_submit').click(function () {
+            var password = $('#password_old').val();
+            var newPassword = $('#password_new').val();
+            $('#password_old').val('');
+            $('#password_new').val('');
 
             // auto login
             var loginInfo = localStorage.getItem('MESE_login');

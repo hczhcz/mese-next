@@ -116,11 +116,6 @@
             <table bind='production'>
                 <tr><th>Production</th></tr>
                 <tr><td>Balanced production rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
-                <!-- <tr><td>prod_rate_pow</td><td><span bind='prod_rate_pow'></span></td></tr>
-                <tr><td>prod_cost_factor_rate_over</td><td><span bind='prod_cost_factor_rate_over'></span></td></tr>
-                <tr><td>prod_cost_factor_rate_under</td><td><span bind='prod_cost_factor_rate_under'></span></td></tr>
-                <tr><td>prod_cost_factor_size</td><td><span bind='prod_cost_factor_size'></span></td></tr>
-                <tr><td>prod_cost_factor_const</td><td><span bind='prod_cost_factor_const'></span></td></tr> -->
 
                 <tr><td>Unit fee</td><td><span bind='unit_fee'></span></td></tr>
                 <tr><td>Deprecation rate</td><td><span bind='deprecation_rate'></span></td></tr>
@@ -149,11 +144,11 @@
             </table>
             <table>
                 <tr><th>Decisions</th></tr>
-                <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' class='submit_num' type='number' step='any' /></td></tr>
-                <tr><td>Production</td><td><span bind='prod'></span></td><td><input id='submit_prod' class='submit_num' type='number' step='any' /></td></tr>
-                <tr><td>Marketing</td><td><span bind='mk'></span></td><td><input id='submit_mk' class='submit_num' type='number' step='any' /></td></tr>
-                <tr><td>Investment</td><td><span bind='ci'></span></td><td><input id='submit_ci' class='submit_num' type='number' step='any' /></td></tr>
-                <tr><td>R &amp; D</td><td><span bind='rd'></span></td><td><input id='submit_rd' class='submit_num' type='number' step='any' /></td></tr>
+                <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' type='number' step='any' /></td></tr>
+                <tr><td>Production</td><td><span bind='prod'></span></td><td><input id='submit_prod' type='number' step='any' /></td></tr>
+                <tr><td>Marketing</td><td><span bind='mk'></span></td><td><input id='submit_mk' type='number' step='any' /></td></tr>
+                <tr><td>Investment</td><td><span bind='ci'></span></td><td><input id='submit_ci' type='number' step='any' /></td></tr>
+                <tr><td>R &amp; D</td><td><span bind='rd'></span></td><td><input id='submit_rd' type='number' step='any' /></td></tr>
                 <tr><td></td><td></td><td><input id='submit_submit' type='submit' value='Submit' /></td></tr>
             </table>
         </div>
@@ -466,7 +461,35 @@
             showReport('#report [bind=data_early]', data.data_public.data_early, 'now');
             showReport('#report [bind=data]', data.data_public.data, 'now');
 
-            showReport('#report [bind=settings]', data.next_settings, 'next');
+            if (data.next_settings) {
+                showReport('#report [bind=settings]', data.next_settings, 'next');
+
+                $('#submit_price')
+                    .attr('min', data.next_settings.limits.price_min)
+                    .attr('max', data.next_settings.limits.price_max)
+                    .val(data.decisions.price);
+                $('#submit_prod')
+                    .attr('min', 0)
+                    .attr('max', data.data_early.balance.size)
+                    .val(
+                        Math.round(
+                            data.data_early.balance.size
+                            * data.data_early.production.prod_rate
+                        )
+                    );
+                $('#submit_mk')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.mk_limit)
+                    .val(data.decisions.mk);
+                $('#submit_ci')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.ci_limit)
+                    .val(data.decisions.ci);
+                $('#submit_rd')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.rd_limit)
+                    .val(data.decisions.rd);
+            }
 
             $('#report').removeClass('hide');
             // $('#submit').removeClass('hide'); // TODO: more show/hide in report
@@ -488,7 +511,9 @@
             showReport('#report [bind=data_early]', data.data_public.data_early, 'now');
             showReport('#report [bind=data]', data.data_public.data, 'now');
 
-            showReport('#report [bind=settings]', data.next_settings, 'next');
+            if (data.next_settings) {
+                showReport('#report [bind=settings]', data.next_settings, 'next');
+            }
 
             $('#report').removeClass('hide');
             // $('#submit').addClass('hide'); // TODO: more show/hide in report

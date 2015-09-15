@@ -254,11 +254,11 @@ db.init(function () {
                     !authName
                     || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
                     || !util.verifyInt(data.period)
-                    || !util.verifyInt(data.price)
+                    || !util.verifyNum(data.price)
                     || !util.verifyInt(data.prod)
-                    || !util.verifyInt(data.mk)
-                    || !util.verifyInt(data.ci)
-                    || !util.verifyInt(data.rd)
+                    || !util.verifyNum(data.mk)
+                    || !util.verifyNum(data.ci)
+                    || !util.verifyNum(data.rd)
                 ) {
                     return;
                 }

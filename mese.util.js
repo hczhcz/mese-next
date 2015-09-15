@@ -25,6 +25,10 @@ module.exports.verifyInt = function (num) {
     return typeof num == 'number' && (0 | num) == num;
 };
 
+module.exports.verifyNum = function (num) {
+    return typeof num == 'number';
+};
+
 module.exports.verifyBool = function (bool) {
     return typeof bool == 'boolean';
 };

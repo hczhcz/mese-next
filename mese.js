@@ -310,7 +310,7 @@ db.init(function () {
         });
     });
 
-    var test = function () {
+    var initGame = function (players) {
         var size = 0;
 
         var doAlloc = function (gameData) {
@@ -324,11 +324,7 @@ db.init(function () {
                     }
                 );
                 gameStorage.staticSet(
-                    'players',
-                    [
-                        'test0001', 'test0002', 'test0003', 'test0004',
-                        'test0005', 'test0006', 'test0007', 'test0008',
-                    ],
+                    'players', players,
                     function (doc) {
                         // nothing
                     }
@@ -340,8 +336,11 @@ db.init(function () {
             }
         };
 
-        core.init(8, 'modern', [], doAlloc);
+        core.init(players.length, 'modern', [], doAlloc);
     };
 
-    // test();
+    // initGame([
+    //     'test0001', 'test0002', 'test0003', 'test0004',
+    //     'test0005', 'test0006', 'test0007', 'test0008',
+    // ]);
 });

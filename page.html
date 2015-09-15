@@ -30,11 +30,11 @@
                 <h3>Early report</h3>
                 <table bind='production'>
                     <tr><th>Production</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Production rate</td><td><span bind='prod_rate'></span></td></tr>
+                    <tr><td>Prod rate</td><td><span bind='prod_rate'></span></td></tr>
                     <tr><td></td><td>[<span bind='prod_over'></span>]</td></tr>
-                    <tr><td>Unit production cost</td><td><span bind='prod_cost_unit'></span></td><td><span bind='average_prod_cost_unit'></span></td></tr>
-                    <tr><td>Marginal cost</td><td><span bind='prod_cost_marginal'></span></td></tr>
-                    <tr><td>Total production cost</td><td><span bind='prod_cost'></span></td><td><span bind='average_prod_cost'></span></td></tr>
+                    <tr><td>Unit prod cost</td><td><span bind='prod_cost_unit'></span></td><td><span bind='average_prod_cost_unit'></span></td></tr>
+                    <tr><td>Marginal prod cost</td><td><span bind='prod_cost_marginal'></span></td></tr>
+                    <tr><td>Total prod cost</td><td><span bind='prod_cost'></span></td><td><span bind='average_prod_cost'></span></td></tr>
                 </table>
                 <table bind='balance'>
                     <tr><th>Balance</th><th>You</th><th>Average</th></tr>
@@ -48,7 +48,7 @@
 
                     <tr><td>Goods</td><td><span bind='goods'></span></td><td><span bind='average_goods'></span></td></tr>
                     <tr><td>Cost of goods</td><td><span bind='goods_cost'></span></td></tr>
-                    <tr><td>Ideal sales of goods</td><td><span bind='goods_max_sales'></span></td></tr>
+                    <tr><td>Ideal sales</td><td><span bind='goods_max_sales'></span></td></tr>
                 </table>
                 <table bind='history'>
                     <tr><th>History</th></tr>
@@ -119,7 +119,7 @@
                 </table>
                 <table bind='production'>
                     <tr><th>Production</th></tr>
-                    <tr><td>Balanced production rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
+                    <tr><td>Balanced prod rate</td><td><span bind='prod_rate_balanced'></span></td></tr>
 
                     <tr><td>Unit fee</td><td><span bind='unit_fee'></span></td></tr>
                     <tr><td>Deprecation rate</td><td><span bind='deprecation_rate'></span></td></tr>
@@ -135,9 +135,9 @@
             <td class='report_div' bind='decisions'>
                 <h3>Decisions</h3>
                 <table>
-                    <tr><th>Prices</th></tr>
-                    <tr><td>Average price (given)</td><td><span bind='average_price_given'></span></td></tr>
-                    <tr><td>Average price (sold)</td><td><span bind='average_price'></span></td></tr>
+                    <tr><th>Average prices</th></tr>
+                    <tr><td>Given price</td><td><span bind='average_price_given'></span></td></tr>
+                    <tr><td>Selling price</td><td><span bind='average_price'></span></td></tr>
                 </table>
                 <!-- notice: special unit -->
                 <table>
@@ -194,10 +194,10 @@
         .report_div tr>:first-child {
             text-align: left !important;
 
-            width: 50%;
+            width: 40%;
         }
         .report_list_div tr>:first-child {
-            width: 25% !important;
+            width: 20% !important;
         }
 
         .report_div [target=last] {

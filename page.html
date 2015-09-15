@@ -149,11 +149,11 @@
             </table>
             <table>
                 <tr><th>Decisions</th></tr>
-                <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' type='number' /></td></tr>
-                <tr><td>Production</td><td><span bind='prod'></span></td><td><input id='submit_prod' type='number' /></td></tr>
-                <tr><td>Marketing</td><td><span bind='mk'></span></td><td><input id='submit_mk' type='number' /></td></tr>
-                <tr><td>Investment</td><td><span bind='ci'></span></td><td><input id='submit_ci' type='number' /></td></tr>
-                <tr><td>R &amp; D</td><td><span bind='rd'></span></td><td><input id='submit_rd' type='number' /></td></tr>
+                <tr><td>Price</td><td><span bind='price'></span></td><td><input id='submit_price' class='submit_num' type='number' step='any' /></td></tr>
+                <tr><td>Production</td><td><span bind='prod'></span></td><td><input id='submit_prod' class='submit_num' type='number' step='any' /></td></tr>
+                <tr><td>Marketing</td><td><span bind='mk'></span></td><td><input id='submit_mk' class='submit_num' type='number' step='any' /></td></tr>
+                <tr><td>Investment</td><td><span bind='ci'></span></td><td><input id='submit_ci' class='submit_num' type='number' step='any' /></td></tr>
+                <tr><td>R &amp; D</td><td><span bind='rd'></span></td><td><input id='submit_rd' class='submit_num' type='number' step='any' /></td></tr>
                 <tr><td></td><td></td><td><input id='submit_submit' type='submit' value='Submit' /></td></tr>
             </table>
         </div>
@@ -389,6 +389,22 @@
             .append('<span target="now"><span></span></span>')
             .append('<span target="next"> (<span></span>)</span>');
 
+        $('#submit_price').change(function () {
+            $('#submit_price').val(0.01 * Math.round(100 * $('#submit_price').val()));
+        })
+        $('#submit_prod').change(function () {
+            $('#submit_prod').val(Math.round($('#submit_prod').val()));
+        })
+        $('#submit_mk').change(function () {
+            $('#submit_mk').val(0.01 * Math.round(100 * $('#submit_mk').val()));
+        })
+        $('#submit_ci').change(function () {
+            $('#submit_ci').val(0.01 * Math.round(100 * $('#submit_ci').val()));
+        })
+        $('#submit_rd').change(function () {
+            $('#submit_rd').val(0.01 * Math.round(100 * $('#submit_rd').val()));
+        })
+
         var initReport = function (game, period) {
             currentGame = game;
             currentPeriod = period;
@@ -484,11 +500,11 @@
             socket.emit('submit', {
                 game: currentGame,
                 period: currentPeriod,
-                price: parseInt($('#submit_price').val()),
+                price: parseFloat($('#submit_price').val()),
                 prod: parseInt($('#submit_prod').val()),
-                mk: parseInt($('#submit_mk').val()),
-                ci: parseInt($('#submit_ci').val()),
-                rd: parseInt($('#submit_rd').val()),
+                mk: parseFloat($('#submit_mk').val()),
+                ci: parseFloat($('#submit_ci').val()),
+                rd: parseFloat($('#submit_rd').val()),
             });
         });
 

@@ -107,9 +107,9 @@
                     <tr xbind='price'><td>Price</td></tr>
                     <tr xbind='sold'><td>Sold</td></tr>
                     <tr xbind='sales'><td>Sales</td></tr>
-                    <tr xbind='cost_before_tax'><td>Cost before tax</td></tr>
-                    <tr xbind='profit_before_tax'><td>Profit before tax</td></tr>
-                    <tr xbind='tax_charge'><td>Tax charge</td></tr>
+                    <tr class='report_verbose' xbind='cost_before_tax'><td>Cost before tax</td></tr>
+                    <tr class='report_verbose' xbind='profit_before_tax'><td>Profit before tax</td></tr>
+                    <tr class='report_verbose' xbind='tax_charge'><td>Tax charge</td></tr>
                     <tr xbind='profit'><td>Profit</td></tr>
                     <tr xbind='retern'><td>Retained earning</td></tr>
                     <tr xbind='mpi'><td>MPI</td></tr>
@@ -243,6 +243,9 @@
         }
         .report_list_div tr>:first-child {
             width: 20% !important;
+
+        .report_verbose {
+            display: none;
         }
 
         .report_div input {

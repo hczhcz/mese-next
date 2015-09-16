@@ -5,6 +5,82 @@
     <meta charset='utf-8' />
 </head>
 <body>
+    <style>
+        .hide {
+            display: none;
+        }
+
+        #util {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 18em;
+        }
+
+        .util_box table {
+            width: 100%;
+
+            table-layout: fixed;
+        }
+
+        .util_box input[type=text] {
+            width: 98%;
+        }
+        .util_box input[type=password] {
+            width: 98%;
+        }
+
+        #report {
+            position: absolute;
+            left: 18em;
+            top: 0;
+        }
+
+        .report_div {
+            vertical-align: top;
+            width: 36em;
+
+            font-family: monospace;
+        }
+        .report_list_div {
+            width: 72em !important;
+        }
+
+        .report_div table {
+            width: 100%;
+
+            table-layout: fixed;
+        }
+        .report_list_div table {
+            table-layout: auto !important;
+        }
+
+        .report_div tr>* {
+            text-align: right;
+        }
+        .report_div tr>:first-child {
+            text-align: left !important;
+        }
+
+        .report_verbose {
+            display: none;
+        }
+
+        .report_div input {
+            width: 98%;
+        }
+
+        .report_div [target=last], #report_hint_last {
+            color: gray;
+        }
+        .report_div [target=now], #report_hint_now {
+        }
+        .report_div [target=next], #report_hint_next {
+            color: blue;
+        }
+    </style>
+
     <table id='util'>
         <tr>
             <td>Login user: <span id='user_name'></span></td>
@@ -209,62 +285,6 @@
 
     <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
-
-    <style>
-        .hide {
-            display: none;
-        }
-
-        #login, #password {
-            display: inline-block;
-
-            width: 36em;
-        }
-
-        .report_div {
-            vertical-align: top;
-
-            width: 36em;
-
-            font-family: monospace;
-        }
-        .report_list_div {
-            width: 72em !important;
-        }
-
-        .report_div table {
-            width: 100%;
-
-            table-layout: fixed;
-        }
-        .report_list_div table {
-            table-layout: auto !important;
-        }
-
-        .report_div tr>* {
-            text-align: right;
-        }
-        .report_div tr>:first-child {
-            text-align: left !important;
-        }
-
-        .report_verbose {
-            display: none;
-        }
-
-        .report_div input {
-            width: 100%;
-        }
-
-        .report_div [target=last], #report_hint_last {
-            color: gray;
-        }
-        .report_div [target=now], #report_hint_now {
-        }
-        .report_div [target=next], #report_hint_next {
-            color: blue;
-        }
-    </style>
 
     <script>
         'use strict';

@@ -32,8 +32,8 @@
                 </table>
             </td>
         </tr>
-        <tr>
-            <td id='list' class='hide'>
+        <tr id='list' class='hide'>
+            <td id='list_content'>
             </td>
         </tr>
     </table>
@@ -397,20 +397,21 @@
         // list
 
         var updateList = function (data) {
-            $('#list').empty();
+            $('#list_content').empty();
 
             for (var i in data) {
                 if (data[i]) {
-                    $('<input type="button" />')
-                        .val(i)
-                        .click(function (game) {
-                            return function () {
-                                socket.emit('report', {
-                                    game: game,
-                                });
-                            }
-                        } (i))
-                        .appendTo('#list');
+                    $('#list_content').append(
+                        $('<input type="button" />')
+                            .val(i)
+                            .click(function (game) {
+                                return function () {
+                                    socket.emit('report', {
+                                        game: game,
+                                    });
+                                }
+                            } (i))
+                    );
                 }
             }
 

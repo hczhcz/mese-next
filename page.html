@@ -9,19 +9,27 @@
         <tr>
             <td>Login user: <span id='user_name'></span></td>
         </tr>
-        <tr>
-            <td id='login'>
-                <p>Name: <input id='login_name' type='text' /></p>
-                <p>Password: <input id='login_password' type='password' /></p>
-                <p><input id='login_remember' type='checkbox' checked />Remember me</p>
-                <p><input id='login_submit' type='submit' value='Go!' /></p>
+        <tr id='login'>
+            <td class='util_box'>
+                <table>
+                    <tr><td>Name</td></tr>
+                    <tr><td><input id='login_name' type='text' /></td></tr>
+                    <tr><td>Password</td></tr>
+                    <tr><td><input id='login_password' type='password' /></td></tr>
+                    <tr><td><input id='login_remember' type='checkbox' checked />Remember me</td></tr>
+                    <tr><td><input id='login_submit' type='submit' value='Go!' /></td></tr>
+                </table>
             </td>
         </tr>
-        <tr>
-            <td id='password' class='hide'>
-                <p>Password: <input id='password_old' type='password' /></p>
-                <p>New password: <input id='password_new' type='password' /></p>
-                <p><input id='password_submit' type='submit' value='Change password' /></p>
+        <tr id='password' class='hide'>
+            <td class='util_box'>
+                <table>
+                    <tr><td>Old password</td></tr>
+                    <tr><td><input id='password_old' type='password' /></td></tr>
+                    <tr><td>New password</td></tr>
+                    <tr><td><input id='password_new' type='password' /></td></tr>
+                    <tr><td><input id='password_submit' type='submit' value='Change password' /></td></tr>
+                </table>
             </td>
         </tr>
         <tr>

@@ -33,12 +33,47 @@
             table-layout: fixed;
         }
 
-        .util_box input[type=text] {
-            width: 98%;
+        #util * {
+            margin: 0;
+            padding: 0;
         }
-        .util_box input[type=password] {
-            width: 98%;
+
+        #util td {
+            padding: 0.25em 0;
         }
+
+        #util p {
+            padding: 0.25em 0;
+        }
+
+        #util input[type=text], #util input[type=password] {
+            width: 100%;
+            width: calc(100% - 6px);
+            padding: 3px;
+            border: 0;
+
+            background: #E0E0E0;
+        }
+        #util input[type=checkbox] {
+            margin-right: 3px;
+            border: 0;
+        }
+        #util input[type=submit] {
+            width: 100%;
+            padding: 3px;
+            border: 0;
+
+            background: #808080;
+        }
+        #util input[type=button] {
+            margin-right: 6px;
+            padding: 3px 1em;
+            border: 0;
+
+            background: #C0C0C0;
+        }
+
+        /* report */
 
         #report {
             position: absolute;
@@ -77,7 +112,8 @@
         }
 
         .report_div input {
-            width: 98%;
+            width: 100%;
+            width: calc(100% - 4px);
         }
 
         .report_div [target=last], #report_hint_last {

@@ -146,7 +146,7 @@
 
     <div class='side'>
         <table id='util'>
-            <tr>
+            <tr id='user' class='hide'>
                 <td>Login user: <span id='user_name'></span></td>
             </tr>
             <tr id='login'>
@@ -155,8 +155,8 @@
                     <p><input id='login_name' type='text' /></p>
                     <p>Password</p>
                     <p><input id='login_password' type='password' /></p>
-                    <p><input id='login_remember' type='checkbox' checked />Remember me</p>
-                    <p><input id='login_submit' type='submit' value='Go!' /></p>
+                    <p><input id='login_remember' type='checkbox' checked />Remember</p>
+                    <p><input id='login_submit' type='submit' value='Login / Sign up' /></p>
                 </td>
             </tr>
             <tr id='password' class='hide'>
@@ -399,28 +399,25 @@
             });
         });
 
-        socket.on('login_new', function (data) {
-            currentName = data.name;
+        var loginDone = function (name, reg) {
+            currentName = name;
 
-            $('#user_name').text(currentName + ' (new user)');
+            $('#user_name').text(reg ? currentName + ' (new user)' : currentName);
 
+            $('#user').removeClass('hide');
             $('#password').removeClass('hide');
             $('#list').addClass('hide');
             $('#report').addClass('hide');
 
             socket.emit('list');
+        };
+
+        socket.on('login_new', function (data) {
+            loginDone(data.name, true);
         });
 
         socket.on('login_ok', function (data) {
-            currentName = data.name;
-
-            $('#user_name').text(currentName);
-
-            $('#password').removeClass('hide');
-            $('#list').addClass('hide');
-            $('#report').addClass('hide');
-
-            socket.emit('list');
+            loginDone(data.name, false);
         });
 
         socket.on('login_fail', function (data) {

@@ -172,7 +172,7 @@
                 <td>
                     <p>Game</p>
                     <p><input id='subscribe_game' type='text' /></p>
-                    <p><input id='subscribe_submit' type='submit' value='Subscribe' /></p>
+                    <p><input id='subscribe_submit' type='submit' value='Subscribe / Unsubscribe' /></p>
                 </td>
             </tr>
             <tr id='list' class='hide'>
@@ -483,6 +483,8 @@
 
         // subscribe & list
 
+        var currentList = undefined;
+
         $('#subscribe_game').keypress(function (event) {
             if (event.which === 13) {
                 $('#subscribe_submit').click();
@@ -494,15 +496,17 @@
 
             socket.emit('subscribe', {
                 game: game,
-                enabled: true,
+                enabled: !currentList[$('#subscribe_game').val()],
             });
         });
 
         var updateList = function (data) {
+            currentList = data;
+
             $('#list_content').empty();
 
-            for (var i in data) {
-                if (data[i]) {
+            for (var i in currentList) {
+                if (currentList[i]) {
                     $('#list_content').append(
                         $('<input type="button" />')
                             .val(i)
@@ -564,7 +568,11 @@
             currentGame = game;
             currentPeriod = period;
 
-            $('#report_title').text('Period ' + period + ' of Game "' + game + '"');
+            $('#subscribe_game').val(currentGame);
+
+            $('#report_title').text(
+                'Period ' + currentPeriod + ' of Game "' + currentGame + '"'
+            );
 
             $('#submit_game').text(currentGame);
             $('#submit_period').text(currentPeriod + 1);

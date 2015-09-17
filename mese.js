@@ -161,7 +161,7 @@ db.init(function () {
                 var gameStorage = db.access('games', data.game);
 
                 gameStorage.staticGet('players', function (players) {
-                    if (players === undefined) {
+                    if (data.enabled && players === undefined) {
                         util.log('wrong game');
 
                         return;

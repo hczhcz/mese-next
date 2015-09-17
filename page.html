@@ -311,7 +311,7 @@
                     <tr><td>Decision period</td><td id='submit_period'></td></tr>
                     <tr><td>Player name</td><td id='submit_name'></td></tr>
                 </table>
-                <table>
+                <table id='submit'>
                     <tr><th>Decisions</th></tr>
                     <tr>
                         <td>Price</td>
@@ -530,8 +530,6 @@
 
         socket.on('subscribe_update', updateList);
 
-        // TODO: subscribe changes
-
         // report
 
         var currentGame = undefined;
@@ -660,8 +658,8 @@
                     .val(data.decisions.rd);
             }
 
+            $('#submit').removeClass('hide');
             $('#report').removeClass('hide');
-            // $('#submit').removeClass('hide'); // TODO: more show/hide in report
         });
 
         socket.on('report_public', function (data) {
@@ -684,8 +682,8 @@
                 showReport('#report_settings', data.next_settings, 'next');
             }
 
+            $('#submit').addClass('hide');
             $('#report').removeClass('hide');
-            // $('#submit').addClass('hide'); // TODO: more show/hide in report
         });
 
         // submit

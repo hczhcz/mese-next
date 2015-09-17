@@ -2,8 +2,10 @@
 
 var childProcess = require('child_process');
 
+var util = require('./mese.util');
+
 module.exports.exec = function (args, input, callback, fail) {
-    console.log('exec ' + JSON.stringify(args));
+    util.log('exec ' + JSON.stringify(args));
 
     var proc = childProcess.spawn('./mese', args);
     var output = [];
@@ -25,7 +27,7 @@ module.exports.exec = function (args, input, callback, fail) {
 };
 
 module.exports.execSync = function (args, input, callback, fail) {
-    console.log('exec (sync) ' + JSON.stringify(args));
+    util.log('exec (sync) ' + JSON.stringify(args));
 
     var proc = childProcess.spawnSync('./mese', args, {
         input: input,
@@ -41,7 +43,7 @@ module.exports.execSync = function (args, input, callback, fail) {
 };
 
 var stdFail = function (status, output) {
-    throw 1;
+    throw Error('exec fail: ' + status);
 };
 
 module.exports.init = function (count, preset, settings, callback) {

@@ -18,8 +18,7 @@ var server = http.createServer(function (req, res) {
     var d = domain.create();
 
     d.on('error', function (e) {
-        util.log(e);
-        console.log(e.stack);
+        util.log(e.stack || e);
     });
 
     d.add(req);
@@ -41,8 +40,7 @@ db.init(function () {
         var d = domain.create();
 
         d.on('error', function (e) {
-            util.log(e);
-            console.log(e.stack);
+            util.log(e.stack || e);
         });
 
         d.add(socket);
@@ -191,13 +189,17 @@ db.init(function () {
                 if (authName) {
                     util.log('get report ' + authName + ' ' + data.game);
                 } else {
-                    util.log('get report ' + socket.conn.remoteAddress + data.game);
+                    util.log('get report ' + socket.conn.remoteAddress + ' ' + data.game);
                 }
 
                 var gameName = data.game;
                 var gameStorage = db.access('games', gameName);
 
                 gameStorage.staticGet('players', function (players) {
+                    if (players === undefined) {
+                        throw Error('wrong game');
+                    }
+
                     var player;
 
                     for (var i in players) {
@@ -268,6 +270,10 @@ db.init(function () {
                 var gameStorage = db.access('games', data.game);
 
                 gameStorage.staticGet('players', function (players) {
+                    if (players === undefined) {
+                        throw Error('wrong game');
+                    }
+
                     var player;
 
                     for (var i in players) {

@@ -75,6 +75,7 @@
         }
         #util input[type=button] {
             margin-right: 6px;
+            margin-bottom: 6px;
             padding: 3px 1em;
             border: 0;
 
@@ -371,13 +372,13 @@
         }
 
         $('#login_name').keypress(function (event) {
-            if (event.which === 13) {
+            if (event.which == 13) {
                 $('#login_password').focus();
             }
         });
 
         $('#login_password').keypress(function (event) {
-            if (event.which === 13) {
+            if (event.which == 13) {
                 $('#login_submit').click();
             }
         });
@@ -436,13 +437,13 @@
         // password
 
         $('#password_old').keypress(function (event) {
-            if (event.which === 13) {
+            if (event.which == 13) {
                 $('#password_new').focus();
             }
         });
 
         $('#password_new').keypress(function (event) {
-            if (event.which === 13) {
+            if (event.which == 13) {
                 $('#password_submit').click();
             }
         });
@@ -486,7 +487,7 @@
         var currentList = undefined;
 
         $('#subscribe_game').keypress(function (event) {
-            if (event.which === 13) {
+            if (event.which == 13) {
                 $('#subscribe_submit').click();
             }
         });

@@ -158,22 +158,32 @@ db.init(function () {
                     util.log('unsubscribe ' + authName + ' ' + data.game);
                 }
 
-                authStorage.staticGet('subscribes', function (subscribes) {
-                    if (subscribes === undefined) {
-                        subscribes = {};
+                var gameStorage = db.access('games', data.game);
+
+                gameStorage.staticGet('players', function (players) {
+                    if (players === undefined) {
+                        util.log('wrong game');
+
+                        return;
                     }
 
-                    subscribes[data.game] = data.enabled;
-
-                    authStorage.staticSet(
-                        'subscribes', subscribes,
-                        function (doc) {
-                            socket.emit(
-                                'subscribe_update',
-                                subscribes
-                            );
+                    authStorage.staticGet('subscribes', function (subscribes) {
+                        if (subscribes === undefined) {
+                            subscribes = {};
                         }
-                    );
+
+                        subscribes[data.game] = data.enabled;
+
+                        authStorage.staticSet(
+                            'subscribes', subscribes,
+                            function (doc) {
+                                socket.emit(
+                                    'subscribe_update',
+                                    subscribes
+                                );
+                            }
+                        );
+                    });
                 });
             });
 
@@ -197,7 +207,9 @@ db.init(function () {
 
                 gameStorage.staticGet('players', function (players) {
                     if (players === undefined) {
-                        throw Error('wrong game');
+                        util.log('wrong game');
+
+                        return;
                     }
 
                     var player;
@@ -271,7 +283,9 @@ db.init(function () {
 
                 gameStorage.staticGet('players', function (players) {
                     if (players === undefined) {
-                        throw Error('wrong game');
+                        util.log('wrong game');
+
+                        return;
                     }
 
                     var player;

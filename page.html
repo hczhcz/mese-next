@@ -168,6 +168,13 @@
                     <p><input id='password_submit' type='submit' value='Change password' /></p>
                 </td>
             </tr>
+            <tr id='subscribe' class='hide'>
+                <td>
+                    <p>Game</p>
+                    <p><input id='subscribe_game' type='text' /></p>
+                    <p><input id='subscribe_submit' type='submit' value='Subscribe' /></p>
+                </td>
+            </tr>
             <tr id='list' class='hide'>
                 <td>
                     <p id='list_content'></p>
@@ -406,6 +413,7 @@
 
             $('#user').removeClass('hide');
             $('#password').removeClass('hide');
+            $('#subscribe').removeClass('hide');
             $('#list').addClass('hide');
             $('#report').addClass('hide');
 
@@ -473,7 +481,22 @@
             console.log('Wrong password!');
         });
 
-        // list
+        // subscribe & list
+
+        $('#subscribe_game').keypress(function (event) {
+            if (event.which === 13) {
+                $('#subscribe_submit').click();
+            }
+        });
+
+        $('#subscribe_submit').click(function () {
+            var game = $('#subscribe_game').val();
+
+            socket.emit('subscribe', {
+                game: game,
+                enabled: true,
+            });
+        });
 
         var updateList = function (data) {
             $('#list_content').empty();
@@ -523,19 +546,19 @@
 
         $('#submit_price').change(function () {
             $('#submit_price').val(0.01 * Math.round(100 * $('#submit_price').val()));
-        })
+        });
         $('#submit_prod').change(function () {
             $('#submit_prod').val(Math.round($('#submit_prod').val()));
-        })
+        });
         $('#submit_mk').change(function () {
             $('#submit_mk').val(0.01 * Math.round(100 * $('#submit_mk').val()));
-        })
+        });
         $('#submit_ci').change(function () {
             $('#submit_ci').val(0.01 * Math.round(100 * $('#submit_ci').val()));
-        })
+        });
         $('#submit_rd').change(function () {
             $('#submit_rd').val(0.01 * Math.round(100 * $('#submit_rd').val()));
-        })
+        });
 
         var initReport = function (game, period) {
             currentGame = game;

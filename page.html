@@ -14,11 +14,16 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 18em;
+            width: 17em;
             height: 100%;
 
             background: #303030;
             color: #E0E0E0;
+        }
+
+        body {
+            background: #E0E0E0;
+            color: #202020
         }
 
         /* util */
@@ -27,7 +32,7 @@
             position: absolute;
             left: 1em;
             top: 1em;
-            width: 16em;
+            width: 15em;
             border-spacing: 0;
 
             table-layout: fixed;
@@ -78,7 +83,14 @@
         #report {
             position: absolute;
             left: 18em;
-            top: 0;
+            top: 1em;
+        }
+
+        #report h2 {
+            margin: 0.25em 0;
+        }
+        #report h3 {
+            margin: 0.5em 0;
         }
 
         .report_div {
@@ -118,6 +130,7 @@
 
         .report_div [target=last], #report_hint_last {
             color: gray;
+            font-size: 75%;
         }
         .report_div [target=now], #report_hint_now {
         }
@@ -161,7 +174,7 @@
     <table id='report' class='hide'>
         <tr>
             <td colspan='2'>
-                <h1 id='report_title'></h1>
+                <h2 id='report_title'></h2>
             </td>
         </tr>
         <tr>
@@ -231,7 +244,7 @@
             <td class='report_div report_list_div' colspan='2'>
                 <h3>Players' detail</h3>
                 <table id='report_list'>
-                    <tr id='report_players'><th></th></tr>
+                    <tr id='report_players'><th>Player</th></tr>
                     <tr xbind='price'><td>Price</td></tr>
                     <tr xbind='sold'><td>Sold</td></tr>
                     <tr xbind='sales'><td>Sales</td></tr>

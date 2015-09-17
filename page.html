@@ -10,16 +10,25 @@
             display: none;
         }
 
-        #util {
-            position: absolute;
+        .side {
+            position: fixed;
             left: 0;
             top: 0;
-            bottom: 0;
             width: 18em;
+            height: 100%;
+
+            background: #303030;
+            color: #E0E0E0;
         }
 
-        .util_box table {
-            width: 100%;
+        /* util */
+
+        #util {
+            position: absolute;
+            left: 1em;
+            top: 1em;
+            width: 16em;
+            border-spacing: 0;
 
             table-layout: fixed;
         }
@@ -81,38 +90,37 @@
         }
     </style>
 
-    <table id='util'>
-        <tr>
-            <td>Login user: <span id='user_name'></span></td>
-        </tr>
-        <tr id='login'>
-            <td class='util_box'>
-                <table>
-                    <tr><td>Name</td></tr>
-                    <tr><td><input id='login_name' type='text' /></td></tr>
-                    <tr><td>Password</td></tr>
-                    <tr><td><input id='login_password' type='password' /></td></tr>
-                    <tr><td><input id='login_remember' type='checkbox' checked />Remember me</td></tr>
-                    <tr><td><input id='login_submit' type='submit' value='Go!' /></td></tr>
-                </table>
-            </td>
-        </tr>
-        <tr id='password' class='hide'>
-            <td class='util_box'>
-                <table>
-                    <tr><td>Old password</td></tr>
-                    <tr><td><input id='password_old' type='password' /></td></tr>
-                    <tr><td>New password</td></tr>
-                    <tr><td><input id='password_new' type='password' /></td></tr>
-                    <tr><td><input id='password_submit' type='submit' value='Change password' /></td></tr>
-                </table>
-            </td>
-        </tr>
-        <tr id='list' class='hide'>
-            <td id='list_content'>
-            </td>
-        </tr>
-    </table>
+    <div class='side'>
+        <table id='util'>
+            <tr>
+                <td>Login user: <span id='user_name'></span></td>
+            </tr>
+            <tr id='login'>
+                <td>
+                    <p>Name</p>
+                    <p><input id='login_name' type='text' /></p>
+                    <p>Password</p>
+                    <p><input id='login_password' type='password' /></p>
+                    <p><input id='login_remember' type='checkbox' checked />Remember me</p>
+                    <p><input id='login_submit' type='submit' value='Go!' /></p>
+                </td>
+            </tr>
+            <tr id='password' class='hide'>
+                <td>
+                    <p>Old password</p>
+                    <p><input id='password_old' type='password' /></p>
+                    <p>New password</p>
+                    <p><input id='password_new' type='password' /></p>
+                    <p><input id='password_submit' type='submit' value='Change password' /></p>
+                </td>
+            </tr>
+            <tr id='list' class='hide'>
+                <td>
+                    <p id='list_content'></p>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <table id='report' class='hide'>
         <tr>

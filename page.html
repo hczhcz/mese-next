@@ -608,7 +608,21 @@
             }
         };
 
+        var showStatus = function (status) {
+            for (var i = 0; i < 16; ++i) { // max = 16
+                if (status & (1 << i)) {
+                    // done
+                    $('#report_players [bind=' + i + ']').addClass('hint_next');
+                } else {
+                    // not done
+                    $('#report_players [bind=' + i + ']').removeClass('hint_next');
+                }
+            }
+        };
+
         socket.on('report_early', function (data) {
+            showStatus(data.status);
+
             showReport('#report_decisions', data.decisions, 'next');
             showReport('#report_data_early', data.data_early, 'next');
         });
@@ -616,6 +630,7 @@
         socket.on('report_player', function (data) {
             initReport(data.game, data.now_period);
 
+            showStatus(data.status);
             showReport('#report_players', data.players, 'now');
 
             if (data.now_period >= 3) {
@@ -672,6 +687,7 @@
         socket.on('report_public', function (data) {
             initReport(data.game, data.now_period);
 
+            showStatus(data.status);
             showReport('#report_players', data.players, 'now');
 
             if (data.now_period >= 3) {

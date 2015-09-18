@@ -19,12 +19,13 @@
             display: none;
         }
 
-        .side {
+        #side {
             position: fixed;
             left: 0;
             top: 0;
             width: 16rem;
             height: 100%;
+            z-index: 2;
 
             background: #303030;
             color: #E0E0E0;
@@ -88,6 +89,7 @@
             position: absolute;
             left: 17rem;
             top: 1rem;
+            z-index: 1;
 
             font-family: monospace;
         }
@@ -138,17 +140,17 @@
             width: 100%;
         }
 
-        .report_div [target=last], #report_hint_last {
+        .report_div [target=last], .hint_last {
             color: gray;
         }
-        .report_div [target=now], #report_hint_now {
+        .report_div [target=now], .hint_now {
         }
-        .report_div [target=next], #report_hint_next {
+        .report_div [target=next], .hint_next {
             color: blue;
         }
     </style>
 
-    <div class='side'>
+    <div id='side'>
         <table id='util'>
             <tr id='user' class='hide'>
                 <td>Login user: <span id='user_name'></span></td>
@@ -346,9 +348,9 @@
                     <tr>
                         <td colspan='2'>
                             <i>
-                                <span id='report_hint_last'>(Last) </span>
-                                <span id='report_hint_now'>This period</span>
-                                <span id='report_hint_next'> (Next)</span>
+                                <span class='hint_last'>(Last) </span>
+                                <span class='hint_now'>This period</span>
+                                <span class='hint_next'> (Next)</span>
                             </i>
                         </td>
                         <td><input id='submit_submit' type='submit' value='Submit' /></td>

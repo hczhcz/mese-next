@@ -379,7 +379,10 @@
         // auto login
         var loginInfo = localStorage.getItem('MESE_login');
         if (loginInfo) {
-            socket.emit('login', JSON.parse(loginInfo));
+            var loginInfoObj = JSON.parse(loginInfo);
+
+            socket.emit('login', loginInfoObj);
+            $('#login_name').val(loginInfoObj.name);
         }
 
         $('#login_name').keypress(function (event) {
@@ -712,6 +715,10 @@
 
             $('#submit').addClass('hide');
             $('#report').removeClass('hide');
+        });
+
+        socket.on('report_status', function (data) {
+            showStatus(data);
         });
 
         // auto refresh

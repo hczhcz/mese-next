@@ -251,6 +251,11 @@ db.init(function () {
                                             'report_player',
                                             result
                                         );
+                                    } else {
+                                        socket.emit(
+                                            'report_status',
+                                            result.status
+                                        );
                                     }
                                 }
                             );
@@ -268,6 +273,11 @@ db.init(function () {
                                         socket.emit(
                                             'report_public',
                                             result
+                                        );
+                                    } else {
+                                        socket.emit(
+                                            'report_status',
+                                            result.status
                                         );
                                     }
                                 }

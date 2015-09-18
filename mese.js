@@ -192,6 +192,7 @@ db.init(function () {
 
                 if (
                     !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
+                    || !util.verifyInt(data.period)
                 ) {
                     return;
                 }
@@ -233,10 +234,12 @@ db.init(function () {
                                     result.game = data.game;
                                     result.players = players;
 
-                                    socket.emit(
-                                        'report_player',
-                                        result
-                                    );
+                                    if (result.now_period !== data.period) { // TODO: simplify
+                                        socket.emit(
+                                            'report_player',
+                                            result
+                                        );
+                                    }
                                 }
                             );
                         } else {
@@ -249,10 +252,12 @@ db.init(function () {
                                     result.game = data.game;
                                     result.players = players;
 
-                                    socket.emit(
-                                        'report_public',
-                                        result
-                                    );
+                                    if (result.now_period !== data.period) { // TODO: simplify
+                                        socket.emit(
+                                            'report_public',
+                                            result
+                                        );
+                                    }
                                 }
                             );
                         }

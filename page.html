@@ -135,9 +135,13 @@
 
         .report_div input[type=number] {
             width: 100%;
+
+            font-family: monospace;
         }
         .report_div input[type=submit] {
             width: 100%;
+
+            font-family: monospace;
         }
 
         .report_div [target=last], .hint_last {
@@ -522,6 +526,7 @@
                                 return function () {
                                     socket.emit('report', {
                                         game: game,
+                                        period: -1, // force reload
                                     });
                                 }
                             } (i))
@@ -530,7 +535,7 @@
             }
 
             $('#list').removeClass('hide');
-            $('#report').addClass('hide');
+            // $('#report').addClass('hide'); // TODO: necessary?
         };
 
         socket.on('subscribe_list', updateList);
@@ -708,6 +713,19 @@
             $('#submit').addClass('hide');
             $('#report').removeClass('hide');
         });
+
+        // auto refresh
+        setInterval(
+            function () {
+                if (!$('#report').hasClass('hide')) {
+                    socket.emit('report', {
+                        game: currentGame,
+                        period: currentPeriod,
+                    });
+                }
+            },
+            30000
+        );
 
         // submit
 

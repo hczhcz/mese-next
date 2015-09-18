@@ -27,6 +27,7 @@
             height: 100%;
             z-index: 2;
 
+            overflow-y: auto;
             background: #303030;
             color: #E0E0E0;
         }
@@ -162,7 +163,7 @@
             <tr id='login'>
                 <td>
                     <p>Name</p>
-                    <p><input id='login_name' type='text' /></p>
+                    <p><input id='login_name' type='text' pattern='^[A-Za-z0-9_ ]+$' /></p>
                     <p>Password</p>
                     <p><input id='login_password' type='password' /></p>
                     <p><input id='login_remember' type='checkbox' checked />Remember</p>
@@ -181,7 +182,7 @@
             <tr id='subscribe' class='hide'>
                 <td>
                     <p>Game</p>
-                    <p><input id='subscribe_game' type='text' /></p>
+                    <p><input id='subscribe_game' type='text' pattern='^[A-Za-z0-9_ ]+$' /></p>
                     <p><input id='subscribe_submit' type='submit' value='Subscribe / Unsubscribe' /></p>
                 </td>
             </tr>
@@ -522,7 +523,7 @@
 
             for (var i in currentList) {
                 if (currentList[i]) {
-                    $('#list_content').append(
+                    $('#list_content').prepend(
                         $('<input type="button" />')
                             .val(i)
                             .click(function (game) {
@@ -585,11 +586,11 @@
             $('#subscribe_game').val(currentGame);
 
             $('#report_title').text(
-                'Period ' + currentPeriod + ' of Game "' + currentGame + '"'
+                'Period ' + (currentPeriod - 1) + ' of Game "' + currentGame + '"'
             );
 
             $('#submit_game').text(currentGame);
-            $('#submit_period').text(currentPeriod + 1);
+            $('#submit_period').text(currentPeriod);
             $('#submit_name').text(currentName);
 
             $('.report_div [target]').addClass('hide');
@@ -686,9 +687,12 @@
                     .attr('min', 0)
                     .attr('max', data.next_settings.limits.rd_limit)
                     .val(data.decisions.rd);
+
+                $('#submit').removeClass('hide');
+            } else {
+                $('#submit').addClass('hide');
             }
 
-            $('#submit').removeClass('hide');
             $('#report').removeClass('hide');
         });
 

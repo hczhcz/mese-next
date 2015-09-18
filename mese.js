@@ -12,6 +12,11 @@ var core = require('./mese.core');
 var game = require('./mese.game');
 var db = require('./mese.db');
 
+process.on('uncaughtException', function (e) {
+    util.log('uncaught exception');
+    util.log(e.stack || e);
+});
+
 var page = fs.readFileSync('./page.html');
 
 var server = http.createServer(function (req, res) {
@@ -316,7 +321,7 @@ db.init(function () {
                         return;
                     }
 
-                    var player;
+                    var player = undefined;
 
                     for (var i in players) {
                         if (players[i] === authName) {

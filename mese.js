@@ -53,8 +53,8 @@ db.init(function () {
         d.add(socket);
 
         d.run(function () {
-            var authName;
-            var authStorage;
+            var authName = undefined;
+            var authStorage = undefined;
 
             socket.on('login', function (data) {
                 // args: name, password
@@ -229,7 +229,7 @@ db.init(function () {
                         return;
                     }
 
-                    var player;
+                    var player = undefined;
 
                     for (var i in players) {
                         if (players[i] === authName) {

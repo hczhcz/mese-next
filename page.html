@@ -377,15 +377,6 @@
 
         var currentName = undefined;
 
-        // auto login
-        var loginInfo = localStorage.getItem('MESE_login');
-        if (loginInfo) {
-            var loginInfoObj = JSON.parse(loginInfo);
-
-            socket.emit('login', loginInfoObj);
-            $('#login_name').val(loginInfoObj.name);
-        }
-
         $('#login_name').keypress(function (event) {
             if (event.which == 13) {
                 $('#login_password').focus();
@@ -431,9 +422,15 @@
             $('#password').removeClass('hide');
             $('#subscribe').removeClass('hide');
             $('#list').addClass('hide');
-            $('#report').addClass('hide');
 
             socket.emit('list');
+
+            if (currentGame) {
+                socket.emit('report', {
+                    game: currentGame, // notice: see report utils
+                    period: -1, // force reload
+                });
+            }
         };
 
         socket.on('login_new', function (data) {
@@ -448,6 +445,15 @@
             // TODO
             console.log('Wrong password!');
         });
+
+        // auto login
+        var loginInfo = localStorage.getItem('MESE_login');
+        if (loginInfo) {
+            var loginInfoObj = JSON.parse(loginInfo);
+
+            socket.emit('login', loginInfoObj);
+            $('#login_name').val(loginInfoObj.name);
+        }
 
         // password
 
@@ -539,7 +545,6 @@
             }
 
             $('#list').removeClass('hide');
-            // $('#report').addClass('hide'); // TODO: necessary?
         };
 
         socket.on('subscribe_list', updateList);
@@ -718,12 +723,22 @@
             }
 
             $('#submit').addClass('hide');
+
             $('#report').removeClass('hide');
         });
 
         socket.on('report_status', function (data) {
             showStatus(data);
         });
+
+        // load from url hash
+        var urlHash = window.location.hash.slice(1);
+        if (urlHash) {
+            socket.emit('report', {
+                game: urlHash,
+                period: -1, // force reload
+            });
+        }
 
         // auto refresh
         setInterval(

@@ -17,6 +17,7 @@ module.exports.exec = function (args, input, callback, fail) {
     proc.stdout.on('data', function (data) {
         output.push(data);
     });
+
     proc.on('close', function (status) {
         if (proc.status) {
             fail(status, Buffer.concat(output));

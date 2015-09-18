@@ -83,8 +83,8 @@ module.exports.action = function (storage) {
             }
         };
 
-        storage.staticGet('data', function (data) {
-            handleDecision(data.buffer);
+        storage.staticGet('data', function (dataObj) {
+            handleDecision(dataObj.buffer);
         });
     });
 };

@@ -146,7 +146,7 @@ db.init(function () {
 
                 if (
                     !authName
-                    || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
+                    || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
                     || !util.verifyBool(data.enabled)
                 ) {
                     return;
@@ -191,7 +191,7 @@ db.init(function () {
                 // args: game
 
                 if (
-                    !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
+                    !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
                 ) {
                     return;
                 }
@@ -202,8 +202,7 @@ db.init(function () {
                     util.log('get report ' + socket.conn.remoteAddress + ' ' + data.game);
                 }
 
-                var gameName = data.game;
-                var gameStorage = db.access('games', gameName);
+                var gameStorage = db.access('games', data.game);
 
                 gameStorage.staticGet('players', function (players) {
                     if (players === undefined) {
@@ -220,8 +219,8 @@ db.init(function () {
                         }
                     }
 
-                    gameStorage.staticGet('data', function (data) {
-                        var gameData = data.buffer;
+                    gameStorage.staticGet('data', function (dataObj) {
+                        var gameData = dataObj.buffer;
 
                         if (player !== undefined) {
                             // as player
@@ -231,7 +230,7 @@ db.init(function () {
                                 player,
                                 function (report) {
                                     var result = eval('(' + report + ')');
-                                    result.game = gameName;
+                                    result.game = data.game;
                                     result.players = players;
 
                                     socket.emit(
@@ -247,7 +246,7 @@ db.init(function () {
                                 gameData,
                                 function (report) {
                                     var result = eval('(' + report + ')');
-                                    result.game = gameName;
+                                    result.game = data.game;
                                     result.players = players;
 
                                     socket.emit(
@@ -266,7 +265,7 @@ db.init(function () {
 
                 if (
                     !authName
-                    || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game) // TODO
+                    || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
                     || !util.verifyInt(data.period)
                     || !util.verifyNum(data.price)
                     || !util.verifyInt(data.prod)

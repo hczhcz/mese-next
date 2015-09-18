@@ -33,6 +33,8 @@ var server = http.createServer(function (req, res) {
     });
 }).listen(port);
 
+util.log('server init ' + port)
+
 db.init(function () {
     io(server).on('connection', function (socket) {
         util.log('socket ' + socket.conn.remoteAddress);
@@ -56,6 +58,8 @@ db.init(function () {
                     !util.verify(/^[A-Za-z0-9_ ]+$/, data.name)
                     || !util.verify(/^.+$/, data.password)
                 ) {
+                    util.log('bad socket request');
+
                     return;
                 }
 
@@ -97,6 +101,8 @@ db.init(function () {
                     || !util.verify(/^.+$/, data.password)
                     || !util.verify(/^.+$/, data.newPassword)
                 ) {
+                    util.log('bad socket request');
+
                     return;
                 }
 
@@ -124,6 +130,8 @@ db.init(function () {
                 if (
                     !authName
                 ) {
+                    util.log('bad socket request');
+
                     return;
                 }
 
@@ -149,6 +157,8 @@ db.init(function () {
                     || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
                     || !util.verifyBool(data.enabled)
                 ) {
+                    util.log('bad socket request');
+
                     return;
                 }
 
@@ -194,6 +204,8 @@ db.init(function () {
                     !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
                     || !util.verifyInt(data.period)
                 ) {
+                    util.log('bad socket request');
+
                     return;
                 }
 
@@ -278,6 +290,8 @@ db.init(function () {
                     || !util.verifyNum(data.ci)
                     || !util.verifyNum(data.rd)
                 ) {
+                    util.log('bad socket request');
+
                     return;
                 }
 
@@ -333,41 +347,4 @@ db.init(function () {
             });
         });
     });
-
-    var initGame = function (name, players) {
-        var size = 0;
-
-        var doAlloc = function (gameData) {
-            if (size >= 7) {
-                var gameStorage = db.access('games', name);
-
-                gameStorage.staticSet(
-                    'data', gameData,
-                    function (doc) {
-                        // nothing
-                    }
-                );
-                gameStorage.staticSet(
-                    'players', players,
-                    function (doc) {
-                        // nothing
-                    }
-                );
-            } else {
-                size += 1;
-
-                core.alloc(gameData, [], doAlloc);
-            }
-        };
-
-        core.init(players.length, 'modern', [], doAlloc);
-    };
-
-    // initGame(
-    //     'test',
-    //     [
-    //         'test0001', 'test0002', 'test0003', 'test0004',
-    //         'test0005', 'test0006', 'test0007', 'test0008',
-    //     ]
-    // );
 });

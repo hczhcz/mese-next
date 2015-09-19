@@ -134,17 +134,6 @@
             display: none;
         }
 
-        .report_div input[type=number] {
-            width: 100%;
-
-            font-family: monospace;
-        }
-        .report_div input[type=submit] {
-            width: 100%;
-
-            font-family: monospace;
-        }
-
         .report_div [target=last], .hint_last {
             color: gray;
         }
@@ -152,6 +141,42 @@
         }
         .report_div [target=next], .hint_next {
             color: blue;
+        }
+
+        /* submit */
+
+        #submit input[type=number] {
+            width: 100%;
+
+            font-family: monospace;
+        }
+        #submit input[type=submit] {
+            width: 100%;
+
+            font-family: monospace;
+        }
+
+        /* message */
+
+        #message {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            padding: 0.25em 1em;
+            z-index: 3;
+            border-radius: 0.25em;
+
+            background: rgba(48, 48, 48, 0.5);
+            color: #E0E0E0;
+            font-size: 400%;
+            text-shadow: 0.05em 0.05em 0.05em #303030;
+        }
+
+        #message p {
+            margin: 0;
+            padding: 0;
         }
     </style>
 
@@ -365,6 +390,8 @@
         </tr>
     </table>
 
+    <div id='message' style='display: none'></div>
+
     <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>
 
@@ -372,6 +399,36 @@
         'use strict';
 
         var socket = io(window.location.origin);
+
+        // message
+
+        var showMessage = function () {
+            $('#message')
+                .stop()
+                .clearQueue()
+                .attr('style', '');
+        };
+
+        var hideMessage = function () {
+            $('#message')
+                .delay(1000)
+                .fadeOut(2000, function () {
+                    $('#message').empty();
+                });
+        };
+
+        var message = function (message) {
+            $('#message').append(
+                $('<p />').text(message)
+            );
+
+            showMessage();
+            hideMessage();
+        };
+
+        $('#message').mouseenter(showMessage);
+        $('#message').mousemove(showMessage);
+        $('#message').mouseleave(hideMessage);
 
         // login
 

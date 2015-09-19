@@ -335,10 +335,20 @@ db.init(function () {
                                 gameData,
                                 player,
                                 function (report) {
-                                    socket.emit(
-                                        'report_early',
-                                        eval('(' + report + ')')
-                                    );
+                                    // socket.emit(
+                                    //     'report_early',
+                                    //     eval('(' + report + ')')
+                                    // );
+                                    try { // TODO: unexpected error
+                                        socket.emit(
+                                            'report_early',
+                                            eval('(' + report + ')')
+                                        );
+                                    } catch (e) {
+                                        console.log(report);
+
+                                        throw e;
+                                    }
                                 }
                             );
                         };

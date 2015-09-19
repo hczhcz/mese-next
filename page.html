@@ -19,6 +19,33 @@
             display: none;
         }
 
+        /* message */
+
+        #message {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            padding: 0.25em 1em;
+            z-index: 3;
+            border-radius: 0.25em;
+
+            background: rgba(48, 48, 48, 0.5);
+            color: #E0E0E0;
+            font-size: 400%;
+            text-shadow: 0.05em 0.05em 0.05em #303030;
+        }
+
+        #message p {
+            margin: 0;
+            padding: 0;
+
+            white-space: nowrap;
+        }
+
+        /* side */
+
         #side {
             position: fixed;
             left: 0;
@@ -31,8 +58,6 @@
             background: #303030;
             color: #E0E0E0;
         }
-
-        /* util */
 
         #util {
             position: absolute;
@@ -155,32 +180,9 @@
 
             font-family: monospace;
         }
-
-        /* message */
-
-        #message {
-            position: fixed;
-            left: 50%;
-            top: 50%;
-            -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-            padding: 0.25em 1em;
-            z-index: 3;
-            border-radius: 0.25em;
-
-            background: rgba(48, 48, 48, 0.5);
-            color: #E0E0E0;
-            font-size: 400%;
-            text-shadow: 0.05em 0.05em 0.05em #303030;
-        }
-
-        #message p {
-            margin: 0;
-            padding: 0;
-
-            white-space: nowrap;
-        }
     </style>
+
+    <div id='message' style='display: none'></div>
 
     <div id='side'>
         <table id='util'>
@@ -391,8 +393,6 @@
             </td>
         </tr>
     </table>
-
-    <div id='message' style='display: none'></div>
 
     <script src='http://code.jquery.com/jquery-1.11.3.min.js'></script>
     <script src='/socket.io/socket.io.js'></script>

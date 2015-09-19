@@ -413,7 +413,9 @@
 
         var hideMessage = function () {
             $('#message')
-                .delay(1000)
+                .stop()
+                .clearQueue()
+                .delay(2000)
                 .fadeOut(2000, function () {
                     $('#message').empty();
                 });
@@ -650,6 +652,13 @@
         });
 
         var initReport = function (game, period) {
+            if (game !== currentGame) {
+                message('Game: ' + game);
+            }
+            if (period !== currentPeriod) {
+                message('Period: ' + period);
+            }
+
             currentGame = game;
             currentPeriod = period;
 

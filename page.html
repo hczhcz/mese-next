@@ -177,6 +177,8 @@
         #message p {
             margin: 0;
             padding: 0;
+
+            white-space: nowrap;
         }
     </style>
 
@@ -417,6 +419,11 @@
                 });
         };
 
+        var removeMessage = function () {
+            $('#message')
+                .attr('style', 'display: none');
+        };
+
         var message = function (message) {
             $('#message').append(
                 $('<p />').text(message)
@@ -426,9 +433,9 @@
             hideMessage();
         };
 
-        $('#message').mouseenter(showMessage);
+        $('#message').hover(showMessage, hideMessage);
         $('#message').mousemove(showMessage);
-        $('#message').mouseleave(hideMessage);
+        $('#message').click(removeMessage);
 
         // login
 
@@ -492,15 +499,18 @@
 
         socket.on('login_new', function (data) {
             loginDone(data.name, true);
+
+            message('New user: ' + data.name);
         });
 
         socket.on('login_ok', function (data) {
             loginDone(data.name, false);
+
+            message('Login: ' + data.name);
         });
 
         socket.on('login_fail', function (data) {
-            // TODO
-            console.log('Wrong password!');
+            message('Wrong password');
         });
 
         // auto login
@@ -551,13 +561,11 @@
         });
 
         socket.on('password_ok', function (data) {
-            // TODO
-            console.log('Password changed!');
+            message('Password changed');
         });
 
         socket.on('password_fail', function (data) {
-            // TODO
-            console.log('Wrong password!');
+            message('Wrong password');
         });
 
         // subscribe & list
@@ -825,18 +833,15 @@
         });
 
         socket.on('submit_ok', function (data) {
-            // TODO
-            console.log('Submit ok!');
+            message('Submit ok');
         });
 
         socket.on('submit_decline', function (data) {
-            // TODO
-            console.log('Submit decline!');
+            message('Submit declined');
         });
 
         socket.on('submit_fail', function (data) {
-            // TODO
-            console.log('Submit fail!');
+            message('Submit fail');
         });
 </script>
 </body>

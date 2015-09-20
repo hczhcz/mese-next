@@ -427,6 +427,21 @@
                 .stop()
                 .clearQueue()
                 .attr('style', '');
+
+            // IE8 workaround
+            if (
+                $('#message').position().left * 2 + 1 >= $(window).width()
+                && $('#message').position().top * 2 + 1 >= $(window).height()
+            ) {
+                $('#message').css(
+                    'margin-left',
+                    (-$('#message').outerWidth(true) / 2) + 'px'
+                );
+                $('#message').css(
+                    'margin-top',
+                    (-$('#message').outerHeight(true) / 2) + 'px'
+                );
+            }
         };
 
         var hideMessage = function () {
@@ -451,21 +466,6 @@
 
             showMessage();
             hideMessage();
-
-            // IE8 workaround
-            if (
-                $('#message').position().left * 2 + 1 >= $(window).width()
-                && $('#message').position().top * 2 + 1 >= $(window).height()
-            ) {
-                $('#message').css(
-                    'margin-left',
-                    (-$('#message').outerWidth(true) / 2) + 'px'
-                );
-                $('#message').css(
-                    'margin-top',
-                    (-$('#message').outerHeight(true) / 2) + 'px'
-                );
-            }
         };
 
         $('#message').hover(showMessage, hideMessage);
@@ -781,7 +781,7 @@
                     }
 
                     // path-based bind
-                    showReport(head + ' [bind=' + i + ']', data[i], tail);
+                    showReport(head + ' [bind=' + i + ']', data[i], tail, xbind);
                 }
             }
         };

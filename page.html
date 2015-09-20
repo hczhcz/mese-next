@@ -455,6 +455,45 @@
         $('#message').mousemove(showMessage);
         $('#message').click(removeMessage);
 
+        // side
+
+        var sideEnabled = true;
+
+        var showSide = function () {
+            if (!sideEnabled) {
+                sideEnabled = true;
+
+                $('#side')
+                    .css('overflow-y', 'auto')
+                    .stop()
+                    .clearQueue()
+                    .animate({left: '0'});
+                $('#report')
+                    .stop()
+                    .clearQueue()
+                    .animate({left: '17rem'});
+            }
+        };
+
+        var hideSide = function () {
+            if (sideEnabled && $('#side').position().left === 0) {
+                sideEnabled = false;
+
+                $('#side')
+                    .css('overflow-y', 'hidden')
+                    .stop()
+                    .clearQueue()
+                    .animate({left: '-15.5rem'}, 2000);
+                $('#report')
+                    .stop()
+                    .clearQueue()
+                    .animate({left: '1.5rem'}, 2000);
+            }
+        };
+
+        $('#side').click(showSide);
+        $('#side').dblclick(hideSide);
+
         // login
 
         var currentName = undefined;
@@ -686,6 +725,7 @@
 
         var initReport = function (game, period) {
             if (game !== currentGame) {
+                hideSide();
                 message('Game: ' + game);
             }
             if (period !== currentPeriod) {
@@ -892,6 +932,6 @@
         socket.on('submit_fail', function (data) {
             message('Submit fail');
         });
-</script>
+    </script>
 </body>
 </html>

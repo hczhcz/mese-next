@@ -795,10 +795,12 @@
                     .attr('max', data.next_settings.limits.rd_limit)
                     .val(data.decisions.rd);
 
-                $('#submit').removeClass('hide');
+                $('#submit input').attr('disabled', false);
             } else {
-                $('#submit').addClass('hide');
+                $('#submit input').attr('disabled', true);
             }
+
+            $('#submit').removeClass('hide');
 
             $('#report').removeClass('hide');
         });

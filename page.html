@@ -20,6 +20,17 @@
             display: none;
         }
 
+        .box {
+            border-radius: 0.25em;
+
+            background: #303030;
+            background: rgba(48, 48, 48, 0.5);
+            color: #E0E0E0;
+            font-size: 400%;
+            text-align: center;
+            text-shadow: 0.05em 0.05em 0.05em #303030;
+        }
+
         /* message */
 
         #message {
@@ -30,13 +41,6 @@
             transform: translate(-50%, -50%);
             padding: 0.25em 1em;
             z-index: 3;
-            border-radius: 0.25em;
-
-            background: #303030;
-            background: rgba(48, 48, 48, 0.5);
-            color: #E0E0E0;
-            font-size: 400%;
-            text-shadow: 0.05em 0.05em 0.05em #303030;
         }
 
         #message p {
@@ -64,12 +68,9 @@
 
         #util {
             position: absolute;
-            left: 1em;
-            left: 1rem;
-            top: 1em;
-            top: 1rem;
-            width: 14em;
-            width: 14rem;
+            width: 100%;
+            padding: 1em;
+            padding: 1rem;
             border-spacing: 0;
 
             table-layout: fixed;
@@ -197,7 +198,7 @@
         }
     </style>
 
-    <div id='message' style='display: none'></div>
+    <div id='message' class='box' style='display: none'></div>
 
     <div id='side'>
         <table id='util'>

@@ -483,7 +483,9 @@
         var loginDone = function (name, reg) {
             currentName = name;
 
-            $('#user_name').text(reg ? currentName + ' (new user)' : currentName);
+            $('#user_name').text(
+                reg ? currentName + ' (new user)' : currentName
+            );
 
             $('#user').removeClass('hide');
             $('#password').removeClass('hide');
@@ -637,19 +639,29 @@
             .append('<span target="next"> (<span></span>)</span>');
 
         $('#submit_price').change(function () {
-            $('#submit_price').val(0.01 * Math.round(100 * $('#submit_price').val()));
+            $('#submit_price').val(
+                0.01 * Math.round(100 * $('#submit_price').val())
+            );
         });
         $('#submit_prod').change(function () {
-            $('#submit_prod').val(Math.round($('#submit_prod').val()));
+            $('#submit_prod').val(
+                Math.round($('#submit_prod').val())
+            );
         });
         $('#submit_mk').change(function () {
-            $('#submit_mk').val(0.01 * Math.round(100 * $('#submit_mk').val()));
+            $('#submit_mk').val(
+                0.01 * Math.round(100 * $('#submit_mk').val())
+            );
         });
         $('#submit_ci').change(function () {
-            $('#submit_ci').val(0.01 * Math.round(100 * $('#submit_ci').val()));
+            $('#submit_ci').val(
+                0.01 * Math.round(100 * $('#submit_ci').val())
+            );
         });
         $('#submit_rd').change(function () {
-            $('#submit_rd').val(0.01 * Math.round(100 * $('#submit_rd').val()));
+            $('#submit_rd').val(
+                0.01 * Math.round(100 * $('#submit_rd').val())
+            );
         });
 
         var initReport = function (game, period) {

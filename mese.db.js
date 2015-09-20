@@ -9,17 +9,20 @@ var memStorage = {
 };
 
 module.exports.init = function (callback) {
-    mongodb.connect('mongodb://localhost/mese', function (err, db) {
-        if (err) {
-            throw err;
-        } else {
-            dbStorage = {
-                users: db.collection('users'),
-                games: db.collection('games'),
-            };
-            callback();
+    mongodb.connect(
+        'mongodb://localhost/mese',
+        function (err, db) {
+            if (err) {
+                throw err;
+            } else {
+                dbStorage = {
+                    users: db.collection('users'),
+                    games: db.collection('games'),
+                };
+                callback();
+            }
         }
-    });
+    );
 };
 
 module.exports.access = function (lv1, lv2) {

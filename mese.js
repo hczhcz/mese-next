@@ -38,7 +38,7 @@ var server = http.createServer(function (req, res) {
     });
 }).listen(port);
 
-util.log('server init ' + port)
+util.log('server init ' + port);
 
 db.init(function () {
     io(server).on('connection', function (socket) {

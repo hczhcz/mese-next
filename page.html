@@ -150,6 +150,8 @@
         }
 
         .report_div tr>* {
+            vertical-align: baseline;
+
             text-align: right;
         }
         .report_div tr>:first-child {
@@ -175,6 +177,9 @@
             width: 100%;
 
             font-family: monospace;
+        }
+        #submit_prod {
+            width: 60% !important;
         }
         #submit input[type=submit] {
             width: 100%;
@@ -363,7 +368,7 @@
                     <tr>
                         <td>Production</td>
                         <td bind='prod'></td>
-                        <td><input id='submit_prod' type='number' step='any' /></td>
+                        <td><span id='submit_prod_rate'></span> % <input id='submit_prod' type='number' step='any' /></td>
                     </tr>
                     <tr>
                         <td>Marketing</td>
@@ -647,6 +652,11 @@
             $('#submit_prod').val(
                 Math.round($('#submit_prod').val())
             );
+            $('#submit_prod_rate').text(
+                Math.round(
+                    100 * $('#submit_prod').val() / $('#submit_prod').attr('max')
+                )
+            );
         });
         $('#submit_mk').change(function () {
             $('#submit_mk').val(
@@ -767,6 +777,11 @@
                             * data.data_early.production.prod_rate
                         )
                     );
+                $('#submit_prod_rate').text(
+                    Math.round(
+                        100 * data.data_early.production.prod_rate
+                    )
+                );
                 $('#submit_mk')
                     .attr('min', 0)
                     .attr('max', data.next_settings.limits.mk_limit)

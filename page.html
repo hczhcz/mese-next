@@ -26,9 +26,9 @@
             background: #303030;
             background: rgba(48, 48, 48, 0.5);
             color: #E0E0E0;
-            font-size: 400%;
             text-align: center;
             text-shadow: 0.05em 0.05em 0.05em #303030;
+            font-size: 400%;
         }
 
         /* message */
@@ -38,6 +38,8 @@
             left: 50%;
             top: 50%;
             -ms-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
             padding: 0.25em 1em;
             z-index: 3;
@@ -127,6 +129,7 @@
             z-index: 1;
 
             font-family: monospace;
+            font-size: 75%;
         }
 
         #report h2 {
@@ -153,7 +156,6 @@
             width: 100%;
 
             table-layout: fixed;
-            font-size: 75%;
         }
         .report_list_div table {
             table-layout: auto !important;
@@ -449,6 +451,21 @@
 
             showMessage();
             hideMessage();
+
+            // IE8 workaround
+            if (
+                $('#message').position().left * 2 + 1 >= $(window).width()
+                && $('#message').position().top * 2 + 1 >= $(window).height()
+            ) {
+                $('#message').css(
+                    'margin-left',
+                    (-$('#message').outerWidth(true) / 2) + 'px'
+                );
+                $('#message').css(
+                    'margin-top',
+                    (-$('#message').outerHeight(true) / 2) + 'px'
+                );
+            }
         };
 
         $('#message').hover(showMessage, hideMessage);
@@ -476,7 +493,7 @@
         };
 
         var hideSide = function () {
-            if (sideEnabled && $('#side').position().left === 0) {
+            if (sideEnabled && $('#side').position().left == 0) {
                 sideEnabled = false;
 
                 $('#side')

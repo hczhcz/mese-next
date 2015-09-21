@@ -68,7 +68,13 @@ var showSide = function () {
             .css('overflow-y', 'auto')
             .clearQueue()
             .stop()
-            .animate({left: '0'});
+            .animate({left: '0rem'}, function () {
+                // IE8 workaround
+                if ($('#side').position().left != 0) {
+                    $('#side').css('left', '0');
+                    $('#report').css('left', '16em');
+                }
+            });
         $('#report')
             .clearQueue()
             .stop()
@@ -84,7 +90,13 @@ var hideSide = function () {
             .css('overflow-y', 'hidden')
             .clearQueue()
             .stop()
-            .animate({left: '-15.5rem'}, 2000);
+            .animate({left: '-15.5rem'}, 2000, function () {
+                // IE8 workaround
+                if ($('#side').position().left == 0) {
+                    $('#side').css('left', '-15.5em');
+                    $('#report').css('left', '0.5em');
+                }
+            });
         $('#report')
             .clearQueue()
             .stop()

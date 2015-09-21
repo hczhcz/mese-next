@@ -461,12 +461,12 @@
         };
 
         var message = function (message) {
+            showMessage();
+            hideMessage();
+
             $('#message').append(
                 $('<p />').text(message)
             );
-
-            showMessage();
-            hideMessage();
         };
 
         $('#message').hover(showMessage, hideMessage);
@@ -781,8 +781,8 @@
             } else if (typeof data == 'object') {
                 for (var i in data) {
                     // top-level bind
-                    if (!xbind) {
-                        showReport($('.report_div [xbind=' + i + ']'), data[i], tail, true);
+                    if (xbind && data[i] instanceof Array /* notice: optimization */) {
+                        showReport($('.report_div [xbind=' + i + ']'), data[i], tail);
                     }
 
                     // path-based bind
@@ -820,18 +820,18 @@
                 // showReport($('#report_decisions'), data.last_decisions, 'last');
                 // showReport($('#report_data_early'), data.last_data_early, 'last');
                 // showReport($('#report_data'), data.last_data, 'last');
-                showReport($('#report_decisions'), data.last_data_public.decisions, 'last');
+                showReport($('#report_decisions'), data.last_data_public.decisions, 'last', true);
                 showReport($('#report_data_early'), data.last_data_public.data_early, 'last');
-                showReport($('#report_data'), data.last_data_public.data, 'last');
+                showReport($('#report_data'), data.last_data_public.data, 'last', true);
             }
 
             showReport($('#report_settings'), data.settings, 'now');
             showReport($('#report_decisions'), data.decisions, 'now');
             showReport($('#report_data_early'), data.data_early, 'now');
             showReport($('#report_data'), data.data, 'now');
-            showReport($('#report_decisions'), data.data_public.decisions, 'now');
+            showReport($('#report_decisions'), data.data_public.decisions, 'now', true);
             showReport($('#report_data_early'), data.data_public.data_early, 'now');
-            showReport($('#report_data'), data.data_public.data, 'now');
+            showReport($('#report_data'), data.data_public.data, 'now', true);
 
             if (data.next_settings) {
                 showReport($('#report_settings'), data.next_settings, 'next');
@@ -884,15 +884,15 @@
             showReport($('#report_players'), data.players, 'now');
 
             if (data.now_period >= 3) {
-                showReport($('#report_decisions'), data.last_data_public.decisions, 'last');
+                showReport($('#report_decisions'), data.last_data_public.decisions, 'last', true);
                 showReport($('#report_data_early'), data.last_data_public.data_early, 'last');
-                showReport($('#report_data'), data.last_data_public.data, 'last');
+                showReport($('#report_data'), data.last_data_public.data, 'last', true);
             }
 
             showReport($('#report_settings'), data.settings, 'now');
-            showReport($('#report_decisions'), data.data_public.decisions, 'now');
+            showReport($('#report_decisions'), data.data_public.decisions, 'now', true);
             showReport($('#report_data_early'), data.data_public.data_early, 'now');
-            showReport($('#report_data'), data.data_public.data, 'now');
+            showReport($('#report_data'), data.data_public.data, 'now', true);
 
             if (data.next_settings) {
                 showReport($('#report_settings'), data.next_settings, 'next');

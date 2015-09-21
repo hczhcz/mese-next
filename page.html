@@ -122,10 +122,11 @@
 
         #report {
             position: absolute;
-            left: 17em;
-            left: 17rem;
-            top: 1em;
-            top: 1rem;
+            left: 16em;
+            left: 16rem;
+            top: 0;
+            padding: 1em;
+            padding: 1rem;
             z-index: 1;
 
             font-family: monospace;
@@ -260,7 +261,7 @@
                 </table>
                 <table bind='balance'>
                     <tr><th>Balance</th><th>You</th><th>Average</th></tr>
-                    <tr class='report_verbose'><td>Deprecation</td><td bind='deprecation'></td></tr>
+                    <tr><td>Deprecation</td><td bind='deprecation'></td></tr>
                     <tr><td>Capital</td><td bind='capital'></td><td bind='average_capital'></td></tr>
                     <tr><td>Size</td><td bind='size'></td><td bind='average_size'></td></tr>
                     <tr><td>Spending</td><td bind='spending'></td></tr>
@@ -294,7 +295,7 @@
 
                     <tr><td>Sales</td><td bind='sales'></td><td bind='average_sales'></td></tr>
                     <tr class='report_verbose'><td>Inventory charge</td><td bind='inventory_charge'></td></tr>
-                    <tr class='report_verbose'><td>Cost before tax</td><td bind='cost_before_tax'></td><td bind='average_cost_before_tax'></td></tr>
+                    <tr><td>Cost before tax</td><td bind='cost_before_tax'></td><td bind='average_cost_before_tax'></td></tr>
                     <tr><td>Profit before tax</td><td bind='profit_before_tax'></td><td bind='average_profit_before_tax'></td></tr>
                     <tr class='report_verbose'><td>Tax charge</td><td bind='tax_charge'></td><td bind='average_tax_charge'></td></tr>
                     <tr><td>Profit</td><td bind='profit'></td><td bind='average_profit'></td></tr>
@@ -319,7 +320,7 @@
                         <tr xbind='price'><td>Price</td></tr>
                         <tr xbind='sold'><td>Sold</td></tr>
                         <tr xbind='sales'><td>Sales</td></tr>
-                        <tr class='report_verbose' xbind='cost_before_tax'><td>Cost before tax</td></tr>
+                        <tr xbind='cost_before_tax'><td>Cost before tax</td></tr>
                         <tr class='report_verbose' xbind='profit_before_tax'><td>Profit before tax</td></tr>
                         <tr class='report_verbose' xbind='tax_charge'><td>Tax charge</td></tr>
                         <tr xbind='profit'><td>Profit</td></tr>
@@ -488,7 +489,7 @@
                 $('#report')
                     .stop()
                     .clearQueue()
-                    .animate({left: '17rem'});
+                    .animate({left: '16rem'});
             }
         };
 
@@ -504,7 +505,7 @@
                 $('#report')
                     .stop()
                     .clearQueue()
-                    .animate({left: '1.5rem'}, 2000);
+                    .animate({left: '0.5rem'}, 2000);
             }
         };
 

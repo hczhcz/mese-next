@@ -425,8 +425,8 @@
 
         var showMessage = function () {
             $('#message')
-                .stop()
                 .clearQueue()
+                .stop()
                 .attr('style', '');
 
             // IE8 workaround
@@ -447,8 +447,8 @@
 
         var hideMessage = function () {
             $('#message')
-                .stop()
                 .clearQueue()
+                .stop()
                 .delay(2000)
                 .fadeOut(2000, function () {
                     $('#message').empty();
@@ -457,16 +457,17 @@
 
         var removeMessage = function () {
             $('#message')
-                .attr('style', 'display: none');
+                .attr('style', 'display: none')
+                .empty();
         };
 
         var message = function (message) {
-            showMessage();
-            hideMessage();
-
             $('#message').append(
                 $('<p />').text(message)
             );
+
+            showMessage();
+            hideMessage();
         };
 
         $('#message').hover(showMessage, hideMessage);
@@ -483,12 +484,12 @@
 
                 $('#side')
                     .css('overflow-y', 'auto')
-                    .stop()
                     .clearQueue()
+                    .stop()
                     .animate({left: '0'});
                 $('#report')
-                    .stop()
                     .clearQueue()
+                    .stop()
                     .animate({left: '16rem'});
             }
         };
@@ -499,12 +500,12 @@
 
                 $('#side')
                     .css('overflow-y', 'hidden')
-                    .stop()
                     .clearQueue()
+                    .stop()
                     .animate({left: '-15.5rem'}, 2000);
                 $('#report')
-                    .stop()
                     .clearQueue()
+                    .stop()
                     .animate({left: '0.5rem'}, 2000);
             }
         };

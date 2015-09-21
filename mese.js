@@ -17,8 +17,6 @@ process.on('uncaughtException', function (e) {
     util.log(e.stack || e);
 });
 
-var page = fs.readFileSync('./page.html');
-
 var server = http.createServer(function (req, res) {
     var d = domain.create();
 
@@ -30,11 +28,24 @@ var server = http.createServer(function (req, res) {
     d.add(res);
 
     d.run(function () {
-        util.log('web ' + req.connection.remoteAddress);
+        util.log('web ' + req.connection.remoteAddress + ' ' + req.url);
 
-        res.writeHead(200);
-        // res.end(page); // TODO
-        res.end(fs.readFileSync('./page.html')); // for debug
+        if (req.url == '/jquery.min.js') {
+            res.writeHead(200);
+            res.end(fs.readFileSync('./res/jquery.min.js'));
+        } else if (req.url == '/socket.io.min.js') {
+            res.writeHead(200);
+            res.end(fs.readFileSync('./res/socket.io.min.js'));
+        } else if (req.url == '/page.js') {
+            res.writeHead(200);
+            res.end(fs.readFileSync('./res/page.js'));
+        } else if (req.url == '/') {
+            res.writeHead(200);
+            res.end(fs.readFileSync('./res/page.html'));
+        } else {
+            res.writeHead(404);
+            res.end('Not found');
+        }
     });
 }).listen(port);
 

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MESE-Next</title>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=0.75' />
+</head>
+<body>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F0F0F0;
+            color: #202020;
+            font-family: sans-serif;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .box {
+            border-radius: 0.25em;
+
+            background: #303030;
+            background: rgba(48, 48, 48, 0.5);
+            color: #E0E0E0;
+            text-align: center;
+            text-shadow: 0.05em 0.05em 0.05em #303030;
+            font-size: 400%;
+        }
+
+        /* message */
+
+        #message {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            -ms-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            padding: 0.25em 1em;
+            z-index: 3;
+        }
+
+        #message p {
+            margin: 0;
+            padding: 0;
+
+            white-space: nowrap;
+        }
+
+        /* side */
+
+        #side {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 16em;
+            width: 16rem;
+            height: 100%;
+            z-index: 2;
+
+            overflow-y: auto;
+            background: #303030;
+            color: #E0E0E0;
+        }
+
+        #util {
+            position: absolute;
+            width: 100%;
+            padding: 1em;
+            padding: 1rem;
+            border-spacing: 0;
+
+            table-layout: fixed;
+        }
+
+        #util * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #util td {
+            padding: 0.25em 0;
+        }
+
+        #util p {
+            padding: 0.25em 0;
+        }
+
+        #util input[type=text], #util input[type=password] {
+            width: 100%;
+            padding: 0.25em;
+            border: 0;
+
+            background: #E0E0E0;
+        }
+        #util input[type=checkbox] {
+            margin-right: 0.25em;
+            border: 0;
+        }
+        #util input[type=submit] {
+            width: 100%;
+            padding: 0.25em;
+            border: 0;
+
+            background: #A0A0A0;
+        }
+        #util input[type=button] {
+            margin-right: 0.5em;
+            margin-bottom: 0.5em;
+            padding: 0.25em 1em;
+            border: 0;
+
+            background: #C0C0C0;
+        }
+
+        /* report */
+
+        #report {
+            position: absolute;
+            left: 21.333em;
+            left: 16rem;
+            top: 0;
+            padding: 1em;
+            padding: 1rem;
+            z-index: 1;
+
+            font-family: monospace;
+            font-size: 75%;
+        }
+
+        #report h2 {
+            margin: 0.25em 0;
+        }
+        #report h3 {
+            margin: 0.5em 0;
+        }
+
+        .report_div {
+            vertical-align: top;
+            width: 37.333em;
+            width: 28rem;
+        }
+        .report_list_div {
+            width: 74.666em;
+            width: 56rem;
+
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .report_div table {
+            width: 100%;
+
+            table-layout: fixed;
+        }
+        .report_list_div table {
+            table-layout: auto !important;
+        }
+
+        .report_div tr>* {
+            vertical-align: baseline;
+
+            text-align: right;
+        }
+        .report_div tr>:first-child {
+            text-align: left !important;
+        }
+
+        .report_verbose {
+            display: none;
+        }
+
+        .report_div [target=last], .hint_last {
+            color: gray;
+        }
+        .report_div [target=now], .hint_now {
+        }
+        .report_div [target=next], .hint_next {
+            color: blue;
+        }
+
+        /* submit */
+
+        #submit input[type=number] {
+            width: 100%;
+
+            font-family: monospace;
+        }
+        #submit_prod {
+            width: 60% !important;
+        }
+        #submit input[type=submit] {
+            width: 100%;
+
+            font-family: monospace;
+        }
+    </style>
+
+    <div id='message' class='box' style='display: none'></div>
+
+    <div id='side'>
+        <table id='util'>
+            <tr id='user' class='hide'>
+                <td>Login user: <span id='user_name'></span></td>
+            </tr>
+            <tr id='login'>
+                <td>
+                    <p>Name</p>
+                    <p><input id='login_name' type='text' pattern='^[A-Za-z0-9_ ]+$' /></p>
+                    <p>Password</p>
+                    <p><input id='login_password' type='password' /></p>
+                    <p><input id='login_remember' type='checkbox' checked />Remember</p>
+                    <p><input id='login_submit' type='submit' value='Login / Sign up' /></p>
+                </td>
+            </tr>
+            <tr id='password' class='hide'>
+                <td>
+                    <p>Old password</p>
+                    <p><input id='password_old' type='password' /></p>
+                    <p>New password</p>
+                    <p><input id='password_new' type='password' /></p>
+                    <p><input id='password_submit' type='submit' value='Change password' /></p>
+                </td>
+            </tr>
+            <tr id='subscribe' class='hide'>
+                <td>
+                    <p>Game</p>
+                    <p><input id='subscribe_game' type='text' pattern='^[A-Za-z0-9_ ]+$' /></p>
+                    <p><input id='subscribe_submit' type='submit' value='Subscribe / Unsubscribe' /></p>
+                </td>
+            </tr>
+            <tr id='list' class='hide'>
+                <td>
+                    <p id='list_content'></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <table id='report' class='hide'>
+        <tr>
+            <td colspan='2'>
+                <h2 id='report_title'></h2>
+            </td>
+        </tr>
+        <tr>
+            <td id='report_data_early' class='report_div'>
+                <h3>Early report</h3>
+                <table bind='production'>
+                    <tr><th>Production</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Prod rate</td><td bind='prod_rate'></td></tr>
+                    <tr class='report_verbose'><td></td><td bind='prod_over'></td></tr>
+                    <tr><td>Unit prod cost</td><td bind='prod_cost_unit'></td><td bind='average_prod_cost_unit'></td></tr>
+                    <tr><td>Marginal prod cost</td><td bind='prod_cost_marginal'></td></tr>
+                    <tr><td>Total prod cost</td><td bind='prod_cost'></td><td bind='average_prod_cost'></td></tr>
+                </table>
+                <table bind='balance'>
+                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Deprecation</td><td bind='deprecation'></td></tr>
+                    <tr><td>Capital</td><td bind='capital'></td><td bind='average_capital'></td></tr>
+                    <tr><td>Size</td><td bind='size'></td><td bind='average_size'></td></tr>
+                    <tr><td>Spending</td><td bind='spending'></td></tr>
+                    <tr class='report_verbose'><td>Early balance</td><td bind='balance_early'></td></tr>
+                    <tr><td>Early loan</td><td bind='loan_early'></td></tr>
+                    <tr><td>Interest</td><td bind='interest'></td></tr>
+
+                    <tr><td>Goods</td><td bind='goods'></td><td bind='average_goods'></td></tr>
+                    <tr><td>Cost of goods</td><td bind='goods_cost'></td></tr>
+                    <tr><td>Ideal sales</td><td bind='goods_max_sales'></td></tr>
+                </table>
+                <table bind='history'>
+                    <tr><th>History</th><th>You</th><th>Average</th></tr>
+                    <tr class='report_verbose'><td>Total marketing</td><td bind='history_mk'></td></tr>
+                    <tr><td>Total R &amp; D</td><td bind='history_rd'></td></tr>
+                </table>
+            </td>
+            <td id='report_data' class='report_div'>
+                <h3>Result report</h3>
+                <table bind='orders'>
+                    <tr><th>Units</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Orders</td><td bind='orders'></td><td bind='average_orders'></td></tr>
+                    <tr><td>Sold</td><td bind='sold'></td><td bind='average_sold'></td></tr>
+                    <tr><td>Inventory</td><td bind='inventory'></td><td bind='average_inventory'></td></tr>
+                    <tr><td>Unfilled</td><td bind='unfilled'></td><td bind='average_unfilled'></td></tr>
+                </table>
+                <table bind='balance'>
+                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Cost of goods sold</td><td bind='goods_cost_sold'></td><td bind='average_goods_cost_sold'></td></tr>
+                    <tr><td>Cost of inventory</td><td bind='goods_cost_inventory'></td></tr>
+
+                    <tr><td>Sales</td><td bind='sales'></td><td bind='average_sales'></td></tr>
+                    <tr class='report_verbose'><td>Inventory charge</td><td bind='inventory_charge'></td></tr>
+                    <tr><td>Cost before tax</td><td bind='cost_before_tax'></td><td bind='average_cost_before_tax'></td></tr>
+                    <tr><td>Profit before tax</td><td bind='profit_before_tax'></td><td bind='average_profit_before_tax'></td></tr>
+                    <tr class='report_verbose'><td>Tax charge</td><td bind='tax_charge'></td><td bind='average_tax_charge'></td></tr>
+                    <tr><td>Profit</td><td bind='profit'></td><td bind='average_profit'></td></tr>
+
+                    <tr class='report_verbose'><td>Balance</td><td bind='balance'></td></tr>
+                    <tr><td>Loan</td><td bind='loan'></td></tr>
+                    <tr><td>Cash</td><td bind='cash'></td></tr>
+                    <tr><td>Retained earning</td><td bind='retern'></td><td bind='average_retern'></td></tr>
+                </table>
+                <table bind='mpi'>
+                    <tr><th>MPI</th><th>You</th><th>Average</th></tr>
+                    <tr><td>MPI</td><td bind='mpi'></td><td bind='average_mpi'></td></tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td class='report_div' colspan='2'>
+                <h3>Players' detail</h3>
+                <div class='report_list_div'>
+                    <table id='report_list'>
+                        <tr id='report_players'><th>Player</th></tr>
+                        <tr xbind='price'><td>Price</td></tr>
+                        <tr xbind='sold'><td>Sold</td></tr>
+                        <tr xbind='sales'><td>Sales</td></tr>
+                        <tr xbind='cost_before_tax'><td>Cost before tax</td></tr>
+                        <tr class='report_verbose' xbind='profit_before_tax'><td>Profit before tax</td></tr>
+                        <tr class='report_verbose' xbind='tax_charge'><td>Tax charge</td></tr>
+                        <tr xbind='profit'><td>Profit</td></tr>
+                        <tr xbind='retern'><td>Retained earning</td></tr>
+                        <tr xbind='mpi'><td>MPI</td></tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td id='report_settings' class='report_div'>
+                <h3>Settings</h3>
+                <table bind='limits'>
+                    <tr><th>Limits</th></tr>
+                    <tr><td>Min price</td><td bind='price_min'></td></tr>
+                    <tr><td>Max price</td><td bind='price_max'></td></tr>
+                    <tr><td>Max marketing</td><td bind='mk_limit'></td></tr>
+                    <tr><td>Max investment</td><td bind='ci_limit'></td></tr>
+                    <tr><td>Max R &amp; D</td><td bind='rd_limit'></td></tr>
+                    <tr><td>Max loan</td><td bind='loan_limit'></td></tr>
+                </table>
+                <table bind='production'>
+                    <tr><th>Production</th></tr>
+                    <tr><td>Balanced prod rate</td><td bind='prod_rate_balanced'></td></tr>
+
+                    <tr><td>Unit fee</td><td bind='unit_fee'></td></tr>
+                    <tr><td>Deprecation rate</td><td bind='deprecation_rate'></td></tr>
+                </table>
+                <table bind='balance'>
+                    <tr><th>Balance</th></tr>
+                    <tr><td>Interest rate (cash)</td><td bind='interest_rate_cash'></td></tr>
+                    <tr><td>Interest rate (loan)</td><td bind='interest_rate_loan'></td></tr>
+                    <tr><td>Inventory fee</td><td bind='inventory_fee'></td></tr>
+                    <tr><td>Tax rate</td><td bind='tax_rate'></td></tr>
+                </table>
+            </td>
+            <td id='report_decisions' class='report_div'>
+                <h3>Decisions</h3>
+                <table>
+                    <tr><th>Average prices</th></tr>
+                    <tr><td>Given price</td><td bind='average_price_given'></td></tr>
+                    <tr><td>Selling price</td><td bind='average_price'></td></tr>
+                </table>
+                <!-- notice: special unit -->
+                <table>
+                    <tr><th>Status</th></tr>
+                    <tr><td>Game</td><td id='submit_game'></td></tr>
+                    <tr><td>Decision period</td><td id='submit_period'></td></tr>
+                    <tr><td>Player name</td><td id='submit_name'></td></tr>
+                </table>
+                <table id='submit'>
+                    <tr><th>Decisions</th></tr>
+                    <tr>
+                        <td>Price</td>
+                        <td bind='price'></td>
+                        <td><input id='submit_price' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Production</td>
+                        <td bind='prod'></td>
+                        <td><span id='submit_prod_rate'></span> % <input id='submit_prod' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Marketing</td>
+                        <td bind='mk'></td>
+                        <td><input id='submit_mk' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Investment</td>
+                        <td bind='ci'></td>
+                        <td><input id='submit_ci' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>R &amp; D</td>
+                        <td bind='rd'></td>
+                        <td><input id='submit_rd' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'>
+                            <i>
+                                <span class='hint_last'>(Last) </span>
+                                <span class='hint_now'>This period</span>
+                                <span class='hint_next'> (Next)</span>
+                            </i>
+                        </td>
+                        <td><input id='submit_submit' type='submit' value='Submit' /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <script src='jquery.min.js'></script>
+    <script src='socket.io.min.js'></script>
+    <script src='page.js'></script>
+</body>
+</html>

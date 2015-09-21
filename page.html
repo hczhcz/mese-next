@@ -3,6 +3,7 @@
 <head>
     <title>MESE-Next</title>
     <meta charset='utf-8' />
+    <meta name='viewport' content='initial-scale=0.75' />
 </head>
 <body>
     <style>
@@ -122,7 +123,7 @@
 
         #report {
             position: absolute;
-            left: 16em;
+            left: 21.333em;
             left: 16rem;
             top: 0;
             padding: 1em;
@@ -142,11 +143,11 @@
 
         .report_div {
             vertical-align: top;
-            width: 28em;
+            width: 37.333em;
             width: 28rem;
         }
         .report_list_div {
-            width: 56em;
+            width: 74.666em;
             width: 56rem;
 
             overflow-x: auto;
@@ -473,6 +474,7 @@
         $('#message').hover(showMessage, hideMessage);
         $('#message').mousemove(showMessage);
         $('#message').click(removeMessage);
+        $('#message').on('touchstart', removeMessage);
 
         // side
 
@@ -495,7 +497,7 @@
         };
 
         var hideSide = function () {
-            if (sideEnabled && $('#side').position().left == 0) {
+            if (sideEnabled) {
                 sideEnabled = false;
 
                 $('#side')
@@ -511,6 +513,7 @@
         };
 
         $('#side').click(showSide);
+        $('#side').on('touchstart', showSide);
         $('#side').dblclick(hideSide);
 
         // login
@@ -529,7 +532,9 @@
             }
         });
 
-        $('#login_submit').click(function () {
+        $('#login_submit').click(function (event) {
+            event.preventDefault();
+
             var name = $('#login_name').val();
             var password = $('#login_password').val();
             $('#login_password').val('');
@@ -614,7 +619,9 @@
             }
         });
 
-        $('#password_submit').click(function () {
+        $('#password_submit').click(function (event) {
+            event.preventDefault();
+
             var password = $('#password_old').val();
             var newPassword = $('#password_new').val();
             $('#password_old').val('');
@@ -656,7 +663,9 @@
             }
         });
 
-        $('#subscribe_submit').click(function () {
+        $('#subscribe_submit').click(function (event) {
+            event.preventDefault();
+
             var game = $('#subscribe_game').val();
 
             socket.emit('subscribe', {
@@ -676,7 +685,9 @@
                         $('<input type="button" />')
                             .val(i)
                             .click(function (game) {
-                                return function () {
+                                return function (event) {
+                                    event.preventDefault();
+
                                     socket.emit('report', {
                                         game: game,
                                         period: -1, // force reload
@@ -932,7 +943,9 @@
 
         // submit
 
-        $('#submit_submit').click(function () {
+        $('#submit_submit').click(function (event) {
+            event.preventDefault();
+
             socket.emit('submit', {
                 game: currentGame,
                 period: currentPeriod,

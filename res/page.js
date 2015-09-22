@@ -8,6 +8,7 @@ var showMessage = function () {
     $('#message')
         .clearQueue()
         .stop()
+        .removeClass('hide')
         .attr('style', '');
 
     // IE8 workaround
@@ -28,7 +29,7 @@ var showMessage = function () {
 
 var removeMessage = function () {
     $('#message')
-        .attr('style', 'display: none')
+        .addClass('hide')
         .empty();
 };
 

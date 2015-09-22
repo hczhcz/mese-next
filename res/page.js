@@ -308,9 +308,9 @@ for (var i = 0; i < 16; ++i) { // max = 16
 }
 
 $('.report_div [bind]')
-    .append('<span target="last">(<span></span>) </span>')
+    .append('<span target="last"><span></span>&nbsp;</span>')
     .append('<span target="now"><span></span></span>')
-    .append('<span target="next"> (<span></span>)</span>');
+    .append('<span target="next">&nbsp;<span></span></span>');
 
 $('#submit_price').change(function () {
     $('#submit_price').val(

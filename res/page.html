@@ -277,7 +277,7 @@
 
                     <tr><td>Goods</td><td bind='goods'></td><td bind='average_goods'></td></tr>
                     <tr><td>Cost of goods</td><td bind='goods_cost'></td></tr>
-                    <tr><td>Ideal sales</td><td bind='goods_max_sales'></td></tr>
+                    <tr><td>Ideal sales income</td><td bind='goods_max_sales'></td></tr>
                 </table>
                 <table bind='history'>
                     <tr><th>History</th><th>You</th><th>Average</th></tr>
@@ -297,9 +297,9 @@
                 <table bind='balance'>
                     <tr><th>Balance</th><th>You</th><th>Average</th></tr>
                     <tr><td>Cost of goods sold</td><td bind='goods_cost_sold'></td><td bind='average_goods_cost_sold'></td></tr>
-                    <tr><td>Inventory value</td><td bind='goods_cost_inventory'></td></tr>
+                    <tr><td>Cost of inventory</td><td bind='goods_cost_inventory'></td></tr>
 
-                    <tr><td>Sales</td><td bind='sales'></td><td bind='average_sales'></td></tr>
+                    <tr><td>Sales income</td><td bind='sales'></td><td bind='average_sales'></td></tr>
                     <tr class='report_verbose'><td>Inventory charge</td><td bind='inventory_charge'></td></tr>
                     <tr><td>Cost before tax</td><td bind='cost_before_tax'></td><td bind='average_cost_before_tax'></td></tr>
                     <tr><td>Profit before tax</td><td bind='profit_before_tax'></td><td bind='average_profit_before_tax'></td></tr>
@@ -324,8 +324,8 @@
                     <table id='report_list'>
                         <tr id='report_players'><th>Player</th></tr>
                         <tr xbind='price'><td>Price</td></tr>
-                        <tr xbind='sold'><td>Sold</td></tr>
-                        <tr xbind='sales'><td>Sales</td></tr>
+                        <tr xbind='sold'><td>Units sold</td></tr>
+                        <tr xbind='sales'><td>Sales income</td></tr>
                         <tr xbind='cost_before_tax'><td>Cost before tax</td></tr>
                         <tr class='report_verbose' xbind='profit_before_tax'><td>Profit before tax</td></tr>
                         <tr class='report_verbose' xbind='tax_charge'><td>Tax charge</td></tr>

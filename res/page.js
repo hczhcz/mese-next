@@ -26,20 +26,18 @@ var showMessage = function () {
     }
 };
 
+var removeMessage = function () {
+    $('#message')
+        .attr('style', 'display: none')
+        .empty();
+};
+
 var hideMessage = function () {
     $('#message')
         .clearQueue()
         .stop()
         .delay(2000)
-        .fadeOut(2000, function () {
-            $('#message').empty();
-        });
-};
-
-var removeMessage = function () {
-    $('#message')
-        .attr('style', 'display: none')
-        .empty();
+        .fadeOut(2000, removeMessage);
 };
 
 var message = function (message) {

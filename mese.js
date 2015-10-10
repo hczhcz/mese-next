@@ -31,19 +31,38 @@ var server = http.createServer(function (req, res) {
         util.log('web ' + req.connection.remoteAddress + ' ' + req.url);
 
         if (req.url == '/jquery.min.js') {
-            res.writeHead(200);
-            res.end(fs.readFileSync('./res/jquery.min.js'));
+            var data = fs.readFileSync('./res/jquery.min.js');
+
+            res.writeHead(200, {
+                'Content-Type': 'application/javascript',
+            });
+            res.end(data);
         } else if (req.url == '/socket.io.min.js') {
-            res.writeHead(200);
-            res.end(fs.readFileSync('./res/socket.io.min.js'));
+            var data = fs.readFileSync('./res/socket.io.min.js');
+
+            res.writeHead(200, {
+                'Content-Type': 'application/javascript'
+            });
+            res.end(data);
         } else if (req.url == '/page.js') {
-            res.writeHead(200);
-            res.end(fs.readFileSync('./res/page.js'));
+            var data = fs.readFileSync('./res/page.js');
+
+            res.writeHead(200, {
+                'Content-Type': 'application/javascript',
+            });
+            res.end(data);
         } else if (req.url == '/') {
-            res.writeHead(200);
-            res.end(fs.readFileSync('./res/page.html'));
+            var data = fs.readFileSync('./res/page.html');
+
+            res.writeHead(200, {
+                'Content-Type': 'text/html',
+            });
+            res.end(data);
         } else {
-            res.writeHead(404);
+            res.writeHead(404, {
+                'Content-Type': 'text/plain',
+            });
+
             res.end('Not found');
         }
     });

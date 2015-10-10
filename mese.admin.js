@@ -5,7 +5,7 @@ var core = require('./mese.core');
 var db = require('./mese.db');
 
 db.init(function () {
-    var initGame = function (game, invites) {
+    var initGame = function (game, invites, settings) {
         util.log('create game ' + game + ' ' + JSON.stringify(invites));
 
         var gameStorage = db.access('games', game);
@@ -14,10 +14,14 @@ db.init(function () {
             if (players === undefined) {
                 // create new game
 
-                var size = 0;
+                var period = 0;
 
                 var doAlloc = function (gameData) {
-                    if (size >= 7) {
+                    period += 1;
+
+                    if (period < settings.length) {
+                        core.alloc(gameData, settings[period], doAlloc);
+                    } else {
                         gameStorage.staticSet(
                             'data', gameData,
                             function (doc) {
@@ -30,10 +34,6 @@ db.init(function () {
                                 // nothing
                             }
                         );
-                    } else {
-                        size += 1;
-
-                        core.alloc(gameData, [], doAlloc);
                     }
                 };
 
@@ -57,7 +57,7 @@ db.init(function () {
                 };
 
                 // alloc periods
-                core.init(invites.length, 'modern', [], doAlloc);
+                core.init(invites.length, 'modern', settings[0], doAlloc);
 
                 // add subscriptions
                 for (var i in invites) {
@@ -72,8 +72,10 @@ db.init(function () {
     initGame(
         'test',
         [
-            'test0001', 'test0002', 'test0003', 'test0004',
-            'test0005', 'test0006', 'test0007', 'test0008',
+            'test0001'
+        ],
+        [
+            {}, {}, {}, {}, {}, {}, {}, {}
         ]
     );
 });

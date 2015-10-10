@@ -48,9 +48,15 @@ var stdFail = function (status, output) {
 };
 
 module.exports.init = function (count, preset, settings, callback) {
-    // TODO: settings?
+    var args = ['init', count, preset];
+
+    for (var i in settings) {
+        args.push(i);
+        args.push(settings[i]);
+    }
+
     module.exports.execSync(
-        ['init', count, preset],
+        args,
         Buffer(0),
         callback,
         stdFail
@@ -58,9 +64,15 @@ module.exports.init = function (count, preset, settings, callback) {
 };
 
 module.exports.alloc = function (gameData, settings, callback) {
-    // TODO: settings?
+    var args = ['alloc'];
+
+    for (var i in settings) {
+        args.push(i);
+        args.push(settings[i]);
+    }
+
     module.exports.execSync(
-        ['alloc'],
+        args,
         gameData,
         callback,
         stdFail

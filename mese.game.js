@@ -28,6 +28,8 @@ module.exports.action = function (storage) {
         storage.dynamicSet('active', true);
 
         var handleDecision = function (gameData) {
+            var oldData = gameData;
+
             var decisions = storage.dynamicGet('decisions');
 
             if (decisions.length > 0) {
@@ -61,6 +63,12 @@ module.exports.action = function (storage) {
                     gameData,
                     function (gameData) {
                         // closed
+
+                        if (!gameData || gameData.length != oldData.length) {
+                            throw Error('data broken');
+                        }
+
+                        // store data
                         storage.staticSet(
                             'data',
                             gameData,
@@ -71,6 +79,12 @@ module.exports.action = function (storage) {
                     },
                     function (gameData) {
                         // not closed
+
+                        if (!gameData || gameData.length != oldData.length) {
+                            throw Error('data broken');
+                        }
+
+                        // store data
                         storage.staticSet(
                             'data',
                             gameData,
@@ -83,6 +97,7 @@ module.exports.action = function (storage) {
             }
         };
 
+        // get data and do handling
         storage.staticGet('data', function (dataObj) {
             handleDecision(dataObj.buffer);
         });

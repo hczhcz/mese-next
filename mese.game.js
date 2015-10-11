@@ -76,6 +76,13 @@ module.exports.action = function (storage) {
                                 storage.dynamicSet('active', false);
                             }
                         );
+
+                        // store snapshot
+                        storage.staticSet(
+                            'data_' + Number(new Date()),
+                            gameData,
+                            function (doc) {}
+                        );
                     },
                     function (gameData) {
                         // not closed

@@ -30,6 +30,10 @@
             display: none;
         }
 
+        .wrong {
+            color: red;
+        }
+
         .box {
             -ms-border-radius: 0.25em;
             -moz-border-radius: 0.25em;
@@ -229,9 +233,9 @@
             <tr id='login'>
                 <td>
                     <p>Name</p>
-                    <p><input id='login_name' type='text' pattern='^[A-Za-z0-9_ ]+$' /></p>
+                    <p><input id='login_name' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></p>
                     <p>Password</p>
-                    <p><input id='login_password' type='password' /></p>
+                    <p><input id='login_password' type='password' maxlength='32' /></p>
                     <p><input id='login_remember' type='checkbox' checked />Remember</p>
                     <p><input id='login_submit' type='submit' value='Sign up / Login' /></p>
                 </td>
@@ -239,16 +243,16 @@
             <tr id='password' class='hide'>
                 <td>
                     <p>Old password</p>
-                    <p><input id='password_old' type='password' /></p>
+                    <p><input id='password_old' type='password' maxlength='32' /></p>
                     <p>New password</p>
-                    <p><input id='password_new' type='password' /></p>
+                    <p><input id='password_new' type='password' maxlength='32' /></p>
                     <p><input id='password_submit' type='submit' value='Change password' /></p>
                 </td>
             </tr>
             <tr id='subscribe' class='hide'>
                 <td>
                     <p>Game</p>
-                    <p><input id='subscribe_game' type='text' pattern='^[A-Za-z0-9_ ]+$' /></p>
+                    <p><input id='subscribe_game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></p>
                     <p><input id='subscribe_submit' type='submit' value='Subscribe / Unsubscribe' /></p>
                 </td>
             </tr>

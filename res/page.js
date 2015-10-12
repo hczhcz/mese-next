@@ -114,6 +114,14 @@ $('#util td').dblclick(function (event) {
 
 var currentName = undefined;
 
+$('#login_name').change(function () {
+    if (/^[A-Za-z0-9_ ]+$/.test($('#login_name').val())) {
+        $('#login_name').removeClass('wrong');
+    } else {
+        $('#login_name').addClass('wrong');
+    }
+});
+
 $('#login_name').keypress(function (event) {
     if (event.which == 13) {
         $('#login_password').focus();
@@ -250,6 +258,14 @@ socket.on('password_fail', function (data) {
 // subscribe & list
 
 var currentList = undefined;
+
+$('#subscribe_game').change(function () {
+    if (/^[A-Za-z0-9_ ]+$/.test($('#subscribe_game').val())) {
+        $('#subscribe_game').removeClass('wrong');
+    } else {
+        $('#subscribe_game').addClass('wrong');
+    }
+});
 
 $('#subscribe_game').keypress(function (event) {
     if (event.which == 13) {

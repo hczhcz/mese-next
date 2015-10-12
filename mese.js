@@ -225,7 +225,7 @@ db.init(function () {
                             );
                         });
                     } else {
-                        util.log('wrong game');
+                        util.log('game not found ' + data.game);
 
                         socket.emit('subscribe_fail');
                     }
@@ -254,7 +254,7 @@ db.init(function () {
 
                 gameStorage.staticGet('players', function (players) {
                     if (players === undefined) {
-                        util.log('wrong game');
+                        util.log('game not found ' + data.game);
 
                         return;
                     }
@@ -346,7 +346,7 @@ db.init(function () {
 
                 gameStorage.staticGet('players', function (players) {
                     if (players === undefined) {
-                        util.log('wrong game');
+                        util.log('game not found ' + data.game);
 
                         return;
                     }
@@ -391,11 +391,15 @@ db.init(function () {
                                 afterSubmit(gameData);
                             },
                             function (gameData) {
+                                util.log('submit declined ' + authName + ' ' + data.game);
+
                                 socket.emit('submit_decline');
                                 afterSubmit(gameData);
                             }
                         );
                     } else {
+                        util.log('submit not allowed ' + authName + ' ' + data.game);
+
                         socket.emit('submit_fail');
                     }
                 });

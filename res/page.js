@@ -561,5 +561,5 @@ socket.on('submit_decline', function (data) {
 });
 
 socket.on('submit_fail', function (data) {
-    message('Submit fail');
+    message('Submit not allowed');
 });

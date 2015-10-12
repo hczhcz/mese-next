@@ -206,29 +206,29 @@ db.init(function () {
                 var gameStorage = db.access('games', data.game);
 
                 gameStorage.staticGet('players', function (players) {
-                    if (data.enabled && players === undefined) {
+                    if (!data.enabled || players !== undefined) {
+                        authStorage.staticGet('subscribes', function (subscribes) {
+                            if (subscribes === undefined) {
+                                subscribes = {};
+                            }
+
+                            subscribes[data.game] = data.enabled;
+
+                            authStorage.staticSet(
+                                'subscribes', subscribes,
+                                function (doc) {
+                                    socket.emit(
+                                        'subscribe_update',
+                                        subscribes
+                                    );
+                                }
+                            );
+                        });
+                    } else {
                         util.log('wrong game');
 
-                        return;
+                        socket.emit('subscribe_fail');
                     }
-
-                    authStorage.staticGet('subscribes', function (subscribes) {
-                        if (subscribes === undefined) {
-                            subscribes = {};
-                        }
-
-                        subscribes[data.game] = data.enabled;
-
-                        authStorage.staticSet(
-                            'subscribes', subscribes,
-                            function (doc) {
-                                socket.emit(
-                                    'subscribe_update',
-                                    subscribes
-                                );
-                            }
-                        );
-                    });
                 });
             });
 

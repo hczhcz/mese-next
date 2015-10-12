@@ -296,6 +296,10 @@ socket.on('subscribe_list', updateList);
 
 socket.on('subscribe_update', updateList);
 
+socket.on('subscribe_fail', function (data) {
+    message('Game not found');
+});
+
 // report
 
 var currentGame = undefined;

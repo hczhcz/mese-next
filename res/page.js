@@ -106,6 +106,9 @@ var hideSide = function () {
 $('#side').click(showSide);
 $('#side').on('touchstart', showSide);
 $('#side').dblclick(hideSide);
+$('#util td').dblclick(function (event) {
+    event.stopPropagation();
+});
 
 // login
 

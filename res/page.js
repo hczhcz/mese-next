@@ -195,6 +195,9 @@ socket.on('login_ok', function (data) {
 });
 
 socket.on('login_fail', function (data) {
+    // reset auto login
+    localStorage.removeItem('MESE_login');
+
     message('Wrong password');
 });
 
@@ -229,17 +232,8 @@ $('#password_submit').click(function (event) {
     $('#password_old').val('');
     $('#password_new').val('');
 
-    // auto login
-    var loginInfo = localStorage.getItem('MESE_login');
-    if (loginInfo) {
-        localStorage.setItem(
-            'MESE_login',
-            JSON.stringify({
-                name: JSON.parse(loginInfo).name,
-                password: newPassword, // TODO: hash?
-            })
-        );
-    }
+    // reset auto login
+    localStorage.removeItem('MESE_login');
 
     socket.emit('password', {
         password: password, // TODO: hash?

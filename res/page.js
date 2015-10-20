@@ -429,6 +429,32 @@ var showStatus = function (status) {
     }
 };
 
+// load from url hash
+var loadHash = function () {
+    var urlHash = window.location.hash.slice(1);
+    if (urlHash) {
+        socket.emit('report', {
+            game: urlHash,
+            period: -1, // force reload
+        });
+    }
+};
+loadHash();
+$(window).on('hashchange', loadHash);
+
+// auto refresh
+setInterval(
+    function () {
+        if (!$('#report').hasClass('hide')) {
+            socket.emit('report', {
+                game: currentGame,
+                period: currentPeriod,
+            });
+        }
+    },
+    30000
+);
+
 socket.on('report_early', function (data) {
     showStatus(data.status);
 
@@ -532,28 +558,6 @@ socket.on('report_public', function (data) {
 socket.on('report_status', function (data) {
     showStatus(data);
 });
-
-// load from url hash
-var urlHash = window.location.hash.slice(1);
-if (urlHash) {
-    socket.emit('report', {
-        game: urlHash,
-        period: -1, // force reload
-    });
-}
-
-// auto refresh
-setInterval(
-    function () {
-        if (!$('#report').hasClass('hide')) {
-            socket.emit('report', {
-                game: currentGame,
-                period: currentPeriod,
-            });
-        }
-    },
-    30000
-);
 
 // submit
 

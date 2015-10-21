@@ -313,6 +313,16 @@ socket.on('subscribe_fail', function (data) {
     message('Game not found');
 });
 
+// auto refresh
+setInterval(
+    function () {
+        if (!$('#list').hasClass('hide')) {
+            socket.emit('list');
+        }
+    },
+    60000
+);
+
 // report
 
 var currentGame = undefined;

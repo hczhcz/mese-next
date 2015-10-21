@@ -7,9 +7,9 @@ var http = require('http'); // TODO: https?
 var io = require('socket.io');
 
 var util = require('./mese.util');
-var core = require('./mese.core');
 var db = require('./mese.db');
 var game = require('./mese.game');
+var report = require('./mese.report');
 var web = require('./mese.web');
 
 process.on('uncaughtException', function (e) {
@@ -218,58 +218,41 @@ db.init(function () {
                         }
                     }
 
-                    gameStorage.staticGet('data', function (dataObj) {
-                        var gameData = dataObj.buffer;
+                    report.print(
+                        gameStorage, player,
+                        function (result) {
+                            result.game = data.game;
+                            result.players = players;
 
-                        if (player !== undefined) {
-                            // as player
+                            if (result.now_period !== data.period) { // TODO: simplify
+                                socket.emit(
+                                    'report_player',
+                                    result
+                                );
+                            } else {
+                                socket.emit(
+                                    'report_status',
+                                    result.status
+                                );
+                            }
+                        },
+                        function (result) {
+                            result.game = data.game;
+                            result.players = players;
 
-                            core.printPlayer(
-                                gameData,
-                                player,
-                                function (report) {
-                                    var result = eval('(' + report + ')');
-                                    result.game = data.game;
-                                    result.players = players;
-
-                                    if (result.now_period !== data.period) { // TODO: simplify
-                                        socket.emit(
-                                            'report_player',
-                                            result
-                                        );
-                                    } else {
-                                        socket.emit(
-                                            'report_status',
-                                            result.status
-                                        );
-                                    }
-                                }
-                            );
-                        } else {
-                            // as guest
-
-                            core.printPublic(
-                                gameData,
-                                function (report) {
-                                    var result = eval('(' + report + ')');
-                                    result.game = data.game;
-                                    result.players = players;
-
-                                    if (result.now_period !== data.period) { // TODO: simplify
-                                        socket.emit(
-                                            'report_public',
-                                            result
-                                        );
-                                    } else {
-                                        socket.emit(
-                                            'report_status',
-                                            result.status
-                                        );
-                                    }
-                                }
-                            );
+                            if (result.now_period !== data.period) { // TODO: simplify
+                                socket.emit(
+                                    'report_public',
+                                    result
+                                );
+                            } else {
+                                socket.emit(
+                                    'report_status',
+                                    result.status
+                                );
+                            }
                         }
-                    });
+                    );
                 });
             });
 
@@ -312,24 +295,13 @@ db.init(function () {
 
                     if (player !== undefined) {
                         var afterSubmit = function (gameData) {
-                            core.printPlayerEarly(
-                                gameData,
-                                player,
-                                function (report) {
-                                    // socket.emit(
-                                    //     'report_early',
-                                    //     eval('(' + report + ')')
-                                    // );
-                                    try { // TODO: unexpected error
-                                        socket.emit(
-                                            'report_early',
-                                            eval('(' + report + ')')
-                                        );
-                                    } catch (e) {
-                                        console.log(report);
-
-                                        throw e;
-                                    }
+                            report.printEarly(
+                                gameData, player,
+                                function (result) {
+                                    socket.emit(
+                                        'report_early',
+                                        result
+                                    );
                                 }
                             );
                         };

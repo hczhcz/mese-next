@@ -3,7 +3,6 @@
 var domain = require('domain');
 
 var core = require('./mese.core');
-var db = require('./mese.db');
 
 var addDecision = function (storage, decision) {
     var decisions = storage.dynamicGet('decisions');

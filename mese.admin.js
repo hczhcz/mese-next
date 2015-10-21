@@ -22,10 +22,18 @@ db.init(function () {
                     if (period < settings.length) {
                         core.alloc(gameData, settings[period], doAlloc);
                     } else {
+                        // generate an unique id (assumed unique)
+                        var uid = Number(new Date());
+
                         gameStorage.staticSet(
                             'data', gameData,
                             function (doc) {
-                                // nothing
+                                storage.staticSet(
+                                    'uid', uid,
+                                    function (doc) {
+                                        // nothing
+                                    }
+                                );
                             }
                         );
                         gameStorage.staticSet(

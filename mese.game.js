@@ -59,6 +59,9 @@ module.exports.action = function (storage) {
             } else {
                 // close
 
+                // generate an unique id (assumed unique)
+                var uid = Number(new Date());
+
                 core.close(
                     gameData,
                     function (gameData) {
@@ -70,17 +73,20 @@ module.exports.action = function (storage) {
 
                         // store data
                         storage.staticSet(
-                            'data',
-                            gameData,
+                            'data', gameData,
                             function (doc) {
-                                storage.dynamicSet('active', false);
+                                storage.staticSet(
+                                    'uid', uid,
+                                    function (doc) {
+                                        storage.dynamicSet('active', false);
+                                    }
+                                );
                             }
                         );
 
                         // store snapshot
                         storage.staticSet(
-                            'data_' + Number(new Date()),
-                            gameData,
+                            'data_' + uid, gameData,
                             function (doc) {}
                         );
                     },
@@ -93,10 +99,14 @@ module.exports.action = function (storage) {
 
                         // store data
                         storage.staticSet(
-                            'data',
-                            gameData,
+                            'data', gameData,
                             function (doc) {
-                                storage.dynamicSet('active', false);
+                                storage.staticSet(
+                                    'uid', uid,
+                                    function (doc) {
+                                        storage.dynamicSet('active', false);
+                                    }
+                                );
                             }
                         );
                     }

@@ -4,7 +4,7 @@ var childProcess = require('child_process');
 
 var util = require('./mese.util');
 
-module.exports.exec = function (args, input, callback, fail) {
+var execCore = function (args, input, callback, fail) {
     util.log('exec ' + JSON.stringify(args));
 
     var proc = childProcess.spawn('./mese', args);
@@ -27,22 +27,6 @@ module.exports.exec = function (args, input, callback, fail) {
     });
 };
 
-module.exports.execSync = function (args, input, callback, fail) {
-    util.log('exec (sync) ' + JSON.stringify(args));
-
-    var proc = childProcess.spawnSync('./mese', args, {
-        input: input,
-        timeout: 10000,
-        maxBuffer: 1024 * 1024 * 4,
-    });
-
-    if (proc.status) {
-        fail(proc.status, proc.stdout);
-    } else {
-        callback(proc.stdout);
-    }
-};
-
 var stdFail = function (status, output) {
     throw Error('exec fail: ' + status);
 };
@@ -55,7 +39,7 @@ module.exports.init = function (count, preset, settings, callback) {
         args.push(settings[i]);
     }
 
-    module.exports.execSync(
+    execCore(
         args,
         Buffer(0),
         callback,
@@ -71,7 +55,7 @@ module.exports.alloc = function (gameData, settings, callback) {
         args.push(settings[i]);
     }
 
-    module.exports.execSync(
+    execCore(
         args,
         gameData,
         callback,
@@ -84,7 +68,7 @@ module.exports.submit = function (
     price, prod, mk, ci, rd,
     callback, fail
 ) {
-    module.exports.execSync(
+    execCore(
         ['submit', player, period, price, prod, mk, ci, rd],
         gameData,
         callback,
@@ -99,7 +83,7 @@ module.exports.submit = function (
 };
 
 module.exports.close = function (gameData, callback, fail) {
-    module.exports.execSync(
+    execCore(
         ['close'],
         gameData,
         callback,
@@ -114,7 +98,7 @@ module.exports.close = function (gameData, callback, fail) {
 };
 
 module.exports.printFull = function (gameData, callback) {
-    module.exports.exec(
+    execCore(
         ['print_full'],
         gameData,
         callback,
@@ -123,7 +107,7 @@ module.exports.printFull = function (gameData, callback) {
 };
 
 module.exports.printPlayerEarly = function (gameData, player, callback) {
-    module.exports.exec(
+    execCore(
         ['print_player_early', player],
         gameData,
         callback,
@@ -132,7 +116,7 @@ module.exports.printPlayerEarly = function (gameData, player, callback) {
 };
 
 module.exports.printPlayer = function (gameData, player, callback) {
-    module.exports.exec(
+    execCore(
         ['print_player', player],
         gameData,
         callback,
@@ -141,7 +125,7 @@ module.exports.printPlayer = function (gameData, player, callback) {
 };
 
 module.exports.printPublic = function (gameData, callback) {
-    module.exports.exec(
+    execCore(
         ['print_public'],
         gameData,
         callback,

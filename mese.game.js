@@ -5,7 +5,7 @@ var domain = require('domain');
 var core = require('./mese.core');
 var db = require('./mese.db');
 
-module.exports.action = function (storage) {
+var action = function (storage) {
     if (storage.dynamicGet('active')) {
         return;
     }
@@ -147,5 +147,5 @@ module.exports.submit = function (
         fail: fail,
     });
 
-    module.exports.action(storage);
+    action(storage);
 };

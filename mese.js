@@ -8,8 +8,8 @@ var io = require('socket.io');
 
 var util = require('./mese.util');
 var core = require('./mese.core');
-var game = require('./mese.game');
 var db = require('./mese.db');
+var game = require('./mese.game');
 var web = require('./mese.web');
 
 process.on('uncaughtException', function (e) {

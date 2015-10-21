@@ -28,18 +28,17 @@ db.init(function () {
                         gameStorage.staticSet(
                             'data', gameData,
                             function (doc) {
-                                storage.staticSet(
+                                gameStorage.staticSet(
                                     'uid', uid,
                                     function (doc) {
-                                        // nothing
+                                        gameStorage.staticSet(
+                                            'players', invites,
+                                            function (doc) {
+                                                // nothing
+                                            }
+                                        );
                                     }
                                 );
-                            }
-                        );
-                        gameStorage.staticSet(
-                            'players', invites,
-                            function (doc) {
-                                // nothing
                             }
                         );
                     }

@@ -2,7 +2,6 @@
 
 var port = 63000;
 
-var fs = require('fs');
 var domain = require('domain');
 var http = require('http'); // TODO: https?
 var io = require('socket.io');
@@ -11,62 +10,14 @@ var util = require('./mese.util');
 var core = require('./mese.core');
 var game = require('./mese.game');
 var db = require('./mese.db');
+var web = require('./mese.web');
 
 process.on('uncaughtException', function (e) {
     util.log('uncaught exception');
     util.log(e.stack || e);
 });
 
-var server = http.createServer(function (req, res) {
-    var d = domain.create();
-
-    d.on('error', function (e) {
-        util.log(e.stack || e);
-    });
-
-    d.add(req);
-    d.add(res);
-
-    d.run(function () {
-        util.log('web ' + req.connection.remoteAddress + ' ' + req.url);
-
-        if (req.url == '/jquery.min.js') {
-            var data = fs.readFileSync('./res/jquery.min.js'); // TODO
-
-            res.writeHead(200, {
-                'Content-Type': 'application/javascript',
-            });
-            res.end(data);
-        } else if (req.url == '/socket.io.min.js') {
-            var data = fs.readFileSync('./res/socket.io.min.js'); // TODO
-
-            res.writeHead(200, {
-                'Content-Type': 'application/javascript'
-            });
-            res.end(data);
-        } else if (req.url == '/page.js') {
-            var data = fs.readFileSync('./res/page.js'); // TODO
-
-            res.writeHead(200, {
-                'Content-Type': 'application/javascript',
-            });
-            res.end(data);
-        } else if (req.url == '/') {
-            var data = fs.readFileSync('./res/page.html'); // TODO
-
-            res.writeHead(200, {
-                'Content-Type': 'text/html',
-            });
-            res.end(data);
-        } else {
-            res.writeHead(404, {
-                'Content-Type': 'text/plain',
-            });
-
-            res.end('Not found');
-        }
-    });
-}).listen(port);
+var server = http.createServer(web.handler).listen(port);
 
 util.log('server init ' + port);
 

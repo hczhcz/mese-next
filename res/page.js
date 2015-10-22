@@ -175,10 +175,18 @@ var loginDone = function (name, reg) {
     socket.emit('list');
 
     if (currentGame) {
-        socket.emit('report', {
-            game: currentGame, // notice: see report utils
-            period: -1, // force reload
-        });
+        loadReport(currentGame);
+    }
+};
+
+var autoLogin = function () {
+    // auto login
+    var loginInfo = localStorage.getItem('MESE_login');
+    if (loginInfo) {
+        var loginInfoObj = JSON.parse(loginInfo);
+
+        socket.emit('login', loginInfoObj);
+        $('#login_name').val(loginInfoObj.name);
     }
 };
 
@@ -200,15 +208,6 @@ socket.on('login_fail', function (data) {
 
     message('Wrong password');
 });
-
-// auto login
-var loginInfo = localStorage.getItem('MESE_login');
-if (loginInfo) {
-    var loginInfoObj = JSON.parse(loginInfo);
-
-    socket.emit('login', loginInfoObj);
-    $('#login_name').val(loginInfoObj.name);
-}
 
 // password
 
@@ -292,10 +291,7 @@ var updateList = function (data) {
                         return function (event) {
                             event.preventDefault();
 
-                            socket.emit('report', {
-                                game: game,
-                                period: -1, // force reload
-                            });
+                            loadReport(game);
                         }
                     } (i))
             );
@@ -433,14 +429,18 @@ var showStatus = function (status) {
     }
 };
 
+var loadReport = function (game) {
+    socket.emit('report', {
+        game: game,
+        period: -1, // force reload
+    });
+};
+
 // load from url hash
 var loadHash = function () {
     var urlHash = window.location.hash.slice(1);
     if (urlHash) {
-        socket.emit('report', {
-            game: urlHash,
-            period: -1, // force reload
-        });
+        loadReport(urlHash);
     }
 };
 loadHash();
@@ -589,4 +589,15 @@ socket.on('submit_decline', function (data) {
 
 socket.on('submit_fail', function (data) {
     message('Submit not allowed');
+});
+
+// connection
+
+socket.on('connect', function () {
+    // TODO
+    autoLogin();
+});
+
+socket.on('disconnect', function () {
+    message('Connection lost');
 });

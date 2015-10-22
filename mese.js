@@ -23,7 +23,7 @@ util.log('server init ' + port);
 
 db.init(function () {
     io(server).on('connection', function (socket) {
-        util.log('socket ' + socket.conn.remoteAddress);
+        util.log('connect ' + socket.conn.remoteAddress);
 
         var d = domain.create();
 

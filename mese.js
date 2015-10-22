@@ -95,7 +95,7 @@ db.init(function () {
                 util.log('change password ' + authName);
 
                 authStorage.staticGet('password', function (password) {
-                    if (data.password === password) {
+                    if (password === data.password) {
                         authStorage.staticSet(
                             'password', data.newPassword,
                             function (doc) {
@@ -224,7 +224,7 @@ db.init(function () {
                             result.game = data.game;
                             result.players = players;
 
-                            if (result.now_period !== data.period) { // TODO: simplify
+                            if (result.now_period != data.period) { // TODO: simplify
                                 socket.emit(
                                     'report_player',
                                     result
@@ -240,7 +240,7 @@ db.init(function () {
                             result.game = data.game;
                             result.players = players;
 
-                            if (result.now_period !== data.period) { // TODO: simplify
+                            if (result.now_period != data.period) { // TODO: simplify
                                 socket.emit(
                                     'report_public',
                                     result

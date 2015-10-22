@@ -323,6 +323,7 @@ setInterval(
 
 var currentGame = undefined;
 var currentPeriod = undefined;
+var currentUid = undefined;
 
 for (var i = 0; i < 16; ++i) { // max = 16
     $('#report_players')
@@ -367,7 +368,7 @@ $('#submit_rd').change(function () {
     );
 });
 
-var initReport = function (game, period) {
+var initReport = function (game, period, uid) {
     if (game !== currentGame) {
         hideSide();
         message('Game: ' + game);
@@ -378,6 +379,7 @@ var initReport = function (game, period) {
 
     currentGame = game;
     currentPeriod = period;
+    currentUid = uid;
 
     $('#subscribe_game').val(currentGame);
 
@@ -433,6 +435,7 @@ var loadReport = function (game) {
     socket.emit('report', {
         game: game,
         period: -1, // force reload
+        uid: -1, // force reload
     });
 };
 
@@ -453,6 +456,7 @@ setInterval(
             socket.emit('report', {
                 game: currentGame,
                 period: currentPeriod,
+                uid: currentUid,
             });
         }
     },
@@ -467,7 +471,7 @@ socket.on('report_early', function (data) {
 });
 
 socket.on('report_player', function (data) {
-    initReport(data.game, data.now_period);
+    initReport(data.game, data.now_period, data.uid);
 
     showStatus(data.status);
     showReport($('#report_players'), data.players, 'now');
@@ -534,7 +538,7 @@ socket.on('report_player', function (data) {
 });
 
 socket.on('report_public', function (data) {
-    initReport(data.game, data.now_period);
+    initReport(data.game, data.now_period, data.uid);
 
     showStatus(data.status);
     showReport($('#report_players'), data.players, 'now');

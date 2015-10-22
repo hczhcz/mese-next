@@ -189,6 +189,7 @@ db.init(function () {
                 if (
                     !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
                     || !util.verifyInt(data.period)
+                    || !util.verifyNum(data.uid)
                 ) {
                     util.log('bad socket request');
 
@@ -210,6 +211,10 @@ db.init(function () {
                         return;
                     }
 
+                    if (map.uid == data.uid) {
+                        return;
+                    }
+
                     var player = undefined;
 
                     for (var i in map.players) {
@@ -222,6 +227,7 @@ db.init(function () {
                         gameStorage, player,
                         function (result) {
                             result.game = data.game;
+                            result.uid = map.uid;
                             result.players = map.players;
 
                             if (result.now_period != data.period) { // TODO: simplify

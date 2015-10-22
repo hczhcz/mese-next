@@ -5,13 +5,13 @@ var core = require('./mese.core');
 var db = require('./mese.db');
 
 db.init(function () {
-    var initGame = function (game, invites, settings) {
-        util.log('create game ' + game + ' ' + JSON.stringify(invites));
+    var initGame = function (game, players, settings) {
+        util.log('create game ' + game + ' ' + JSON.stringify(players));
 
         var gameStorage = db.access('games', game);
 
-        gameStorage.staticGet('players', function (players) {
-            if (players === undefined) {
+        gameStorage.staticGetMulti(function (map) {
+            if (!map) {
                 // create new game
 
                 var period = 0;
@@ -29,7 +29,7 @@ db.init(function () {
                             {
                                 data: gameData,
                                 uid: uid,
-                                players: invites,
+                                players: players,
                             },
                             function (doc) {
                                 // nothing
@@ -42,7 +42,7 @@ db.init(function () {
                     var authStorage = db.access('users', player);
 
                     authStorage.staticGet('subscribes', function (subscribes) {
-                        if (subscribes === undefined) {
+                        if (!subscribes) {
                             subscribes = {};
                         }
 
@@ -58,11 +58,11 @@ db.init(function () {
                 };
 
                 // alloc periods
-                core.init(invites.length, 'modern', settings[0], doAlloc);
+                core.init(players.length, 'modern', settings[0], doAlloc);
 
                 // add subscriptions
-                for (var i in invites) {
-                    doInvite(invites[i]);
+                for (var i in players) {
+                    doInvite(players[i]);
                 }
             } else {
                 util.log('game exists');

@@ -124,7 +124,7 @@ db.init(function () {
                 util.log('list ' + authName);
 
                 authStorage.staticGet('subscribes', function (subscribes) {
-                    if (subscribes === undefined) {
+                    if (!subscribes) {
                         subscribes = {};
                     }
 
@@ -156,10 +156,10 @@ db.init(function () {
 
                 var gameStorage = db.access('games', data.game);
 
-                gameStorage.staticGet('players', function (players) {
-                    if (!data.enabled || players !== undefined) {
+                gameStorage.staticGetMulti(function (map) {
+                    if (!data.enabled || map) {
                         authStorage.staticGet('subscribes', function (subscribes) {
-                            if (subscribes === undefined) {
+                            if (!subscribes) {
                                 subscribes = {};
                             }
 
@@ -203,8 +203,8 @@ db.init(function () {
 
                 var gameStorage = db.access('games', data.game);
 
-                gameStorage.staticGet('players', function (players) {
-                    if (players === undefined) {
+                gameStorage.staticGetMulti(function (map) {
+                    if (!map) {
                         util.log('game not found ' + data.game);
 
                         return;
@@ -212,8 +212,8 @@ db.init(function () {
 
                     var player = undefined;
 
-                    for (var i in players) {
-                        if (players[i] === authName) {
+                    for (var i in map.players) {
+                        if (map.players[i] === authName) {
                             player = parseInt(i);
                         }
                     }
@@ -222,7 +222,7 @@ db.init(function () {
                         gameStorage, player,
                         function (result) {
                             result.game = data.game;
-                            result.players = players;
+                            result.players = map.players;
 
                             if (result.now_period != data.period) { // TODO: simplify
                                 socket.emit(
@@ -238,7 +238,7 @@ db.init(function () {
                         },
                         function (result) {
                             result.game = data.game;
-                            result.players = players;
+                            result.players = map.players;
 
                             if (result.now_period != data.period) { // TODO: simplify
                                 socket.emit(
@@ -278,8 +278,8 @@ db.init(function () {
 
                 var gameStorage = db.access('games', data.game);
 
-                gameStorage.staticGet('players', function (players) {
-                    if (players === undefined) {
+                gameStorage.staticGetMulti(function (map) {
+                    if (!map) {
                         util.log('game not found ' + data.game);
 
                         return;
@@ -287,8 +287,8 @@ db.init(function () {
 
                     var player = undefined;
 
-                    for (var i in players) {
-                        if (players[i] === authName) {
+                    for (var i in map.players) {
+                        if (map.players[i] === authName) {
                             player = parseInt(i);
                         }
                     }

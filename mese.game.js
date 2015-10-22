@@ -59,14 +59,12 @@ var storeData = function (storage, gameData, oldData, snapshot, callback) {
     var uid = Number(new Date());
 
     // store data
-    storage.staticSet(
-        'data', gameData,
-        function (doc) {
-            storage.staticSet(
-                'uid', uid,
-                callback
-            );
-        }
+    storage.staticSetMulti(
+        {
+            data: gameData,
+            uid: uid,
+        },
+        callback
     );
 
     if (snapshot) {

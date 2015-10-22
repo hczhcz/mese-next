@@ -40,9 +40,35 @@ module.exports.access = function (lv1, lv2) {
                 }
             });
         },
+        staticGetMulti: function (callback) {
+            dbStorage[lv1].find({
+                _id: lv2
+            }).toArray(function (err, docs) {
+                if (err) {
+                    throw err;
+                } else if (docs.length == 1) {
+                    callback(docs[0]);
+                } else {
+                    callback(undefined);
+                }
+            });
+        },
         staticSet: function (key, value, callback) {
             var op = {$set: {}};
             op.$set[key] = value;
+
+            dbStorage[lv1].updateOne({
+                _id: lv2
+            }, op, {upsert: true}, function (err, doc) {
+                if (err) {
+                    throw err;
+                } else {
+                    callback(doc);
+                }
+            });
+        },
+        staticSetMulti: function (map, callback) {
+            var op = {$set: map};
 
             dbStorage[lv1].updateOne({
                 _id: lv2

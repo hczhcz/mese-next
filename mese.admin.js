@@ -25,20 +25,14 @@ db.init(function () {
                         // generate an unique id (assumed unique)
                         var uid = Number(new Date());
 
-                        gameStorage.staticSet(
-                            'data', gameData,
+                        gameStorage.staticSetMulti(
+                            {
+                                data: gameData,
+                                uid: uid,
+                                players: invites,
+                            },
                             function (doc) {
-                                gameStorage.staticSet(
-                                    'uid', uid,
-                                    function (doc) {
-                                        gameStorage.staticSet(
-                                            'players', invites,
-                                            function (doc) {
-                                                // nothing
-                                            }
-                                        );
-                                    }
-                                );
+                                // nothing
                             }
                         );
                     }

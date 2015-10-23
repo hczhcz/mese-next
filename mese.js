@@ -205,60 +205,60 @@ db.init(function () {
                 var gameStorage = db.access('games', data.game);
 
                 gameStorage.staticGetMulti(function (map) {
-                    if (!map) {
+                    if (map) {
+                        if (map.uid == data.uid) {
+                            return;
+                        }
+
+                        var player = undefined;
+
+                        for (var i in map.players) {
+                            if (map.players[i] === authName) {
+                                player = parseInt(i);
+                            }
+                        }
+
+                        report.print(
+                            gameStorage, player,
+                            function (result) {
+                                result.game = data.game;
+                                result.uid = map.uid;
+                                result.players = map.players;
+
+                                if (result.now_period != data.period) { // TODO: simplify
+                                    socket.emit(
+                                        'report_player',
+                                        result
+                                    );
+                                } else {
+                                    socket.emit(
+                                        'report_status',
+                                        result.status
+                                    );
+                                }
+                            },
+                            function (result) {
+                                result.game = data.game;
+                                result.players = map.players;
+
+                                if (result.now_period != data.period) { // TODO: simplify
+                                    socket.emit(
+                                        'report_public',
+                                        result
+                                    );
+                                } else {
+                                    socket.emit(
+                                        'report_status',
+                                        result.status
+                                    );
+                                }
+                            }
+                        );
+                    } else {
                         util.log('game not found ' + data.game);
 
-                        return;
+                        socket.emit('report_fail');
                     }
-
-                    if (map.uid == data.uid) {
-                        return;
-                    }
-
-                    var player = undefined;
-
-                    for (var i in map.players) {
-                        if (map.players[i] === authName) {
-                            player = parseInt(i);
-                        }
-                    }
-
-                    report.print(
-                        gameStorage, player,
-                        function (result) {
-                            result.game = data.game;
-                            result.uid = map.uid;
-                            result.players = map.players;
-
-                            if (result.now_period != data.period) { // TODO: simplify
-                                socket.emit(
-                                    'report_player',
-                                    result
-                                );
-                            } else {
-                                socket.emit(
-                                    'report_status',
-                                    result.status
-                                );
-                            }
-                        },
-                        function (result) {
-                            result.game = data.game;
-                            result.players = map.players;
-
-                            if (result.now_period != data.period) { // TODO: simplify
-                                socket.emit(
-                                    'report_public',
-                                    result
-                                );
-                            } else {
-                                socket.emit(
-                                    'report_status',
-                                    result.status
-                                );
-                            }
-                        }
-                    );
                 });
             });
 

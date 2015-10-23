@@ -567,6 +567,10 @@ socket.on('report_status', function (data) {
     showStatus(data);
 });
 
+socket.on('report_fail', function (data) {
+    message('Game not found');
+});
+
 // submit
 
 $('#submit_submit').click(function (event) {

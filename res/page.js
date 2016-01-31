@@ -588,15 +588,15 @@ $('#submit_submit').click(function (event) {
 });
 
 socket.on('submit_ok', function (data) {
-    message('Submit ok');
+    message('Submission ok');
 });
 
 socket.on('submit_decline', function (data) {
-    message('Submit declined');
+    message('Submission declined');
 });
 
 socket.on('submit_fail', function (data) {
-    message('Submit not allowed');
+    message('Submission not allowed');
 });
 
 // connection

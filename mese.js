@@ -320,14 +320,14 @@ db.init(function () {
                                 afterSubmit(gameData);
                             },
                             function (gameData) {
-                                util.log('submit declined ' + authName + ' ' + data.game);
+                                util.log('submission declined ' + authName + ' ' + data.game);
 
                                 socket.emit('submit_decline');
                                 afterSubmit(gameData);
                             }
                         );
                     } else {
-                        util.log('submit not allowed ' + authName + ' ' + data.game);
+                        util.log('submission not allowed ' + authName + ' ' + data.game);
 
                         socket.emit('submit_fail');
                     }

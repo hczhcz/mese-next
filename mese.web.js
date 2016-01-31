@@ -21,6 +21,8 @@ module.exports.handler = function (req, res) {
     d.run(function () {
         util.log('web ' + req.connection.remoteAddress + ' ' + req.url);
 
+        req.url = req.url.split('?')[0];
+
         if (req.url == '/jquery.min.js') {
             res.writeHead(200, {
                 'Content-Type': 'application/javascript',

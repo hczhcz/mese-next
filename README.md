@@ -9,7 +9,9 @@ MESE (Management and Economics Simulation Exercise) is a business simulator whic
 MESE-Next
 ---
 
-MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next website and compete with other players on the Internet. MESE-Next is made by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Frontend).
+MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next server and compete with other players on the Internet. MESE-Next is made by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
+
+> Workflow: MESE-Next
 
 ### Difference between MESE-Next and MESE
 
@@ -17,7 +19,7 @@ MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an on
 * MESE-Next supports more than 8 players in the same game (32 players maximum by default);
 * MESE-Next supports more game settings;
 * MESE-Next provides 8p-feeling settings in any game;
-* Classic MESE have paper-based reports (for MESE-Next, you might print webpages);
+* Classic MESE have paper-based reports (for MESE-Next, you might print the web pages);
 * Classic MESE supports bots;
 
 ### Difference between MESE-Next and [JA Titan](http://titan.ja.org/)
@@ -34,11 +36,11 @@ MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an on
 * IMese only runs under Windows x86 environment;
 
 Client Side Requirements
-===
+---
 
 A browser supports HTML5, CSS3, and ES5 features is required.
 
-MESE-Next works best under:
+MESE-Next web frontend works best under:
 
 * Firefox 38+
 * Chromium 42+
@@ -51,18 +53,21 @@ MESE-Next does not support:
 * QQ (WeChat) Browser on Android
 
 Server Side Requirements
-===
+---
+
+MESE-Next server may require:
 
 * Node.js 0.12+
 * MongoDB 2.x
+* Node.js packages: "mongodb" and "socket.io"
 * MESE-Next Engine (released in MESE China Group)
 
 Installation
-===
+---
 
 (TODO)
 
 Configuration
-===
+---
 
 (TODO)

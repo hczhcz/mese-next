@@ -4,6 +4,8 @@ var socket = io(window.location.origin);
 
 // message
 
+var windowActive = false;
+
 var showMessage = function () {
     $('#message')
         .clearQueue()
@@ -34,11 +36,13 @@ var removeMessage = function () {
 };
 
 var hideMessage = function () {
-    $('#message')
-        .clearQueue()
-        .stop()
-        .delay(2000)
-        .fadeOut(2000, removeMessage);
+    if (windowActive) {
+        $('#message')
+            .clearQueue()
+            .stop()
+            .delay(2000)
+            .fadeOut(2000, removeMessage);
+    }
 };
 
 var message = function (message) {
@@ -49,6 +53,15 @@ var message = function (message) {
     showMessage();
     hideMessage();
 };
+
+$(window).focus(function () {
+    windowActive = true;
+    hideMessage();
+});
+
+$(window).blur(function () {
+    windowActive = false;
+});
 
 $('#message').hover(showMessage, hideMessage);
 $('#message').click(removeMessage);
@@ -341,6 +354,7 @@ $('#submit_price').change(function () {
         0.01 * Math.round(100 * $('#submit_price').val())
     );
 });
+
 $('#submit_prod').change(function () {
     $('#submit_prod').val(
         Math.round($('#submit_prod').val())
@@ -351,16 +365,19 @@ $('#submit_prod').change(function () {
         )
     );
 });
+
 $('#submit_mk').change(function () {
     $('#submit_mk').val(
         0.01 * Math.round(100 * $('#submit_mk').val())
     );
 });
+
 $('#submit_ci').change(function () {
     $('#submit_ci').val(
         0.01 * Math.round(100 * $('#submit_ci').val())
     );
 });
+
 $('#submit_rd').change(function () {
     $('#submit_rd').val(
         0.01 * Math.round(100 * $('#submit_rd').val())
@@ -446,6 +463,7 @@ var loadHash = function () {
     }
 };
 loadHash();
+
 $(window).on('hashchange', loadHash);
 
 // auto refresh

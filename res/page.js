@@ -496,7 +496,7 @@ socket.on('report_player', function (data) {
     if (data.now_period >= 3) {
         // showReport($('#report_decisions'), data.last_decisions, 'last');
         // showReport($('#report_data_early'), data.last_data_early, 'last');
-        // showReport($('#report_data'), data.last_data, 'last');
+        showReport($('#report_data'), data.last_data, 'last');
         showReport($('#report_decisions'), data.last_data_public.decisions, 'last', true);
         showReport($('#report_data_early'), data.last_data_public.data_early, 'last');
         showReport($('#report_data'), data.last_data_public.data, 'last', true);

@@ -51,7 +51,6 @@ var message = function (message) {
 };
 
 $('#message').hover(showMessage, hideMessage);
-$('#message').mousemove(showMessage);
 $('#message').click(removeMessage);
 $('#message').on('touchstart', removeMessage);
 

@@ -343,6 +343,7 @@ for (var i = 0; i < 16; ++i) { // max = 16
     $('#report_list [xbind]')
         .append('<td bind="' + i + '"></td>');
 }
+var verboseEnabled = false;
 
 var initReport = function (game, period, uid) {
     if (game !== currentGame) {
@@ -443,6 +444,24 @@ $('.report_div [bind]')
     .append('<span target="last"><span></span>&nbsp;</span>')
     .append('<span target="now"><span></span></span>')
     .append('<span target="next">&nbsp;<span></span></span>');
+
+$('#report_refresh').click(function () {
+    reloadReport();
+});
+
+$('#report_expand').click(function () {
+    if (verboseEnabled) {
+        verboseEnabled = false;
+
+        $('.report_verbose').addClass('hide');
+        $('#report_expand').text('+');
+    } else {
+        verboseEnabled = true;
+
+        $('.report_verbose').removeClass('hide');
+        $('#report_expand').text('-');
+    }
+});
 
 socket.on('report_early', function (data) {
     showStatus(data.status);

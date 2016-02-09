@@ -35,6 +35,14 @@
             color: red;
         }
 
+        .sqr {
+            display: inline-block;
+            width: 1.5em;
+            height: 1.5em;
+
+            line-height: 150%;
+        }
+
         .box {
             -ms-border-radius: 0.25em;
             -moz-border-radius: 0.25em;
@@ -273,6 +281,8 @@
             <td colspan='2'>
                 <h2>
                     <span id='report_title'></span>
+                    <span id='report_refresh' class='sqr box'>⟳</span>
+                    <span id='report_expand' class='sqr box'>+</span>
                 </h2>
             </td>
         </tr>

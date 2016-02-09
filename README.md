@@ -1,4 +1,4 @@
-MESE-Next
+MESE-Next Server
 ===
 
 About MESE
@@ -9,9 +9,9 @@ MESE (Management and Economics Simulation Exercise) is a business simulator whic
 MESE-Next
 ---
 
-MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next server and compete with other players on the Internet. MESE-Next is made by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
+MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next Server and compete with other players on the Internet. MESE-Next is made by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
 
-> Workflow: MESE-Next Engine <=> Mese-Next Server <=> Web Browsers
+> Workflow: MESE-Next Engine <=> MESE-Next Server <=> Web Browsers
 
 ### Difference between MESE-Next and MESE
 
@@ -40,7 +40,7 @@ Client Side Requirements
 
 A browser supports HTML5, CSS3, and ES5 features is required.
 
-MESE-Next web frontend works best under:
+MESE-Next Web Frontend works best under:
 
 * Firefox 38+
 * Chromium 42+
@@ -55,19 +55,35 @@ MESE-Next does not support:
 Server Side Requirements
 ---
 
-MESE-Next server may require:
+MESE-Next Server may require:
 
 * Node.js 0.12+
 * MongoDB 2.x
-* Node.js packages: "mongodb" and "socket.io"
+* Node.js packages: `mongodb` and `socket.io`
 * MESE-Next Engine (released in MESE China Group)
 
 Installation
 ---
 
-(TODO)
+MESE-Next Server itself does not need installation.
+
+Before running MESE-Next, you may need the following steps:
+
+1. Clone this repository;
+2. Install Node.js and MongoDB;
+3. Install NPM (Node.js Package Manager);
+4. Install required packages: `mongodb`, `socket.io`;
+5. Get MESE-NEXT Engine from our group or by contacting us, and put it under the same directory as MESE-Next Server's;
+6. Now, you could run `mese.js` using Node.js.
 
 Configuration
 ---
 
 (TODO)
+
+License
+---
+
+MESE-Next - Copyright (C) hczhcz
+
+MESE-Next is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. As this distribution is not under any license, commercial use, public use, and redistribution outside GitHub are not allowed. Contact us if you need a licensed version.

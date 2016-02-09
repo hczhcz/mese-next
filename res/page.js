@@ -126,6 +126,36 @@ $('#util td').dblclick(function (event) {
 
 var currentName = undefined;
 
+var loginDone = function (name, reg) {
+    currentName = name;
+
+    $('#user_name').text(
+        reg ? currentName + ' (new user)' : currentName
+    );
+
+    $('#user').removeClass('hide');
+    $('#password').removeClass('hide');
+    $('#subscribe').removeClass('hide');
+    $('#list').addClass('hide');
+
+    socket.emit('list');
+
+    if (currentGame) {
+        loadReport(currentGame);
+    }
+};
+
+var autoLogin = function () {
+    // auto login
+    var loginInfo = localStorage.getItem('MESE_login');
+    if (loginInfo) {
+        var loginInfoObj = JSON.parse(loginInfo);
+
+        socket.emit('login', loginInfoObj);
+        $('#login_name').val(loginInfoObj.name);
+    }
+};
+
 $('#login_name').change(function () {
     if (/^[A-Za-z0-9_ ]+$/.test($('#login_name').val())) {
         $('#login_name').removeClass('wrong');
@@ -171,36 +201,6 @@ $('#login_submit').click(function (event) {
         password: password, // TODO: hash?
     });
 });
-
-var loginDone = function (name, reg) {
-    currentName = name;
-
-    $('#user_name').text(
-        reg ? currentName + ' (new user)' : currentName
-    );
-
-    $('#user').removeClass('hide');
-    $('#password').removeClass('hide');
-    $('#subscribe').removeClass('hide');
-    $('#list').addClass('hide');
-
-    socket.emit('list');
-
-    if (currentGame) {
-        loadReport(currentGame);
-    }
-};
-
-var autoLogin = function () {
-    // auto login
-    var loginInfo = localStorage.getItem('MESE_login');
-    if (loginInfo) {
-        var loginInfoObj = JSON.parse(loginInfo);
-
-        socket.emit('login', loginInfoObj);
-        $('#login_name').val(loginInfoObj.name);
-    }
-};
 
 socket.on('login_new', function (data) {
     loginDone(data.name, true);
@@ -264,6 +264,30 @@ socket.on('password_fail', function (data) {
 
 var currentList = undefined;
 
+var updateList = function (data) {
+    currentList = data;
+
+    $('#list_content').empty();
+
+    for (var i in currentList) {
+        if (currentList[i]) {
+            $('#list_content').prepend(
+                $('<input type="button" />')
+                    .val(i)
+                    .click(function (game) {
+                        return function (event) {
+                            event.preventDefault();
+
+                            loadReport(game);
+                        }
+                    } (i))
+            );
+        }
+    }
+
+    $('#list').removeClass('hide');
+};
+
 $('#subscribe_game').change(function () {
     if (/^[A-Za-z0-9_ ]+$/.test($('#subscribe_game').val())) {
         $('#subscribe_game').removeClass('wrong');
@@ -288,30 +312,6 @@ $('#subscribe_submit').click(function (event) {
         enabled: !currentList[$('#subscribe_game').val()],
     });
 });
-
-var updateList = function (data) {
-    currentList = data;
-
-    $('#list_content').empty();
-
-    for (var i in currentList) {
-        if (currentList[i]) {
-            $('#list_content').prepend(
-                $('<input type="button" />')
-                    .val(i)
-                    .click(function (game) {
-                        return function (event) {
-                            event.preventDefault();
-
-                            loadReport(game);
-                        }
-                    } (i))
-            );
-        }
-    }
-
-    $('#list').removeClass('hide');
-};
 
 socket.on('subscribe_list', updateList);
 
@@ -343,46 +343,6 @@ for (var i = 0; i < 16; ++i) { // max = 16
     $('#report_list [xbind]')
         .append('<td bind="' + i + '"></td>');
 }
-
-$('.report_div [bind]')
-    .append('<span target="last"><span></span>&nbsp;</span>')
-    .append('<span target="now"><span></span></span>')
-    .append('<span target="next">&nbsp;<span></span></span>');
-
-$('#submit_price').change(function () {
-    $('#submit_price').val(
-        0.01 * Math.round(100 * $('#submit_price').val())
-    );
-});
-
-$('#submit_prod').change(function () {
-    $('#submit_prod').val(
-        Math.round($('#submit_prod').val())
-    );
-    $('#submit_prod_rate').text(
-        Math.round(
-            100 * $('#submit_prod').val() / $('#submit_prod').attr('max')
-        )
-    );
-});
-
-$('#submit_mk').change(function () {
-    $('#submit_mk').val(
-        0.01 * Math.round(100 * $('#submit_mk').val())
-    );
-});
-
-$('#submit_ci').change(function () {
-    $('#submit_ci').val(
-        0.01 * Math.round(100 * $('#submit_ci').val())
-    );
-});
-
-$('#submit_rd').change(function () {
-    $('#submit_rd').val(
-        0.01 * Math.round(100 * $('#submit_rd').val())
-    );
-});
 
 var initReport = function (game, period, uid) {
     if (game !== currentGame) {
@@ -479,6 +439,11 @@ setInterval(
     },
     30000
 );
+
+$('.report_div [bind]')
+    .append('<span target="last"><span></span>&nbsp;</span>')
+    .append('<span target="now"><span></span></span>')
+    .append('<span target="next">&nbsp;<span></span></span>');
 
 socket.on('report_early', function (data) {
     showStatus(data.status);
@@ -589,6 +554,41 @@ socket.on('report_fail', function (data) {
 });
 
 // submit
+
+$('#submit_price').change(function () {
+    $('#submit_price').val(
+        0.01 * Math.round(100 * $('#submit_price').val())
+    );
+});
+
+$('#submit_prod').change(function () {
+    $('#submit_prod').val(
+        Math.round($('#submit_prod').val())
+    );
+    $('#submit_prod_rate').text(
+        Math.round(
+            100 * $('#submit_prod').val() / $('#submit_prod').attr('max')
+        )
+    );
+});
+
+$('#submit_mk').change(function () {
+    $('#submit_mk').val(
+        0.01 * Math.round(100 * $('#submit_mk').val())
+    );
+});
+
+$('#submit_ci').change(function () {
+    $('#submit_ci').val(
+        0.01 * Math.round(100 * $('#submit_ci').val())
+    );
+});
+
+$('#submit_rd').change(function () {
+    $('#submit_rd').val(
+        0.01 * Math.round(100 * $('#submit_rd').val())
+    );
+});
 
 $('#submit_submit').click(function (event) {
     event.preventDefault();

@@ -422,23 +422,22 @@ var loadHash = function () {
         loadReport(urlHash);
     }
 };
-loadHash();
 
+var reloadReport = function () {
+    if (!$('#report').hasClass('hide')) {
+        socket.emit('report', {
+            game: currentGame,
+            period: currentPeriod,
+            uid: currentUid,
+        });
+    }
+};
+
+loadHash();
 $(window).on('hashchange', loadHash);
 
 // auto refresh
-setInterval(
-    function () {
-        if (!$('#report').hasClass('hide')) {
-            socket.emit('report', {
-                game: currentGame,
-                period: currentPeriod,
-                uid: currentUid,
-            });
-        }
-    },
-    30000
-);
+setInterval(reloadReport, 30000);
 
 $('.report_div [bind]')
     .append('<span target="last"><span></span>&nbsp;</span>')

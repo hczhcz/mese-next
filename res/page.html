@@ -45,13 +45,18 @@
             background: #303030;
             background: rgba(48, 48, 48, 0.5);
             color: #E0E0E0;
+            cursor: pointer;
             text-align: center;
             -ms-text-shadow: 0.05em 0.05em 0.05em #303030;
             -moz-text-shadow: 0.05em 0.05em 0.05em #303030;
             -webkit-text-shadow: 0.05em 0.05em 0.05em #303030;
             -o-text-shadow: 0.05em 0.05em 0.05em #303030;
             text-shadow: 0.05em 0.05em 0.05em #303030;
-            font-size: 300%;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -o-user-select: none;
+            user-select: none;
         }
 
         /* message */
@@ -67,6 +72,8 @@
             transform: translate(-50%, -50%);
             padding: 0.25em 1em;
             z-index: 3;
+
+            font-size: 300%;
         }
 
         #message p {

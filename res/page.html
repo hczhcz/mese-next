@@ -281,6 +281,7 @@
             <td colspan='2'>
                 <h2>
                     <span id='report_title'></span>
+                    <!-- TODO: iOS 8 Safari does not show "⟳" -->
                     <span id='report_refresh' class='sqr box'>⟳</span>
                     <span id='report_expand' class='sqr box'>+</span>
                 </h2>
@@ -292,7 +293,7 @@
                 <table bind='production'>
                     <tr><th>Production</th><th>You</th><th>Average</th></tr>
                     <tr><td>Prod rate</td><td bind='prod_rate'></td></tr>
-                    <tr class='report_verbose hide'><td></td><td bind='prod_over'></td></tr>
+                    <tr class='report_verbose hide'><td>Prod rate exceed</td><td bind='prod_over'></td></tr>
                     <tr><td>Unit prod cost</td><td bind='prod_cost_unit'></td><td bind='average_prod_cost_unit'></td></tr>
                     <tr><td>Marginal cost</td><td bind='prod_cost_marginal'></td></tr>
                     <tr><td>Total prod cost</td><td bind='prod_cost'></td><td bind='average_prod_cost'></td></tr>

@@ -11,7 +11,7 @@ MESE-Next
 
 MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next server and compete with other players on the Internet. MESE-Next is made by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
 
-> Workflow: MESE-Next
+> Workflow: MESE-Next Engine <=> Mese-Next Server <=> Web Browsers
 
 ### Difference between MESE-Next and MESE
 

@@ -288,6 +288,16 @@ var updateList = function (data) {
     $('#list').removeClass('hide');
 };
 
+// auto refresh
+setInterval(
+    function () {
+        if (!$('#list').hasClass('hide')) {
+            socket.emit('list');
+        }
+    },
+    60000
+);
+
 $('#subscribe_game').change(function () {
     if (/^[A-Za-z0-9_ ]+$/.test($('#subscribe_game').val())) {
         $('#subscribe_game').removeClass('wrong');
@@ -321,28 +331,12 @@ socket.on('subscribe_fail', function (data) {
     message('Game not found');
 });
 
-// auto refresh
-setInterval(
-    function () {
-        if (!$('#list').hasClass('hide')) {
-            socket.emit('list');
-        }
-    },
-    60000
-);
-
 // report
 
 var currentGame = undefined;
 var currentPeriod = undefined;
 var currentUid = undefined;
 
-for (var i = 0; i < 16; ++i) { // max = 16
-    $('#report_players')
-        .append('<th bind="' + i + '"></th>');
-    $('#report_list [xbind]')
-        .append('<td bind="' + i + '"></td>');
-}
 var verboseEnabled = false;
 
 var initReport = function (game, period, uid) {
@@ -434,11 +428,20 @@ var reloadReport = function () {
     }
 };
 
-loadHash();
-$(window).on('hashchange', loadHash);
+// add items
+for (var i = 0; i < 16; ++i) { // max = 16
+    $('#report_players')
+        .append('<th bind="' + i + '"></th>');
+    $('#report_list [xbind]')
+        .append('<td bind="' + i + '"></td>');
+}
 
 // auto refresh
 setInterval(reloadReport, 30000);
+
+// load the game
+loadHash();
+$(window).on('hashchange', loadHash);
 
 $('.report_div [bind]')
     .append('<span target="last"><span></span>&nbsp;</span>')
@@ -637,7 +640,6 @@ socket.on('submit_fail', function (data) {
 // connection
 
 socket.on('connect', function () {
-    // TODO
     autoLogin();
 });
 

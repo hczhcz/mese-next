@@ -239,6 +239,7 @@ db.init(function () {
                             },
                             function (result) {
                                 result.game = data.game;
+                                result.uid = map.uid;
                                 result.players = map.players;
 
                                 if (result.now_period != data.period) { // TODO: simplify

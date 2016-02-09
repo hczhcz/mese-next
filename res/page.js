@@ -176,6 +176,12 @@ $('#login_password').keypress(function (event) {
     }
 });
 
+$('#login_remember').click(function () {
+    if (!$('#login_remember').prop('checked')) {
+        localStorage.removeItem('MESE_login');
+    }
+});
+
 $('#login_submit').click(function (event) {
     event.preventDefault();
 

@@ -2,6 +2,8 @@
 
 var mongodb = require('mongodb').MongoClient;
 
+var config = require('./mese.config');
+
 var dbStorage = undefined;
 var memStorage = {
     users: {},
@@ -10,7 +12,7 @@ var memStorage = {
 
 module.exports.init = function (callback) {
     mongodb.connect(
-        'mongodb://localhost/mese',
+        config.db,
         function (err, db) {
             if (err) {
                 throw err;

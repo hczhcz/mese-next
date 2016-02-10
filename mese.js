@@ -1,11 +1,10 @@
 'use strict';
 
-var port = 63000;
-
 var domain = require('domain');
 var http = require('http'); // TODO: https?
 var io = require('socket.io');
 
+var config = require('./mese.config');
 var util = require('./mese.util');
 var db = require('./mese.db');
 var game = require('./mese.game');
@@ -17,9 +16,9 @@ process.on('uncaughtException', function (e) {
     util.log(e.stack || e);
 });
 
-var server = http.createServer(web.handler).listen(port);
+var server = http.createServer(web.handler).listen(config.port);
 
-util.log('server init ' + port);
+util.log('server init ' + config.port);
 
 db.init(function () {
     io(server).on('connection', function (socket) {

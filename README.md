@@ -74,12 +74,8 @@ Before running MESE-Next, you may need the following steps:
 3. Install NPM (Node.js Package Manager);
 4. Install required packages: `mongodb`, `socket.io`;
 5. Get MESE-NEXT Engine from our group or by contacting us, and put it under the same directory as MESE-Next Server's;
-6. Now, you could run `mese.js` using Node.js.
-
-Configuration
----
-
-(TODO)
+6. Edit `mese.config.js` if you want to change some configurations;
+7. Now, you could run `mese.js` using Node.js.
 
 License
 ---

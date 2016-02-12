@@ -35,14 +35,6 @@
             color: red;
         }
 
-        .sqr {
-            display: inline-block;
-            width: 1.5em;
-            height: 1.5em;
-
-            line-height: 150%;
-        }
-
         .box {
             -ms-border-radius: 0.25em;
             -moz-border-radius: 0.25em;
@@ -197,7 +189,7 @@
             table-layout: fixed;
         }
         .report_list_div table {
-            table-layout: auto !important;
+            table-layout: auto;
         }
 
         .report_div tr>* {
@@ -206,7 +198,7 @@
             text-align: right;
         }
         .report_div tr>:first-child {
-            text-align: left !important;
+            text-align: left;
         }
 
         .report_div [target=last], .hint_last {
@@ -216,6 +208,14 @@
         }
         .report_div [target=next], .hint_next {
             color: blue;
+        }
+
+        .report_button {
+            display: inline-block;
+            width: 1.5em;
+            height: 1.5em;
+
+            line-height: 150%;
         }
 
         /* submit */
@@ -282,8 +282,8 @@
                 <h2>
                     <span id='report_title'></span>
                     <!-- TODO: iOS 8 Safari does not show "⟳" -->
-                    <span id='report_refresh' class='sqr box'>⟳</span>
-                    <span id='report_expand' class='sqr box'>+</span>
+                    <span id='report_refresh' class='report_button box'>⟳</span>
+                    <span id='report_expand' class='report_button box'>+</span>
                 </h2>
             </td>
         </tr>

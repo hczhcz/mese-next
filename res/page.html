@@ -242,6 +242,11 @@
             <tr id='user' class='hide'>
                 <td>Login user: <span id='user_name'></span></td>
             </tr>
+            <tr id='login_show' class='hide'>
+                <td>
+                    <p><input id='login_show_submit' type='submit' value='Switch User' /></p>
+                </td>
+            </tr>
             <tr id='login'>
                 <td>
                     <p>Name</p>
@@ -252,13 +257,18 @@
                     <p><input id='login_submit' type='submit' value='Sign up / Login' /></p>
                 </td>
             </tr>
+            <tr id='password_show' class='hide'>
+                <td>
+                    <p><input id='password_show_submit' type='submit' value='Change Password' /></p>
+                </td>
+            </tr>
             <tr id='password' class='hide'>
                 <td>
                     <p>Old password</p>
                     <p><input id='password_old' type='password' maxlength='32' /></p>
                     <p>New password</p>
                     <p><input id='password_new' type='password' maxlength='32' /></p>
-                    <p><input id='password_submit' type='submit' value='Change password' /></p>
+                    <p><input id='password_submit' type='submit' value='Change Password' /></p>
                 </td>
             </tr>
             <tr id='subscribe' class='hide'>
@@ -352,7 +362,7 @@
         </tr>
         <tr>
             <td class='report_div' colspan='2'>
-                <h3>Players' detail</h3>
+                <h3>Players' details</h3>
                 <div class='report_list_div'>
                     <table id='report_list'>
                         <tr id='report_players'><th>Player</th></tr>

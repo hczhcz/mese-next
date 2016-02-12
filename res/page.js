@@ -134,10 +134,14 @@ var loginDone = function (name, reg) {
     );
 
     $('#user').removeClass('hide');
-    $('#password').removeClass('hide');
+    $('#login').addClass('hide');
+    $('#login_show').removeClass('hide');
+    $('#password').addClass('hide');
+    $('#password_show').removeClass('hide');
     $('#subscribe').removeClass('hide');
-    $('#list').addClass('hide');
 
+    // update the game list
+    $('#list').addClass('hide');
     socket.emit('list');
 
     if (currentGame) {
@@ -155,6 +159,11 @@ var autoLogin = function () {
         $('#login_name').val(loginInfoObj.name);
     }
 };
+
+$('#login_show').click(function () {
+    $('#login').removeClass('hide');
+    $('#login_show').addClass('hide');
+});
 
 $('#login_name').change(function () {
     if (/^[A-Za-z0-9_ ]+$/.test($('#login_name').val())) {
@@ -228,6 +237,11 @@ socket.on('login_fail', function (data) {
 });
 
 // password
+
+$('#password_show').click(function () {
+    $('#password').removeClass('hide');
+    $('#password_show').addClass('hide');
+});
 
 $('#password_old').keypress(function (event) {
     if (event.which == 13) {

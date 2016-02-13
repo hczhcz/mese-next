@@ -103,7 +103,7 @@ var hideSide = function () {
             .css('overflow-y', 'hidden')
             .clearQueue()
             .stop()
-            .animate({left: '-15.5rem'}, 2000, function () {
+            .animate({left: '-15.5rem'}, 1000, function () {
                 // IE8 workaround
                 if ($('#side').position().left == 0) {
                     $('#side').css('left', '-15.5em');
@@ -113,7 +113,7 @@ var hideSide = function () {
         $('#report')
             .clearQueue()
             .stop()
-            .animate({left: '0.5rem'}, 2000);
+            .animate({left: '0.5rem'}, 1000);
     }
 };
 
@@ -364,7 +364,7 @@ var initReport = function (game, period, uid) {
         hideSide();
         message('Game: ' + game);
     }
-    if (period !== currentPeriod) {
+    if (game === currentGame && period !== currentPeriod) {
         message('Period: ' + period);
     }
 

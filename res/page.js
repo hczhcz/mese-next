@@ -163,6 +163,9 @@ var autoLogin = function () {
 };
 
 $('#login_show').click(function () {
+    // reset auto login
+    localStorage.removeItem('MESE_login');
+
     $('#login').removeClass('hide');
     $('#login_show').addClass('hide');
 });
@@ -187,12 +190,6 @@ $('#login_password').keypress(function (event) {
     }
 });
 
-$('#login_remember').click(function () {
-    if (!$('#login_remember').prop('checked')) {
-        localStorage.removeItem('MESE_login');
-    }
-});
-
 $('#login_submit').click(function (event) {
     event.preventDefault();
 
@@ -209,8 +206,6 @@ $('#login_submit').click(function (event) {
                 password: password, // TODO: hash?
             })
         );
-    } else {
-        localStorage.removeItem('MESE_login');
     }
 
     socket.emit('login', {
@@ -265,9 +260,6 @@ $('#password_submit').click(function (event) {
     $('#password_old').val('');
     $('#password_new').val('');
 
-    // reset auto login
-    localStorage.removeItem('MESE_login');
-
     socket.emit('password', {
         password: password, // TODO: hash?
         newPassword: newPassword, // TODO: hash?
@@ -275,10 +267,16 @@ $('#password_submit').click(function (event) {
 });
 
 socket.on('password_ok', function (data) {
+    // reset auto login
+    localStorage.removeItem('MESE_login');
+
     message('Password changed');
 });
 
 socket.on('password_fail', function (data) {
+    // reset auto login
+    // localStorage.removeItem('MESE_login');
+
     message('Wrong password');
 });
 

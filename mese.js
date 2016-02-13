@@ -35,6 +35,7 @@ db.init(function () {
         d.run(function () {
             var authName = undefined;
             var authStorage = undefined;
+            var authSudo = false;
 
             socket.on('login', function (data) {
                 // args: name, password
@@ -63,6 +64,8 @@ db.init(function () {
                                 authStorage = storage;
 
                                 socket.emit('login_new', {name: authName});
+
+                                // notice: admin user should login again here
                             }
                         );
                     } else if (password === data.password) {
@@ -70,6 +73,17 @@ db.init(function () {
                         authStorage = storage;
 
                         socket.emit('login_ok', {name: authName});
+
+                        if (
+                            data.name === config.adminName
+                            && data.password === config.adminPassword
+                        ) {
+                            util.log('admin login');
+
+                            authSudo = true;
+
+                            socket.emit('admin_login');
+                        }
                     } else {
                         util.log('wrong password ' + data.name);
 

@@ -50,6 +50,8 @@ var message = function (message) {
         $('<p />').text(message)
     );
 
+    $('#user_message').text(message);
+
     showMessage();
     hideMessage();
 };

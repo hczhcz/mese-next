@@ -8,7 +8,7 @@ var db = require('./mese.db');
 var game = require('./mese.game');
 var report = require('./mese.report');
 
-module.exports.handler = function (socket) {
+module.exports = function (socket) {
     util.log('connect ' + socket.conn.remoteAddress);
 
     var d = domain.create();

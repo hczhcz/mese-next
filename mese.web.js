@@ -8,7 +8,7 @@ var util = require('./mese.util');
 var libJQuery = fs.readFileSync('./res/jquery.min.js');
 var libSocketIO = fs.readFileSync('./res/socket.io.min.js');
 
-module.exports.handler = function (req, res) {
+module.exports = function (req, res) {
     var d = domain.create();
 
     d.on('error', function (e) {

@@ -1,7 +1,5 @@
 'use strict';
 
-var domain = require('domain');
-
 var core = require('./mese.core');
 
 module.exports.print = function (storage, player, playerCallback, publicCallback) {

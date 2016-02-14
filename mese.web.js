@@ -27,11 +27,13 @@ module.exports.handler = function (req, res) {
             res.writeHead(200, {
                 'Content-Type': 'application/javascript',
             });
+
             res.end(libJQuery);
         } else if (req.url == '/socket.io.min.js') {
             res.writeHead(200, {
                 'Content-Type': 'application/javascript'
             });
+
             res.end(libSocketIO);
         } else if (req.url == '/page.js') {
             fs.readFile('./res/page.js', function (err, data) {

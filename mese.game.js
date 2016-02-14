@@ -34,11 +34,13 @@ var handleDecisions = function (storage, gameData, callback, fail) {
             decision.rd,
             function (gameData) {
                 // accepted
+
                 decision.callback(gameData);
                 handleDecisions(storage, gameData, callback, fail);
             },
             function (gameData) {
                 // declined
+
                 decision.fail(gameData);
                 handleDecisions(storage, gameData, callback, fail);
             }

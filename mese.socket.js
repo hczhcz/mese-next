@@ -40,8 +40,8 @@ module.exports.handler = function (socket) {
 
             var storage = db.access('users', data.name);
 
-            storage.staticGet('password', function (password) {
-                if (password === undefined) {
+            storage.staticGetMulti(function (map) {
+                if (!map) {
                     util.log('new user ' + data.name);
 
                     storage.staticSet(
@@ -55,7 +55,7 @@ module.exports.handler = function (socket) {
                             // notice: admin user should login again here
                         }
                     );
-                } else if (password === data.password) {
+                } else if (map.password === data.password) {
                     authName = data.name;
                     authStorage = storage;
 

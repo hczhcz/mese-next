@@ -102,7 +102,7 @@ var action = function (storage) {
 
         // get data and do handling
         storage.staticGet('data', function (dataObj) {
-            var oldData = dataObj.buffer;
+            var oldData = dataObj.buffer; // MongoDB binary data
 
             handleDecisions(
                 storage, oldData,

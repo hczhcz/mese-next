@@ -219,7 +219,7 @@ module.exports.handler = function (socket) {
                     }
 
                     report.print(
-                        gameStorage, player,
+                        map.data.buffer /* MongoDB binary data */, player,
                         function (result) {
                             result.game = data.game;
                             result.uid = map.uid;

@@ -157,29 +157,31 @@ module.exports.handler = function (socket) {
             var gameStorage = db.access('games', data.game);
 
             gameStorage.staticGetMulti(function (map) {
-                if (!data.enabled || map) {
-                    authStorage.staticGet('subscribes', function (subscribes) {
-                        if (!subscribes) {
-                            subscribes = {};
-                        }
-
-                        subscribes[data.game] = data.enabled;
-
-                        authStorage.staticSet(
-                            'subscribes', subscribes,
-                            function (doc) {
-                                socket.emit(
-                                    'subscribe_update',
-                                    subscribes
-                                );
-                            }
-                        );
-                    });
-                } else {
+                if (data.enabled && !map) {
                     util.log('game not found ' + data.game);
 
                     socket.emit('subscribe_fail');
+
+                    return;
                 }
+
+                authStorage.staticGet('subscribes', function (subscribes) {
+                    if (!subscribes) {
+                        subscribes = {};
+                    }
+
+                    subscribes[data.game] = data.enabled;
+
+                    authStorage.staticSet(
+                        'subscribes', subscribes,
+                        function (doc) {
+                            socket.emit(
+                                'subscribe_update',
+                                subscribes
+                            );
+                        }
+                    );
+                });
             });
         });
 
@@ -205,61 +207,63 @@ module.exports.handler = function (socket) {
             var gameStorage = db.access('games', data.game);
 
             gameStorage.staticGetMulti(function (map) {
-                if (map) {
-                    if (map.uid == data.uid) {
-                        return;
-                    }
-
-                    var player = undefined;
-
-                    for (var i in map.players) {
-                        if (map.players[i] === authName) {
-                            player = parseInt(i);
-                        }
-                    }
-
-                    report.print(
-                        map.data.buffer /* MongoDB binary data */, player,
-                        function (result) {
-                            result.game = data.game;
-                            result.uid = map.uid;
-                            result.players = map.players;
-
-                            if (result.now_period != data.period) { // TODO: simplify
-                                socket.emit(
-                                    'report_player',
-                                    result
-                                );
-                            } else {
-                                socket.emit(
-                                    'report_status',
-                                    result.status
-                                );
-                            }
-                        },
-                        function (result) {
-                            result.game = data.game;
-                            result.uid = map.uid;
-                            result.players = map.players;
-
-                            if (result.now_period != data.period) { // TODO: simplify
-                                socket.emit(
-                                    'report_public',
-                                    result
-                                );
-                            } else {
-                                socket.emit(
-                                    'report_status',
-                                    result.status
-                                );
-                            }
-                        }
-                    );
-                } else {
+                if (!map) {
                     util.log('game not found ' + data.game);
 
                     socket.emit('report_fail');
+
+                    return;
                 }
+
+                if (map.uid == data.uid) {
+                    return;
+                }
+
+                var player = undefined;
+
+                for (var i in map.players) {
+                    if (map.players[i] === authName) {
+                        player = parseInt(i);
+                    }
+                }
+
+                report.print(
+                    map.data.buffer /* MongoDB binary data */, player,
+                    function (result) {
+                        result.game = data.game;
+                        result.uid = map.uid;
+                        result.players = map.players;
+
+                        if (result.now_period != data.period) { // TODO: simplify
+                            socket.emit(
+                                'report_player',
+                                result
+                            );
+                        } else {
+                            socket.emit(
+                                'report_status',
+                                result.status
+                            );
+                        }
+                    },
+                    function (result) {
+                        result.game = data.game;
+                        result.uid = map.uid;
+                        result.players = map.players;
+
+                        if (result.now_period != data.period) { // TODO: simplify
+                            socket.emit(
+                                'report_public',
+                                result
+                            );
+                        } else {
+                            socket.emit(
+                                'report_status',
+                                result.status
+                            );
+                        }
+                    }
+                );
             });
         });
 

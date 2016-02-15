@@ -14,10 +14,14 @@ process.on('uncaughtException', function (e) {
     util.log(e.stack || e);
 });
 
-var server = http.createServer(web).listen(config.port);
+util.log('db init ' + config.db);
 
-util.log('server init ' + config.port);
+db.init(config.db, function () {
+    util.log('server init ' + config.port);
 
-db.init(function () {
+    var server = http.createServer(web).listen(config.port);
+
+    util.log('socket init');
+
     io(server).on('connection', socket);
 });

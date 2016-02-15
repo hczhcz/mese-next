@@ -2,17 +2,15 @@
 
 var mongodb = require('mongodb').MongoClient;
 
-var config = require('./mese.config');
-
 var dbStorage = undefined;
 var memStorage = {
     users: {},
     games: {},
 };
 
-module.exports.init = function (callback) {
+module.exports.init = function (db, callback) {
     mongodb.connect(
-        config.db,
+        db,
         function (err, db) {
             if (err) {
                 throw err;

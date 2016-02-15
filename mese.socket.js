@@ -31,7 +31,8 @@ module.exports = function (socket) {
             var storage = db.access('users', data.name);
 
             storage.staticGetMulti(function (map) {
-                if (!map) {
+                // notice: map may exist before signing up
+                if (!map || map.password === undefined) {
                     util.log('new user ' + data.name);
 
                     storage.staticSet(

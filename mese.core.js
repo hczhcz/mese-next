@@ -11,7 +11,7 @@ var execCore = function (args, input, callback, fail) {
     var proc = childProcess.spawn(config.core, args);
     var output = [];
 
-    if (input) {
+    if (input !== undefined) {
         proc.stdin.write(input);
     }
 
@@ -42,7 +42,7 @@ module.exports.init = function (count, preset, settings, callback) {
 
     execCore(
         args,
-        Buffer(0),
+        undefined,
         callback,
         stdFail
     );

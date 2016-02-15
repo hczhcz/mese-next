@@ -1,7 +1,5 @@
 'use strict';
 
-var domain = require('domain');
-
 var config = require('./mese.config');
 var util = require('./mese.util');
 var db = require('./mese.db');
@@ -9,17 +7,9 @@ var game = require('./mese.game');
 var report = require('./mese.report');
 
 module.exports = function (socket) {
-    util.log('connect ' + socket.conn.remoteAddress);
+    util.domainRunCatched([socket], function () {
+        util.log('connect ' + socket.conn.remoteAddress);
 
-    var d = domain.create();
-
-    d.on('error', function (e) {
-        util.log(e.stack || e);
-    });
-
-    d.add(socket);
-
-    d.run(function () {
         var authName = undefined;
         var authStorage = undefined;
         var authSudo = false;

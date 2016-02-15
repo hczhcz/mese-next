@@ -1,7 +1,6 @@
 'use strict';
 
 var fs = require('fs');
-var domain = require('domain');
 
 var util = require('./mese.util');
 
@@ -9,16 +8,7 @@ var libJQuery = fs.readFileSync('./res/jquery.min.js');
 var libSocketIO = fs.readFileSync('./res/socket.io.min.js');
 
 module.exports = function (req, res) {
-    var d = domain.create();
-
-    d.on('error', function (e) {
-        util.log(e.stack || e);
-    });
-
-    d.add(req);
-    d.add(res);
-
-    d.run(function () {
+    util.domainRunCatched([req, res], function () {
         util.log('web ' + req.connection.remoteAddress + ' ' + req.url);
 
         req.url = req.url.split('?')[0];

@@ -1,7 +1,6 @@
 'use strict';
 
-var domain = require('domain');
-
+var util = require('./mese.util');
 var core = require('./mese.core');
 
 var addDecision = function (storage, decision) {
@@ -81,21 +80,9 @@ var storeData = function (storage, gameData, oldData, snapshot, callback) {
 };
 
 var action = function (storage) {
-    if (storage.dynamicGet('active')) {
-        return;
-    }
+    util.domainRun([storage], function () {
+        // notice: assume storage.dynamicGet/Set would not throw
 
-    var d = domain.create();
-
-    d.on('error', function (e) {
-        storage.dynamicSet('active', false);
-
-        throw e;
-    });
-
-    d.add(storage);
-
-    d.run(function () {
         if (storage.dynamicGet('active')) {
             return;
         }
@@ -120,6 +107,10 @@ var action = function (storage) {
                 }
             );
         });
+    }, function () {
+        storage.dynamicSet('active', false);
+
+        throw e;
     });
 };
 

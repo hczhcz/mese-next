@@ -1,5 +1,7 @@
 'use strict';
 
+var domain = require('domain');
+
 module.exports.log = function (info) {
     var date = new Date();
 
@@ -31,4 +33,25 @@ module.exports.verifyNum = function (num) {
 
 module.exports.verifyBool = function (bool) {
     return typeof bool == 'boolean';
+};
+
+module.exports.domainRun = function (emitters, callback, fail) {
+    var d = domain.create();
+
+    d.on('error', fail);
+
+    for (var i in emitters) {
+        d.add(emitters[i]);
+    }
+
+    d.run(callback);
+};
+
+module.exports.domainRunCatched = function (emitters, callback) {
+    module.exports.domainRun(
+        emitters, callback,
+        function (e) {
+            module.exports.log(e.stack || e);
+        }
+    );
 };

@@ -120,6 +120,10 @@ var hideSide = function () {
 $('#side').click(showSide);
 $('#side').on('touchstart', showSide);
 $('#side').dblclick(hideSide);
+$('#side_hide').click(function (event) {
+    hideSide();
+    event.stopPropagation();
+});
 $('#util td').dblclick(function (event) {
     event.stopPropagation();
 });
@@ -659,9 +663,7 @@ socket.on('submit_fail', function (data) {
 
 // connection
 
-socket.on('connect', function () {
-    autoLogin();
-});
+socket.on('connect', autoLogin);
 
 socket.on('disconnect', function () {
     message('Connection lost');

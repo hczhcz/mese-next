@@ -2,11 +2,7 @@
 
 var mongodb = require('mongodb').MongoClient;
 
-var dbStorage = undefined;
-var memStorage = {
-    users: {},
-    games: {},
-};
+var collections = undefined;
 
 module.exports.init = function (db, callback) {
     mongodb.connect(
@@ -15,7 +11,7 @@ module.exports.init = function (db, callback) {
             if (err) {
                 throw err;
             } else {
-                dbStorage = {
+                collections = {
                     users: db.collection('users'),
                     games: db.collection('games'),
                 };
@@ -27,8 +23,8 @@ module.exports.init = function (db, callback) {
 
 module.exports.access = function (lv1, lv2) {
     return {
-        staticGet: function (key, callback) {
-            dbStorage[lv1].find({
+        get: function (key, callback) {
+            collections[lv1].find({
                 _id: lv2
             }).toArray(function (err, docs) {
                 if (err) {
@@ -40,8 +36,8 @@ module.exports.access = function (lv1, lv2) {
                 }
             });
         },
-        staticGetMulti: function (callback) {
-            dbStorage[lv1].find({
+        getMulti: function (callback) {
+            collections[lv1].find({
                 _id: lv2
             }).toArray(function (err, docs) {
                 if (err) {
@@ -53,11 +49,11 @@ module.exports.access = function (lv1, lv2) {
                 }
             });
         },
-        staticSet: function (key, value, callback) {
+        set: function (key, value, callback) {
             var op = {$set: {}};
             op.$set[key] = value;
 
-            dbStorage[lv1].updateOne({
+            collections[lv1].updateOne({
                 _id: lv2
             }, op, {upsert: true}, function (err, doc) {
                 if (err) {
@@ -67,10 +63,10 @@ module.exports.access = function (lv1, lv2) {
                 }
             });
         },
-        staticSetMulti: function (map, callback) {
+        setMulti: function (map, callback) {
             var op = {$set: map};
 
-            dbStorage[lv1].updateOne({
+            collections[lv1].updateOne({
                 _id: lv2
             }, op, {upsert: true}, function (err, doc) {
                 if (err) {
@@ -79,20 +75,6 @@ module.exports.access = function (lv1, lv2) {
                     callback(doc);
                 }
             });
-        },
-        dynamicGet: function (key) {
-            if (!memStorage[lv1][lv2]) {
-                return;
-            }
-
-            return memStorage[lv1][lv2][key];
-        },
-        dynamicSet: function (key, value) {
-            if (!memStorage[lv1][lv2]) {
-                memStorage[lv1][lv2] = {};
-            }
-
-            memStorage[lv1][lv2][key] = value;
         },
     };
 };

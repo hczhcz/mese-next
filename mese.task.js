@@ -7,7 +7,7 @@ var tasks = {
     games: {},
 };
 
-module.exports.put = function (lv1, lv2, value) {
+module.exports = function (lv1, lv2, callback) {
     if (!tasks[lv1][lv2]) {
         tasks[lv1][lv2] = {
             active: false,
@@ -17,23 +17,23 @@ module.exports.put = function (lv1, lv2, value) {
 
     var task = tasks[lv1][lv2];
 
-    task.functions.push(value);
+    task.functions.push(callback);
 
-    if (task.active) {
-        return;
+    if (!task.active) {
+        task.active = true;
+
+        var next = function () {
+            if (task.functions.length > 0) {
+                util.domainRun([],
+                    function () {
+                        task.functions.shift()(next);
+                    },
+                    next
+                );
+            } else {
+                task.active = false;
+            }
+        };
+        next();
     }
-
-    task.active = true;
-
-    var next = function () {
-        if (task.functions.length > 0) {
-            task.functions.shift()(next);
-        } else {
-            task.active = false;
-        }
-    };
-
-    util.domainRun([], next, function () {
-        task.active = false;
-    });
 };

@@ -2,6 +2,8 @@
 
 var mongodb = require('mongodb').MongoClient;
 
+var task = require('./mese.task');
+
 var collections = undefined;
 
 module.exports.init = function (db, callback) {
@@ -21,60 +23,42 @@ module.exports.init = function (db, callback) {
     );
 };
 
-module.exports.access = function (lv1, lv2) {
-    return {
-        get: function (key, callback) {
-            collections[lv1].find({
-                _id: lv2
-            }).toArray(function (err, docs) {
-                if (err) {
-                    throw err;
-                } else if (docs.length == 1) {
-                    callback(docs[0][key]);
-                } else {
-                    callback(undefined);
-                }
-            });
-        },
-        getMulti: function (callback) {
-            collections[lv1].find({
-                _id: lv2
-            }).toArray(function (err, docs) {
-                if (err) {
-                    throw err;
-                } else if (docs.length == 1) {
-                    callback(docs[0]);
-                } else {
-                    callback(undefined);
-                }
-            });
-        },
-        set: function (key, value, callback) {
-            var op = {$set: {}};
-            op.$set[key] = value;
+module.exports.get = function (lv1, lv2, callback) {
+    collections[lv1]
+        .find({_id: lv2})
+        .toArray(function (err, docs) {
+            if (err) {
+                throw err;
+            } else if (docs.length == 1) {
+                callback(docs[0]);
+            } else {
+                callback(undefined);
+            }
+        });
+};
 
-            collections[lv1].updateOne({
-                _id: lv2
-            }, op, {upsert: true}, function (err, doc) {
+module.exports.update = function (lv1, lv2, callback) {
+    var setter = function (diff, callback) {
+        collections[lv1].updateOne(
+            {_id: lv2},
+            {$set: diff},
+            {upsert: true},
+            function (err, doc) {
                 if (err) {
                     throw err;
                 } else {
                     callback(doc);
                 }
-            });
-        },
-        setMulti: function (map, callback) {
-            var op = {$set: map};
-
-            collections[lv1].updateOne({
-                _id: lv2
-            }, op, {upsert: true}, function (err, doc) {
-                if (err) {
-                    throw err;
-                } else {
-                    callback(doc);
-                }
-            });
-        },
+            }
+        );
     };
+
+    task(lv1, lv2, function (next) {
+        module.exports.get(
+            lv1, lv2,
+            function (doc) {
+                callback(doc, setter, next);
+            }
+        );
+    });
 };

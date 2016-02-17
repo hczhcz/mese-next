@@ -11,7 +11,6 @@ module.exports = function (socket) {
         util.log('connect ' + socket.conn.remoteAddress);
 
         var authName = undefined;
-        var authStorage = undefined;
         var authSudo = false;
 
         socket.on('login', function (data) {
@@ -28,29 +27,27 @@ module.exports = function (socket) {
 
             util.log('login ' + socket.conn.remoteAddress + ' ' + data.name);
 
-            var storage = db.access('users', data.name);
-
-            storage.staticGetMulti(function (map) {
-                // notice: map may exist before signing up
-                if (!map || map.password === undefined) {
+            db.update('users', data.name, function (doc, setter, next) {
+                // notice: doc may exist before signing up
+                if (!doc || doc.password === undefined) {
                     util.log('new user ' + data.name);
 
-                    storage.staticSet(
-                        'password', data.password,
+                    setter(
+                        {password: data.password},
                         function (doc) {
                             authName = data.name;
-                            authStorage = storage;
 
                             socket.emit('login_new', {name: authName});
+                            next();
 
                             // notice: admin user should login again here
                         }
                     );
-                } else if (map.password === data.password) {
+                } else if (doc.password === data.password) {
                     authName = data.name;
-                    authStorage = storage;
 
                     socket.emit('login_ok', {name: authName});
+                    next();
 
                     if (
                         data.name === config.adminName
@@ -66,6 +63,7 @@ module.exports = function (socket) {
                     util.log('wrong password ' + data.name);
 
                     socket.emit('login_fail');
+                    next();
                 }
             });
         });
@@ -85,18 +83,20 @@ module.exports = function (socket) {
 
             util.log('change password ' + authName);
 
-            authStorage.staticGet('password', function (password) {
-                if (password === data.password) {
-                    authStorage.staticSet(
-                        'password', data.newPassword,
+            db.update('users', authName, function (doc, setter, next) {
+                if (doc.password === data.password) {
+                    setter(
+                        {password: data.password},
                         function (doc) {
                             socket.emit('password_ok');
+                            next();
                         }
                     );
                 } else {
                     util.log('wrong password ' + authName);
 
                     socket.emit('password_fail');
+                    next();
                 }
             });
         });
@@ -114,14 +114,10 @@ module.exports = function (socket) {
 
             util.log('list ' + authName);
 
-            authStorage.staticGet('subscribes', function (subscribes) {
-                if (!subscribes) {
-                    subscribes = {};
-                }
-
+            db.get('users', authName, function (doc) {
                 socket.emit(
                     'subscribe_list',
-                    subscribes
+                    doc.subscribes || {}
                 );
             });
         });
@@ -145,10 +141,8 @@ module.exports = function (socket) {
                 util.log('unsubscribe ' + authName + ' ' + data.game);
             }
 
-            var gameStorage = db.access('games', data.game);
-
-            gameStorage.staticGetMulti(function (map) {
-                if (data.enabled && !map) {
+            db.get('games', data.game, function (doc) {
+                if (data.enabled && !doc) {
                     util.log('game not found ' + data.game);
 
                     socket.emit('subscribe_fail');
@@ -156,20 +150,19 @@ module.exports = function (socket) {
                     return;
                 }
 
-                authStorage.staticGet('subscribes', function (subscribes) {
-                    if (!subscribes) {
-                        subscribes = {};
-                    }
+                db.update('users', data.name, function (doc, setter, next) {
+                    var subscribes = doc.subscribes || {};
 
                     subscribes[data.game] = data.enabled;
 
-                    authStorage.staticSet(
-                        'subscribes', subscribes,
+                    setter(
+                        {subscribes: subscribes},
                         function (doc) {
                             socket.emit(
                                 'subscribe_update',
                                 subscribes
                             );
+                            next();
                         }
                     );
                 });
@@ -195,10 +188,8 @@ module.exports = function (socket) {
                 util.log('get report ' + socket.conn.remoteAddress + ' ' + data.game);
             }
 
-            var gameStorage = db.access('games', data.game);
-
-            gameStorage.staticGetMulti(function (map) {
-                if (!map) {
+            db.get('games', data.game, function (doc) {
+                if (!doc) {
                     util.log('game not found ' + data.game);
 
                     socket.emit('report_fail');
@@ -206,24 +197,24 @@ module.exports = function (socket) {
                     return;
                 }
 
-                if (map.uid == data.uid) {
+                if (doc.uid == data.uid) {
                     return;
                 }
 
                 var player = undefined;
 
-                for (var i in map.players) {
-                    if (map.players[i] === authName) {
+                for (var i in doc.players) {
+                    if (doc.players[i] === authName) {
                         player = parseInt(i);
                     }
                 }
 
                 report.print(
-                    map.data.buffer /* MongoDB binary data */, player,
+                    doc.data.buffer /* MongoDB binary data */, player,
                     function (result) {
                         result.game = data.game;
-                        result.uid = map.uid;
-                        result.players = map.players;
+                        result.uid = doc.uid;
+                        result.players = doc.players;
 
                         if (result.now_period != data.period) { // TODO: simplify
                             socket.emit(
@@ -239,8 +230,8 @@ module.exports = function (socket) {
                     },
                     function (result) {
                         result.game = data.game;
-                        result.uid = map.uid;
-                        result.players = map.players;
+                        result.uid = doc.uid;
+                        result.players = doc.players;
 
                         if (result.now_period != data.period) { // TODO: simplify
                             socket.emit(
@@ -278,10 +269,8 @@ module.exports = function (socket) {
 
             util.log('submit ' + authName + ' ' + data.game);
 
-            var gameStorage = db.access('games', data.game);
-
-            gameStorage.staticGetMulti(function (map) {
-                if (!map) {
+            db.update('games', data.game, function (doc, setter, next) {
+                if (!doc) {
                     util.log('game not found ' + data.game);
 
                     return;
@@ -289,8 +278,8 @@ module.exports = function (socket) {
 
                 var player = undefined;
 
-                for (var i in map.players) {
-                    if (map.players[i] === authName) {
+                for (var i in doc.players) {
+                    if (doc.players[i] === authName) {
                         player = parseInt(i);
                     }
                 }
@@ -308,24 +297,26 @@ module.exports = function (socket) {
                         );
                     };
 
-                    game.submit(
-                        gameStorage, player, data.period,
-                        data.price, data.prod, data.mk, data.ci, data.rd,
-                        function (gameData) {
-                            socket.emit('submit_ok');
-                            afterSubmit(gameData);
-                        },
-                        function (gameData) {
-                            util.log('submission declined ' + authName + ' ' + data.game);
+                    // game.submit(
+                    //     gameStorage, player, data.period,
+                    //     data.price, data.prod, data.mk, data.ci, data.rd,
+                    //     function (gameData) {
+                    //         socket.emit('submit_ok');
+                    //         afterSubmit(gameData);
+                    //     },
+                    //     function (gameData) {
+                    //         util.log('submission declined ' + authName + ' ' + data.game);
 
-                            socket.emit('submit_decline');
-                            afterSubmit(gameData);
-                        }
-                    );
+                    //         socket.emit('submit_decline');
+                    //         afterSubmit(gameData);
+                    //     }
+                    // ); // TODO
+                    // TODO: next();
                 } else {
                     util.log('submission not allowed ' + authName + ' ' + data.game);
 
                     socket.emit('submit_fail');
+                    next();
                 }
             });
         });

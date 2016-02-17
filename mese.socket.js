@@ -330,6 +330,27 @@ module.exports = function (socket) {
             });
         });
 
+        socket.on('admin_login', function () {
+        });
+
+        socket.on('admin_password', function () {
+        });
+
+        socket.on('admin_report', function () {
+        });
+
+        socket.on('admin_transfer', function () { // edit player list
+        });
+
+        socket.on('admin_init', function () {
+        });
+
+        socket.on('admin_alloc', function () {
+        });
+
+        // socket.on('admin_revent', function () { // not implemented
+        // });
+
         socket.on('disconnect', function () {
             util.log('disconnect ' + socket.conn.remoteAddress);
         });

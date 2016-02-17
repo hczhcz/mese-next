@@ -4,7 +4,6 @@ var config = require('./mese.config');
 var util = require('./mese.util');
 var db = require('./mese.db');
 var game = require('./mese.game');
-var report = require('./mese.report');
 
 module.exports = function (socket) {
     util.domainRunCatched([socket], function () {
@@ -209,7 +208,7 @@ module.exports = function (socket) {
                     }
                 }
 
-                report.print(
+                game.print(
                     doc.data.buffer /* MongoDB binary data */, player,
                     function (result) {
                         result.game = data.game;
@@ -288,7 +287,7 @@ module.exports = function (socket) {
                     var oldData = doc.data.buffer; // MongoDB binary data
 
                     var afterSubmit = function (gameData) {
-                        report.printEarly(
+                        game.printEarly(
                             gameData, player,
                             function (result) {
                                 socket.emit(

@@ -272,6 +272,8 @@ module.exports = function (socket) {
                 if (!doc) {
                     util.log('game not found ' + data.game);
 
+                    next();
+
                     return;
                 }
 

@@ -86,7 +86,7 @@ module.exports = function (socket) {
             db.update('users', authName, function (doc, setter, next) {
                 if (doc.password === data.password) {
                     setter(
-                        {password: data.password},
+                        {password: data.newPassword},
                         function (doc) {
                             socket.emit('password_ok');
                             next();
@@ -285,6 +285,8 @@ module.exports = function (socket) {
                 }
 
                 if (player !== undefined) {
+                    var oldData = doc.data.buffer; // MongoDB binary data
+
                     var afterSubmit = function (gameData) {
                         report.printEarly(
                             gameData, player,
@@ -297,21 +299,60 @@ module.exports = function (socket) {
                         );
                     };
 
-                    // game.submit(
-                    //     gameStorage, player, data.period,
-                    //     data.price, data.prod, data.mk, data.ci, data.rd,
-                    //     function (gameData) {
-                    //         socket.emit('submit_ok');
-                    //         afterSubmit(gameData);
-                    //     },
-                    //     function (gameData) {
-                    //         util.log('submission declined ' + authName + ' ' + data.game);
+                    var afterClose = function (gameData, snapshot) {
+                        if (!gameData || gameData.length != oldData.length) {
+                            throw Error('data broken');
+                        }
 
-                    //         socket.emit('submit_decline');
-                    //         afterSubmit(gameData);
-                    //     }
-                    // ); // TODO
-                    // TODO: next();
+                        // generate an unique id (assumed unique)
+                        var uid = Number(new Date());
+
+                        // store data
+                        setter(
+                            {
+                                data: gameData,
+                                uid: uid,
+                            },
+                            function (doc) {
+                                // TODO: push updates?
+                                next();
+                            }
+                        );
+
+                        if (snapshot) {
+                            var diff = {};
+                            diff['data_' + uid] = gameData;
+
+                            // store snapshot
+                            setter(
+                                diff,
+                                function (doc) {
+                                    // nothing
+                                }
+                            );
+                        }
+                    };
+
+                    game.submit(
+                        oldData, player, data.period,
+                        data.price, data.prod, data.mk, data.ci, data.rd,
+                        function (gameData) {
+                            socket.emit('submit_ok');
+                            afterSubmit(gameData);
+                        },
+                        function (gameData) {
+                            util.log('submission declined ' + authName + ' ' + data.game);
+
+                            socket.emit('submit_decline');
+                            afterSubmit(gameData);
+                        },
+                        function (gameData) {
+                            afterClose(gameData, true);
+                        },
+                        function (gameData) {
+                            afterClose(gameData, false);
+                        }
+                    );
                 } else {
                     util.log('submission not allowed ' + authName + ' ' + data.game);
 

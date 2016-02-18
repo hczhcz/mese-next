@@ -4,6 +4,7 @@ var config = require('./mese.config');
 var util = require('./mese.util');
 var db = require('./mese.db');
 var game = require('./mese.game');
+var admin = require('./mese.admin');
 
 module.exports = function (socket) {
     util.domainRunCatched([socket], function () {
@@ -342,25 +343,83 @@ module.exports = function (socket) {
             });
         });
 
-        socket.on('admin_login', function () {
+        socket.on('admin_login', function (data) {
+            // args: name
+
+            if (
+                !authSudo
+                || !util.verify(/^[A-Za-z0-9_ ]+$/, data.name)
+            ) {
+                util.log('bad socket request');
+
+                return;
+            }
+
+            util.log('admin login ' + data.name);
+
+            authName = data.name;
+
+            socket.emit('admin_login_ok', {name: authName});
         });
 
-        socket.on('admin_password', function () {
+        socket.on('admin_password', function (data) {
+            // args: newPassword
+
+            if (
+                !authSudo
+                || !util.verify(/^.+$/, data.newPassword)
+            ) {
+                util.log('bad socket request');
+
+                return;
+            }
+
+            util.log('admin change password ' + authName);
+
+            db.update('users', authName, function (doc, setter, next) {
+                setter(
+                    {password: data.newPassword},
+                    function (doc) {
+                        socket.emit('admin_password_ok');
+                        next();
+                    }
+                );
+            });
         });
 
-        socket.on('admin_report', function () {
+        socket.on('admin_report', function (data) {
+            // args: game
+
+            if (
+                !authSudo
+                || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
+            ) {
+                util.log('bad socket request');
+
+                return;
+            }
+
+            admin.print(
+                gameData,
+                function (report) {
+                    socket.emit('admin_report', report);
+                }
+            );
         });
 
-        socket.on('admin_transfer', function () { // edit player list
+        socket.on('admin_transfer', function (data) { // edit player list
+            // TODO
         });
 
-        socket.on('admin_init', function () {
+        socket.on('admin_init', function (data) {
+            // TODO
         });
 
-        socket.on('admin_alloc', function () {
+        socket.on('admin_alloc', function (data) {
+            // TODO
         });
 
-        // socket.on('admin_revent', function () { // not implemented
+        // socket.on('admin_revent', function (data) { // not implemented
         // });
 
         socket.on('disconnect', function () {

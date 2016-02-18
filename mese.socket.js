@@ -52,11 +52,11 @@ module.exports = function (socket) {
                         data.name === config.adminName
                         && data.password === config.adminPassword
                     ) {
-                        util.log('admin login');
+                        util.log('admin auth');
 
                         authSudo = true;
 
-                        socket.emit('admin_login');
+                        socket.emit('admin_auth_ok');
                     }
                 } else {
                     util.log('wrong password ' + data.name);
@@ -114,10 +114,7 @@ module.exports = function (socket) {
             util.log('list ' + authName);
 
             db.get('users', authName, function (doc) {
-                socket.emit(
-                    'subscribe_list',
-                    doc.subscribes || {}
-                );
+                socket.emit('subscribe_list', doc.subscribes || {});
             });
         });
 
@@ -157,10 +154,7 @@ module.exports = function (socket) {
                     setter(
                         {subscribes: subscribes},
                         function (doc) {
-                            socket.emit(
-                                'subscribe_update',
-                                subscribes
-                            );
+                            socket.emit('subscribe_update', subscribes);
                             next();
                         }
                     );
@@ -169,7 +163,7 @@ module.exports = function (socket) {
         });
 
         socket.on('report', function (data) {
-            // args: game
+            // args: game, period, uid
 
             if (
                 !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
@@ -210,38 +204,26 @@ module.exports = function (socket) {
 
                 game.print(
                     doc.data.buffer /* MongoDB binary data */, player,
-                    function (result) {
-                        result.game = data.game;
-                        result.uid = doc.uid;
-                        result.players = doc.players;
+                    function (report) {
+                        report.game = data.game;
+                        report.uid = doc.uid;
+                        report.players = doc.players;
 
-                        if (result.now_period != data.period) { // TODO: simplify
-                            socket.emit(
-                                'report_player',
-                                result
-                            );
+                        if (report.now_period != data.period) { // TODO: simplify
+                            socket.emit('report_player', report);
                         } else {
-                            socket.emit(
-                                'report_status',
-                                result.status
-                            );
+                            socket.emit('report_status', report.status);
                         }
                     },
-                    function (result) {
-                        result.game = data.game;
-                        result.uid = doc.uid;
-                        result.players = doc.players;
+                    function (report) {
+                        report.game = data.game;
+                        report.uid = doc.uid;
+                        report.players = doc.players;
 
-                        if (result.now_period != data.period) { // TODO: simplify
-                            socket.emit(
-                                'report_public',
-                                result
-                            );
+                        if (report.now_period != data.period) { // TODO: simplify
+                            socket.emit('report_public', report);
                         } else {
-                            socket.emit(
-                                'report_status',
-                                result.status
-                            );
+                            socket.emit('report_status', report.status);
                         }
                     }
                 );
@@ -291,11 +273,8 @@ module.exports = function (socket) {
                     var afterSubmit = function (gameData) {
                         game.printEarly(
                             gameData, player,
-                            function (result) {
-                                socket.emit(
-                                    'report_early',
-                                    result
-                                );
+                            function (report) {
+                                socket.emit('report_early', report);
                             }
                         );
                     };

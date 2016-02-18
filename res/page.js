@@ -1,6 +1,22 @@
 'use strict';
 
+// connection
+
 var socket = io(window.location.origin);
+
+var connected = false;
+
+socket.on('connect', function () {
+    connected = true;
+    message('Connected');
+
+    autoLogin();
+});
+
+socket.on('disconnect', function () {
+    connected = false;
+    message('Connection lost');
+});
 
 // message
 
@@ -315,7 +331,7 @@ var updateList = function (data) {
 // auto refresh
 setInterval(
     function () {
-        if (!$('#list').hasClass('hide')) {
+        if (connected && !$('#list').hasClass('hide')) {
             socket.emit('list');
         }
     },
@@ -461,7 +477,14 @@ for (var i = 0; i < 16; ++i) { // max = 16
 }
 
 // auto refresh
-setInterval(reloadReport, 30000);
+setInterval(
+    function () {
+        if (connected) {
+            reloadReport();
+        }
+    },
+    30000
+);
 
 // load the game
 loadHash();
@@ -472,9 +495,7 @@ $('.report_div [bind]')
     .append('<span target="now"><span></span></span>')
     .append('<span target="next">&nbsp;<span></span></span>');
 
-$('#report_refresh').click(function () {
-    reloadReport();
-});
+$('#report_refresh').click(reloadReport);
 
 $('#report_expand').click(function () {
     if (verboseEnabled) {
@@ -663,12 +684,4 @@ socket.on('submit_fail_game', function (data) {
 
 socket.on('submit_fail_player', function (data) {
     message('Submission not allowed');
-});
-
-// connection
-
-socket.on('connect', autoLogin);
-
-socket.on('disconnect', function () {
-    message('Connection lost');
 });

@@ -255,6 +255,7 @@ module.exports = function (socket) {
                 if (!doc) {
                     util.log('game not found ' + data.game);
 
+                    socket.emit('submit_fail_game');
                     next();
 
                     return;
@@ -337,7 +338,7 @@ module.exports = function (socket) {
                 } else {
                     util.log('submission not allowed ' + authName + ' ' + data.game);
 
-                    socket.emit('submit_fail');
+                    socket.emit('submit_fail_player');
                     next();
                 }
             });

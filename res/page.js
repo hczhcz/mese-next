@@ -657,7 +657,11 @@ socket.on('submit_decline', function (data) {
     message('Submission declined');
 });
 
-socket.on('submit_fail', function (data) {
+socket.on('submit_fail_game', function (data) {
+    message('Game not found');
+});
+
+socket.on('submit_fail_player', function (data) {
     message('Submission not allowed');
 });
 

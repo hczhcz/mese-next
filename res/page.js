@@ -65,6 +65,9 @@ var message = function (message) {
     $('#message').append(
         $('<p />').text(message)
     );
+    if ($('#message p').length > 5) {
+        $('#message p:first').remove();
+    }
 
     $('#user_message').text(message);
 

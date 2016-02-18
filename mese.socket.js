@@ -414,8 +414,60 @@ module.exports = function (socket) {
             );
         });
 
-        socket.on('admin_transfer', function (data) { // edit player list
-            // TODO
+        socket.on('admin_transfer', function (data) {
+            // args: game, name
+
+            if (
+                !authSudo
+                || !util.verify(/^[A-Za-z0-9_ ]+$/, data.game)
+                || !util.verify(/^[A-Za-z0-9_ ]+$/, data.name)
+            ) {
+                util.log('bad socket request');
+
+                return;
+            }
+
+            db.update('games', data.game, function (doc, setter, next) {
+                if (!doc) {
+                    util.log('game not found ' + data.game);
+
+                    socket.emit('admin_error');
+                    next();
+
+                    return;
+                }
+
+                var player = undefined;
+
+                for (var i in doc.players) {
+                    if (doc.players[i] === authName) {
+                        player = parseInt(i);
+                        break;
+                    }
+                }
+
+                if (player !== undefined) {
+                    // generate an unique id (assumed unique)
+                    var uid = Number(new Date());
+
+                    doc.players[player] = data.name;
+
+                    // store data
+                    setter(
+                        {
+                            uid: uid,
+                            players: doc.players,
+                        },
+                        function (doc) {
+                            // socket.emit('admin_ok'); // TODO
+                            next();
+                        }
+                    );
+                } else {
+                    socket.emit('admin_error');
+                    next();
+                }
+            });
         });
 
         socket.on('admin_init', function (data) {

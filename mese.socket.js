@@ -147,7 +147,7 @@ module.exports = function (socket) {
                     return;
                 }
 
-                db.update('users', data.name, function (doc, setter, next) {
+                db.update('users', authName, function (doc, setter, next) {
                     var subscribes = doc.subscribes || {};
 
                     subscribes[data.game] = data.enabled;
@@ -200,6 +200,7 @@ module.exports = function (socket) {
                 for (var i in doc.players) {
                     if (doc.players[i] === authName) {
                         player = parseInt(i);
+                        break;
                     }
                 }
 
@@ -266,6 +267,7 @@ module.exports = function (socket) {
                 for (var i in doc.players) {
                     if (doc.players[i] === authName) {
                         player = parseInt(i);
+                        break;
                     }
                 }
 
@@ -292,8 +294,8 @@ module.exports = function (socket) {
                         // store data
                         setter(
                             {
-                                data: gameData,
                                 uid: uid,
+                                data: gameData,
                             },
                             function (doc) {
                                 // TODO: push updates?
@@ -360,7 +362,8 @@ module.exports = function (socket) {
 
             authName = data.name;
 
-            socket.emit('admin_login_ok', {name: authName});
+            // socket.emit('admin_login_ok', {name: authName});　// TODO
+            socket.emit('login_ok', {name: authName});
         });
 
         socket.on('admin_password', function (data) {
@@ -381,7 +384,8 @@ module.exports = function (socket) {
                 setter(
                     {password: data.newPassword},
                     function (doc) {
-                        socket.emit('admin_password_ok');
+                        // socket.emit('admin_password_ok');　// TODO
+                        socket.emit('password_ok');
                         next();
                     }
                 );
@@ -399,6 +403,8 @@ module.exports = function (socket) {
 
                 return;
             }
+
+            util.log('admin get report ' + authName + ' ' + data.game);
 
             admin.print(
                 gameData,

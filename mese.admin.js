@@ -9,14 +9,4 @@ module.exports.init = function (
     // TODO
 };
 
-module.exports.print = function (
-    gameData,
-    callback
-) {
-    core.printFull(
-        gameData,
-        function (reportData) {
-            callback(eval('(' + reportData + ')'));
-        }
-    );
-};
+module.exports.print = core.printFull;

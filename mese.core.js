@@ -32,6 +32,12 @@ var stdFail = function (status, output) {
     throw Error('exec fail: ' + status);
 };
 
+var evalCallback = function (callback) {
+    return function (data) {
+        callback(eval('(' + data + ')'));
+    };
+};
+
 module.exports.init = function (count, preset, settings, callback) {
     var args = ['init', count, preset];
 
@@ -102,7 +108,7 @@ module.exports.printFull = function (gameData, callback) {
     execCore(
         ['print_full'],
         gameData,
-        callback,
+        evalCallback(callback),
         stdFail
     );
 };
@@ -111,7 +117,7 @@ module.exports.printPlayerEarly = function (gameData, player, callback) {
     execCore(
         ['print_player_early', player],
         gameData,
-        callback,
+        evalCallback(callback),
         stdFail
     );
 };
@@ -120,7 +126,7 @@ module.exports.printPlayer = function (gameData, player, callback) {
     execCore(
         ['print_player', player],
         gameData,
-        callback,
+        evalCallback(callback),
         stdFail
     );
 };
@@ -129,7 +135,7 @@ module.exports.printPublic = function (gameData, callback) {
     execCore(
         ['print_public'],
         gameData,
-        callback,
+        evalCallback(callback),
         stdFail
     );
 };

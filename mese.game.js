@@ -13,11 +13,13 @@ module.exports.submit = function (
         function (gameData) {
             callback(gameData);
 
+            core.printPlayerEarly(gameData, player, printCallback);
             core.close(gameData, closeCallback, closeFail);
         },
         function (gameData) {
             fail(gameData);
 
+            core.printPlayerEarly(gameData, player, printCallback);
             closeFail(gameData); // would not close if submission is declined
         }
     );
@@ -30,32 +32,10 @@ module.exports.print = function (
     if (player !== undefined) {
         // as player
 
-        core.printPlayer(
-            gameData, player,
-            function (reportData) {
-                playerCallback(eval('(' + reportData + ')'));
-            }
-        );
+        core.printPlayer(gameData, player, playerCallback);
     } else {
         // as guest
 
-        core.printPublic(
-            gameData,
-            function (reportData) {
-                publicCallback(eval('(' + reportData + ')'));
-            }
-        );
+        core.printPublic(gameData, publicCallback);
     }
-};
-
-module.exports.printEarly = function (
-    gameData, player,
-    callback
-) {
-    core.printPlayerEarly(
-        gameData, player,
-        function (reportData) {
-            callback(eval('(' + reportData + ')'));
-        }
-    );
 };

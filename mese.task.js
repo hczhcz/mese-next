@@ -28,7 +28,11 @@ module.exports = function (lv1, lv2, callback) {
                     function () {
                         task.functions.shift()(next);
                     },
-                    next
+                    function (e) {
+                        util.log(e.stack || e);
+
+                        next();
+                    }
                 );
             } else {
                 task.active = false;

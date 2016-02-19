@@ -5,7 +5,7 @@ var core = require('./mese.core');
 module.exports.submit = function (
     gameData, player, period,
     price, prod, mk, ci, rd,
-    callback, fail, closeCallback, closeFail
+    callback, fail, printCallback, closeCallback, closeFail
 ) {
     core.submit(
         gameData, player, period,

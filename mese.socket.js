@@ -274,15 +274,6 @@ module.exports = function (socket) {
                 if (player !== undefined) {
                     var oldData = doc.data.buffer; // MongoDB binary data
 
-                    var afterSubmit = function (gameData) {
-                        game.printEarly(
-                            gameData, player,
-                            function (report) {
-                                socket.emit('report_early', report);
-                            }
-                        );
-                    };
-
                     var afterClose = function (gameData, snapshot) {
                         if (!gameData || gameData.length != oldData.length) {
                             throw Error('data broken');
@@ -322,13 +313,14 @@ module.exports = function (socket) {
                         data.price, data.prod, data.mk, data.ci, data.rd,
                         function (gameData) {
                             socket.emit('submit_ok');
-                            afterSubmit(gameData);
                         },
                         function (gameData) {
                             util.log('submission declined ' + authName + ' ' + data.game);
 
                             socket.emit('submit_decline');
-                            afterSubmit(gameData);
+                        },
+                        function (report) {
+                            socket.emit('report_early', report);
                         },
                         function (gameData) {
                             afterClose(gameData, true);

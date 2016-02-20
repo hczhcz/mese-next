@@ -43,8 +43,8 @@ module.exports.verifierArr = function (verifier) {
             return false;
         }
 
-        for (var i in obj) {
-            if (!verifier(obj[i])) {
+        for (var i in arr) {
+            if (!verifier(arr[i])) {
                 return false;
             }
         }

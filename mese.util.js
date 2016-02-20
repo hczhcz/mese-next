@@ -37,6 +37,41 @@ module.exports.verifyerStr = function (re) {
     };
 };
 
+module.exports.verifierArr = function (verifier) {
+    return function (arr) {
+        if (!arr instanceof Array) {
+            return false;
+        }
+
+        for (var i in obj) {
+            if (!verifier(obj[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+};
+
+module.exports.verifierObj = function (keyVerifier, valueVerifier) {
+    // notice: use verified objects carefully
+    //         {__proto__: 123, ...}
+
+    return function (obj) {
+        if (!obj instanceof Object) {
+            return false;
+        }
+
+        for (var i in obj) {
+            if (!keyVerifier(i) || !valueVerifier(obj[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+};
+
 module.exports.domainRun = function (emitters, callback, fail) {
     var d = domain.create();
 

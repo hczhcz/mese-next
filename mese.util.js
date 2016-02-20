@@ -19,8 +19,8 @@ module.exports.log = function (info) {
     );
 };
 
-module.exports.verify = function (re, str) {
-    return typeof str == 'string' && str.length <= 32 && re.test(str);
+module.exports.verifyBool = function (bool) {
+    return typeof bool == 'boolean';
 };
 
 module.exports.verifyInt = function (num) {
@@ -31,8 +31,10 @@ module.exports.verifyNum = function (num) {
     return typeof num == 'number' && isFinite(num);
 };
 
-module.exports.verifyBool = function (bool) {
-    return typeof bool == 'boolean';
+module.exports.verifyerStr = function (re) {
+    return function (str) {
+        return typeof str == 'string' && str.length <= 32 && re.test(str);
+    };
 };
 
 module.exports.domainRun = function (emitters, callback, fail) {

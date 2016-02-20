@@ -31,7 +31,7 @@ module.exports.verifyNum = function (num) {
     return typeof num == 'number' && isFinite(num);
 };
 
-module.exports.verifyerStr = function (re) {
+module.exports.verifierStr = function (re) {
     return function (str) {
         return typeof str == 'string' && str.length <= 32 && re.test(str);
     };

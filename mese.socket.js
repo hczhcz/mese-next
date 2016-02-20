@@ -17,8 +17,8 @@ module.exports = function (socket) {
             // args: name, password
 
             if (
-                !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.name)
-                || !util.verifyerStr(/^.+$/)(data.password)
+                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
+                || !util.verifierStr(/^.+$/)(data.password)
             ) {
                 util.log('bad socket request');
 
@@ -73,8 +73,8 @@ module.exports = function (socket) {
 
             if (
                 !authName
-                || !util.verifyerStr(/^.+$/)(data.password)
-                || !util.verifyerStr(/^.+$/)(data.newPassword)
+                || !util.verifierStr(/^.+$/)(data.password)
+                || !util.verifierStr(/^.+$/)(data.newPassword)
             ) {
                 util.log('bad socket request');
 
@@ -124,7 +124,7 @@ module.exports = function (socket) {
 
             if (
                 !authName
-                || !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyBool(data.enabled)
             ) {
                 util.log('bad socket request');
@@ -167,7 +167,7 @@ module.exports = function (socket) {
             // args: game, period, uid
 
             if (
-                !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyInt(data.period)
                 || !util.verifyNum(data.uid)
             ) {
@@ -237,7 +237,7 @@ module.exports = function (socket) {
 
             if (
                 !authName
-                || !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyInt(data.period)
                 || !util.verifyNum(data.price)
                 || !util.verifyInt(data.prod)
@@ -343,7 +343,7 @@ module.exports = function (socket) {
 
             if (
                 !authSudo
-                || !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.name)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
             ) {
                 util.log('bad socket request');
 
@@ -363,7 +363,7 @@ module.exports = function (socket) {
 
             if (
                 !authSudo
-                || !util.verifyerStr(/^.+$/)(data.newPassword)
+                || !util.verifierStr(/^.+$/)(data.newPassword)
             ) {
                 util.log('bad socket request');
 
@@ -389,7 +389,7 @@ module.exports = function (socket) {
 
             if (
                 !authSudo
-                || !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
             ) {
                 util.log('bad socket request');
 
@@ -411,8 +411,8 @@ module.exports = function (socket) {
 
             if (
                 !authSudo
-                || !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifyerStr(/^[A-Za-z0-9_ ]+$/)(data.name)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
             ) {
                 util.log('bad socket request');
 
@@ -463,10 +463,47 @@ module.exports = function (socket) {
         });
 
         socket.on('admin_init', function (data) {
+            // args: game, players, preset, settings
+
+            if (
+                !authSudo
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierArr(util.verifierStr(/^[A-Za-z0-9_ ]+$/))(data.players)
+                || data.players.length == 0 // special condition
+                || !util.verifierStr(/^[A-Za-z0-9_]+$/)(data.preset)
+                || !util.verifierArr(
+                        util.verifierObj(
+                            util.verifierStr(/^[A-Za-z0-9_]+$/),
+                            util.verifyNum
+                        )
+                    )(data.settings)
+            ) {
+                util.log('bad socket request');
+
+                return;
+            }
+
             // TODO
         });
 
         socket.on('admin_alloc', function (data) {
+            // args: game, settings
+
+            if (
+                !authSudo
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierArr(
+                        util.verifierObj(
+                            util.verifierStr(/^[A-Za-z0-9_]+$/),
+                            util.verifyNum
+                        )
+                    )(data.settings)
+            ) {
+                util.log('bad socket request');
+
+                return;
+            }
+
             // TODO
         });
 

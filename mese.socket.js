@@ -419,6 +419,8 @@ module.exports = function (socket) {
                 return;
             }
 
+            util.log('admin transfer game ' + data.game + ' ' + authName + ' ' + data.name);
+
             db.update('games', data.game, function (doc, setter, next) {
                 if (!doc) {
                     util.log('game not found ' + data.game);

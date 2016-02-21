@@ -473,7 +473,6 @@ module.exports = function (socket) {
                 !authSudo
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifierArr(util.verifierStr(/^[A-Za-z0-9_ ]+$/))(data.players)
-                || data.players.length == 0 // special condition
                 || !util.verifierStr(/^[A-Za-z0-9_]+$/)(data.preset)
                 || !util.verifierArr(
                         util.verifierObj(
@@ -489,7 +488,18 @@ module.exports = function (socket) {
 
             userLog('admin create game ' + data.game + ' ' + data.preset);
 
-            // TODO
+            if (data.players.length == 0 || data.players.length > config.maxPlayer) {
+                userLog('player count not supported');
+
+                socket.emit('admin_init_fail_number');
+            }
+
+            admin.init(
+                data.players.length, data.preset, data.settings,
+                function (gameData) {
+                    // TODO
+                }
+            );
         });
 
         socket.on('admin_alloc', function (data) {
@@ -512,7 +522,25 @@ module.exports = function (socket) {
 
             userLog('admin alloc period ' + data.game);
 
-            // TODO
+            db.update('games', data.game, function (doc, setter, next) {
+                if (!doc) {
+                    userLog('game not found ' + data.game);
+
+                    socket.emit('admin_alloc_fail_game');
+                    next();
+
+                    return;
+                }
+
+                var oldData = doc.data.buffer; // MongoDB binary data
+
+                admin.alloc(
+                    oldData, data.settings,
+                    function (gameData) {
+                        // TODO
+                    }
+                );
+            });
         });
 
         // socket.on('admin_revent', function (data) { // not implemented

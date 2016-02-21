@@ -5,3 +5,4 @@ module.exports.port = 63000;
 module.exports.core = './mese';
 module.exports.adminName = 'admin';
 module.exports.adminPassword = 'echopen';
+module.exports.maxPlayer = 32;

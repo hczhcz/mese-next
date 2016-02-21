@@ -425,7 +425,7 @@ module.exports = function (socket) {
                 if (!doc) {
                     userLog('game not found ' + data.game);
 
-                    socket.emit('admin_transfer_error_game');
+                    socket.emit('admin_transfer_fail_game');
                     next();
 
                     return;
@@ -458,7 +458,9 @@ module.exports = function (socket) {
                         }
                     );
                 } else {
-                    socket.emit('admin_transfer_error_player');
+                    userLog('transferring not allowed ' + data.game);
+
+                    socket.emit('admin_transfer_fail_player');
                     next();
                 }
             });

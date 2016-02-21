@@ -23,6 +23,10 @@ socket.on('disconnect', function () {
 var windowActive = false;
 
 var showMessage = function () {
+    if ($('#message p').length == 0) {
+        return;
+    }
+
     $('#message')
         .clearQueue()
         .stop()

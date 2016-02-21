@@ -43,11 +43,11 @@ module.exports.update = function (lv1, lv2, callback) {
             {_id: lv2},
             {$set: diff},
             {upsert: true},
-            function (err, doc) {
+            function (err, upd) {
                 if (err) {
                     throw err;
                 } else {
-                    callback(doc);
+                    callback();
                 }
             }
         );

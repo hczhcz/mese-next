@@ -380,6 +380,12 @@ socket.on('subscribe_fail', function (data) {
 
 // report
 
+// DOM change
+$('.report_div [bind]')
+    .append('<span target="last"><span></span>&nbsp;</span>')
+    .append('<span target="now"><span></span></span>')
+    .append('<span target="next">&nbsp;<span></span></span>');
+
 var currentGame = undefined;
 var currentPeriod = undefined;
 var currentUid = undefined;
@@ -437,8 +443,27 @@ var showReport = function (head, data, tail, xbind /* patch */) {
     }
 };
 
+var initPlayerList = function (count) {
+    // remove items
+
+    $('#report_players [bind]').remove();
+    $('#report_list [xbind] [bind]').remove();
+
+    // add items
+
+    var spanLast = '<span target="last"><span></span>&nbsp;</span>';
+    var spanNow = '<span target="now"><span></span></span>';
+
+    for (var i = 0; i < count; ++i) {
+        $('#report_players')
+            .append('<th bind="' + i + '">' + spanNow + '</th>');
+        $('#report_list [xbind]')
+            .append('<td bind="' + i + '">' + spanLast + spanNow + '</td>');
+    }
+};
+
 var showStatus = function (status) {
-    for (var i = 0; i < 16; ++i) { // max = 16
+    for (var i = 0; status; ++i) {
         if (status & (1 << i)) {
             // done
             $('#report_players [bind=' + i + ']').addClass('hint_next');
@@ -446,6 +471,8 @@ var showStatus = function (status) {
             // not done
             $('#report_players [bind=' + i + ']').removeClass('hint_next');
         }
+
+        status &= ~(1 << i);
     }
 };
 
@@ -475,14 +502,6 @@ var reloadReport = function () {
     }
 };
 
-// add items
-for (var i = 0; i < 16; ++i) { // max = 16
-    $('#report_players')
-        .append('<th bind="' + i + '"></th>');
-    $('#report_list [xbind]')
-        .append('<td bind="' + i + '"></td>');
-}
-
 // auto refresh
 setInterval(
     function () {
@@ -496,11 +515,6 @@ setInterval(
 // load the game
 loadHash();
 $(window).on('hashchange', loadHash);
-
-$('.report_div [bind]')
-    .append('<span target="last"><span></span>&nbsp;</span>')
-    .append('<span target="now"><span></span></span>')
-    .append('<span target="next">&nbsp;<span></span></span>');
 
 $('#report_refresh').click(reloadReport);
 
@@ -526,6 +540,7 @@ socket.on('report_early', function (data) {
 });
 
 socket.on('report_player', function (data) {
+    initPlayerList(data.players.length); // prepare DOM
     initReport(data.game, data.now_period, data.uid);
 
     showStatus(data.status);
@@ -593,6 +608,7 @@ socket.on('report_player', function (data) {
 });
 
 socket.on('report_public', function (data) {
+    initPlayerList(data.players.length); // prepare DOM
     initReport(data.game, data.now_period, data.uid);
 
     showStatus(data.status);

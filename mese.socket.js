@@ -13,6 +13,10 @@ module.exports = function (socket) {
         var authName = undefined;
         var authSudo = false;
 
+        var userLog = function (info) {
+            util.log('[' + (authName || socket.conn.remoteAddress) + '] ' + info);
+        };
+
         socket.on('login', function (data) {
             // args: name, password
 
@@ -20,22 +24,22 @@ module.exports = function (socket) {
                 !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
                 || !util.verifierStr(/^.+$/)(data.password)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('login ' + socket.conn.remoteAddress + ' ' + data.name);
+            userLog('login ' + data.name);
 
             db.update('users', data.name, function (doc, setter, next) {
                 // notice: doc may exist before signing up
                 if (!doc || doc.password === undefined) {
-                    util.log('new user ' + data.name);
-
                     setter(
                         {password: data.password},
                         function (doc) {
                             authName = data.name;
+
+                            userLog('new user');
 
                             socket.emit('login_new', {name: authName});
                             next();
@@ -53,14 +57,14 @@ module.exports = function (socket) {
                         data.name === config.adminName
                         && data.password === config.adminPassword
                     ) {
-                        util.log('admin auth');
-
                         authSudo = true;
+
+                        userLog('admin auth');
 
                         socket.emit('admin_auth_ok');
                     }
                 } else {
-                    util.log('wrong password ' + data.name);
+                    userLog('wrong password');
 
                     socket.emit('login_fail');
                     next();
@@ -76,12 +80,12 @@ module.exports = function (socket) {
                 || !util.verifierStr(/^.+$/)(data.password)
                 || !util.verifierStr(/^.+$/)(data.newPassword)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('change password ' + authName);
+            userLog('change password');
 
             db.update('users', authName, function (doc, setter, next) {
                 if (doc.password === data.password) {
@@ -93,7 +97,7 @@ module.exports = function (socket) {
                         }
                     );
                 } else {
-                    util.log('wrong password ' + authName);
+                    userLog('wrong password');
 
                     socket.emit('password_fail');
                     next();
@@ -107,12 +111,12 @@ module.exports = function (socket) {
             if (
                 !authName
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('list ' + authName);
+            userLog('list');
 
             db.get('users', authName, function (doc) {
                 socket.emit('subscribe_list', doc.subscribes || {});
@@ -127,20 +131,20 @@ module.exports = function (socket) {
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyBool(data.enabled)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
             if (data.enabled) {
-                util.log('subscribe ' + authName + ' ' + data.game);
+                userLog('subscribe ' + data.game);
             } else {
-                util.log('unsubscribe ' + authName + ' ' + data.game);
+                userLog('unsubscribe ' + data.game);
             }
 
             db.get('games', data.game, function (doc) {
                 if (data.enabled && !doc) {
-                    util.log('game not found ' + data.game);
+                    userLog('game not found ' + data.game);
 
                     socket.emit('subscribe_fail');
 
@@ -171,20 +175,16 @@ module.exports = function (socket) {
                 || !util.verifyInt(data.period)
                 || !util.verifyNum(data.uid)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            if (authName) {
-                util.log('get report ' + authName + ' ' + data.game);
-            } else {
-                util.log('get report ' + socket.conn.remoteAddress + ' ' + data.game);
-            }
+            userLog('get report ' + data.game);
 
             db.get('games', data.game, function (doc) {
                 if (!doc) {
-                    util.log('game not found ' + data.game);
+                    userLog('game not found ' + data.game);
 
                     socket.emit('report_fail');
 
@@ -245,16 +245,16 @@ module.exports = function (socket) {
                 || !util.verifyNum(data.ci)
                 || !util.verifyNum(data.rd)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('submit ' + authName + ' ' + data.game);
+            userLog('submit ' + data.game);
 
             db.update('games', data.game, function (doc, setter, next) {
                 if (!doc) {
-                    util.log('game not found ' + data.game);
+                    userLog('game not found ' + data.game);
 
                     socket.emit('submit_fail_game');
                     next();
@@ -315,7 +315,7 @@ module.exports = function (socket) {
                             socket.emit('submit_ok');
                         },
                         function (gameData) {
-                            util.log('submission declined ' + authName + ' ' + data.game);
+                            userLog('submission declined ' + data.game);
 
                             socket.emit('submit_decline');
                         },
@@ -330,7 +330,7 @@ module.exports = function (socket) {
                         }
                     );
                 } else {
-                    util.log('submission not allowed ' + authName + ' ' + data.game);
+                    userLog('submission not allowed ' + data.game);
 
                     socket.emit('submit_fail_player');
                     next();
@@ -345,12 +345,12 @@ module.exports = function (socket) {
                 !authSudo
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('admin login ' + data.name);
+            userLog('admin login ' + data.name);
 
             authName = data.name;
 
@@ -365,12 +365,12 @@ module.exports = function (socket) {
                 !authSudo
                 || !util.verifierStr(/^.+$/)(data.newPassword)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('admin change password ' + authName);
+            userLog('admin change password');
 
             db.update('users', authName, function (doc, setter, next) {
                 setter(
@@ -391,12 +391,12 @@ module.exports = function (socket) {
                 !authSudo
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('admin get report ' + authName + ' ' + data.game);
+            userLog('admin get report ' + data.game);
 
             admin.print(
                 gameData,
@@ -414,16 +414,16 @@ module.exports = function (socket) {
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
 
-            util.log('admin transfer game ' + data.game + ' ' + authName + ' ' + data.name);
+            userLog('admin transfer game ' + data.game + ' ' + data.name);
 
             db.update('games', data.game, function (doc, setter, next) {
                 if (!doc) {
-                    util.log('game not found ' + data.game);
+                    userLog('game not found ' + data.game);
 
                     socket.emit('admin_error');
                     next();
@@ -480,10 +480,12 @@ module.exports = function (socket) {
                         )
                     )(data.settings)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
+
+            userLog('admin create game ' + data.game + ' ' + data.preset);
 
             // TODO
         });
@@ -501,10 +503,12 @@ module.exports = function (socket) {
                         )
                     )(data.settings)
             ) {
-                util.log('bad socket request');
+                userLog('bad socket request');
 
                 return;
             }
+
+            userLog('admin alloc period ' + data.game);
 
             // TODO
         });

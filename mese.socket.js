@@ -354,8 +354,8 @@ module.exports = function (socket) {
 
             authName = data.name;
 
-            // socket.emit('admin_login_ok', {name: authName});　// TODO
             socket.emit('login_ok', {name: authName});
+            socket.emit('admin_login_ok');
         });
 
         socket.on('admin_password', function (data) {
@@ -376,8 +376,8 @@ module.exports = function (socket) {
                 setter(
                     {password: data.newPassword},
                     function (doc) {
-                        // socket.emit('admin_password_ok');　// TODO
                         socket.emit('password_ok');
+                        socket.emit('admin_password_ok');
                         next();
                     }
                 );
@@ -425,7 +425,7 @@ module.exports = function (socket) {
                 if (!doc) {
                     userLog('game not found ' + data.game);
 
-                    socket.emit('admin_error');
+                    socket.emit('admin_transfer_error_game');
                     next();
 
                     return;
@@ -453,12 +453,12 @@ module.exports = function (socket) {
                             players: doc.players,
                         },
                         function (doc) {
-                            // socket.emit('admin_ok'); // TODO
+                            socket.emit('admin_transfer_ok');
                             next();
                         }
                     );
                 } else {
-                    socket.emit('admin_error');
+                    socket.emit('admin_transfer_error_player');
                     next();
                 }
             });

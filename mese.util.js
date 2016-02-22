@@ -31,7 +31,7 @@ module.exports.verifyBool = function (bool) {
 };
 
 module.exports.verifyInt = function (num) {
-    return typeof num == 'number' && isFinite(num) && (0 | num) == num;
+    return typeof num == 'number' && isFinite(num) && (0 | num) === num;
 };
 
 module.exports.verifyNum = function (num) {

@@ -69,7 +69,7 @@ module.exports = function (socket) {
             // args: password, newPassword
 
             if (
-                !authName
+                authName === undefined
                 || !util.verifierStr(/^.+$/)(data.password)
                 || !util.verifierStr(/^.+$/)(data.newPassword)
             ) {
@@ -97,7 +97,7 @@ module.exports = function (socket) {
             // args: (nothing)
 
             if (
-                !authName
+                authName === undefined
             ) {
                 userLog('bad socket request');
 
@@ -115,7 +115,7 @@ module.exports = function (socket) {
             // args: game, enabled
 
             if (
-                !authName
+                authName === undefined
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyBool(data.enabled)
             ) {
@@ -217,7 +217,7 @@ module.exports = function (socket) {
             // args: game, period, price, prod, mk, ci, rd
 
             if (
-                !authName
+                authName === undefined
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyInt(data.period)
                 || !util.verifyNum(data.price)
@@ -254,15 +254,6 @@ module.exports = function (socket) {
                             setter(gameData, function () {
                                 // TODO: push updates?
                             });
-
-                            // TODO
-                            // if (snapshot) {
-                            //     var diff = {};
-                            //     diff['data_' + uid] = gameData;
-
-                            //     // store snapshot
-                            //     setter(diff, function () {});
-                            // }
                         };
 
                         game.submit(
@@ -434,7 +425,7 @@ module.exports = function (socket) {
 
             userLog('admin create game ' + data.game + ' ' + data.preset);
 
-            if (data.players.length == 0 || data.players.length > config.maxPlayer) {
+            if (data.players.length == 0 || data.players.length > config.coreMaxPlayer) {
                 userLog('player count not supported');
 
                 socket.emit('admin_init_fail_number');

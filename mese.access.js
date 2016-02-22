@@ -23,7 +23,7 @@ module.exports.userAuth = function (name, callback) {
             }
         );
 
-        if (resultPassword) {
+        if (resultPassword !== undefined) {
             setter(
                 {password: resultPassword},
                 function () {

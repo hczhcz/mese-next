@@ -20,7 +20,7 @@ var execCore = function (args, input, callback, fail) {
     });
 
     proc.on('close', function (status) {
-        if (status) {
+        if (status != 0) {
             fail(status, Buffer.concat(output));
         } else {
             callback(Buffer.concat(output));

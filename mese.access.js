@@ -52,66 +52,40 @@ module.exports.userSubscribe = function (name, game, enabled, callback) {
     });
 };
 
-module.exports.gamePlayers = function (game, callback, fail) { // TODO: duplication code
+module.exports.gameAction = function (game, callback, fail) {
     db.update('games', game, function (doc, setter, next) {
         var resultPlayers = undefined;
-        var resultCallback = undefined;
-
-        if (doc) {
-            callback(doc.players, function (players, callback) {
-                resultPlayers = players;
-                resultCallback = callback;
-            });
-        } else {
-            fail(function (players, callback) {
-                resultPlayers = players;
-                resultCallback = callback;
-            });
-        }
-
-        if (resultPlayers) {
-            setter(
-                {
-                    // generate an unique id (assumed unique)
-                    uid: Number(new Date()),
-                    players: resultPlayers,
-                },
-                function () {
-                    resultCallback();
-                    next();
-                }
-            );
-        } else {
-            next();
-        }
-    });
-};
-
-module.exports.gameData = function (game, callback, fail) { // TODO: duplication code
-    db.update('games', game, function (doc, setter, next) {
         var resultData = undefined;
         var resultCallback = undefined;
 
         if (doc) {
             // notice: .buffer is required for binary data
-            callback(doc.players, doc.data.buffer, function (gameData, callback) {
+            callback(doc.players, doc.data.buffer, function (players, gameData, callback) {
+                resultPlayers = players;
                 resultData = gameData;
                 resultCallback = callback;
             });
         } else {
-            fail(function (gameData, callback) {
+            fail(function (players, gameData, callback) {
+                resultPlayers = players;
                 resultData = gameData;
                 resultCallback = callback;
             });
         }
 
-        if (resultData) {
+        if (resultPlayers !== undefined || resultData !== undefined) {
+            // generate an unique id (assumed unique)
+            var diff = {uid: Number(new Date())};
+
+            if (resultPlayers !== undefined) {
+                diff.players = resultPlayers;
+            }
+            if (resultData !== undefined) {
+                diff.data = resultData;
+            }
+
             setter(
-                {
-                    // generate an unique id (assumed unique)
-                    uid: Number(new Date()),
-                    data: resultData,
-                },
+                diff,
                 function () {
                     resultCallback();
                     next();

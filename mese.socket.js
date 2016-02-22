@@ -233,7 +233,7 @@ module.exports = function (socket) {
 
             userLog('submit ' + data.game);
 
-            access.gameData(
+            access.gameAction(
                 data.game,
                 function (players, oldData, setter) {
                     var player = undefined;
@@ -251,7 +251,7 @@ module.exports = function (socket) {
                                 throw Error('data broken');
                             }
 
-                            setter(gameData, function () {
+                            setter(undefined, gameData, function () {
                                 // TODO: push updates?
                             });
                         };
@@ -370,9 +370,9 @@ module.exports = function (socket) {
 
             userLog('admin transfer game ' + data.game + ' ' + data.name);
 
-            access.gamePlayers(
+            access.gameAction(
                 data.game,
-                function (players, setter) {
+                function (players, oldData, setter) {
                     var player = undefined;
 
                     for (var i in players) {
@@ -386,7 +386,7 @@ module.exports = function (socket) {
                         players[player] = data.name;
 
                         // store data
-                        setter(players, function () {
+                        setter(players, undefined, function () {
                             socket.emit('admin_transfer_ok');
                         });
                     } else {
@@ -431,10 +431,20 @@ module.exports = function (socket) {
                 socket.emit('admin_init_fail_number');
             }
 
-            admin.init(
-                data.players.length, data.preset, data.settings,
-                function (gameData) {
-                    // TODO
+            access.gameAction(
+                data.game,
+                function (players, oldData, setter) {
+                    userLog('game exists ' + data.game);
+
+                    socket.emit('admin_init_fail_game');
+                },
+                function (setter) {
+                    admin.init(
+                        data.players.length, data.preset, data.settings,
+                        function (gameData) {
+                            // TODO
+                        }
+                    );
                 }
             );
         });
@@ -459,13 +469,13 @@ module.exports = function (socket) {
 
             userLog('admin alloc period ' + data.game);
 
-            access.gameData(
+            access.gameAction(
                 data.game,
                 function (players, oldData, setter) {
                     admin.alloc(
                         oldData, data.settings,
                         function (gameData) {
-                            setter(gameData, function () {
+                            setter(undefined, gameData, function () {
                                 socket.emit('admin_alloc_ok');
                             });
                         }

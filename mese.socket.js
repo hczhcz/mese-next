@@ -448,9 +448,22 @@ module.exports = function (socket) {
                     admin.init(
                         data.players.length, data.preset, data.settings,
                         function (gameData) {
-                            // TODO
+                            setter(data.players, gameData, function () {
+                                for (var i in data.players) {
+                                    access.userSubscribe(
+                                        data.players[i], data.game, true,
+                                        function (subscribes) {
+                                            socket.emit('admin_init_invited', data.players[i]);
+                                        }
+                                    );
+                                }
+
+                                socket.emit('admin_init_ok');
+                            });
                         }
                     );
+
+                    return true; // need setter
                 }
             );
         });

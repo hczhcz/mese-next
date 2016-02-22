@@ -13,28 +13,17 @@ module.exports.game = function (game, callback) {
 
 module.exports.userAuth = function (name, callback) {
     db.update('users', name, function (doc, setter, next) {
-        var resultPassword = undefined;
-        var resultCallback = undefined;
-
-        callback(
-            doc ? doc.password : undefined,
-            function (password, callback) {
-                resultPassword = password;
-                resultCallback = callback;
-            }
-        );
-
-        if (resultPassword !== undefined) {
+        var passwordSetter = function (password, callback) {
             setter(
-                {password: resultPassword},
+                {password: password},
                 function () {
-                    resultCallback();
+                    callback();
                     next();
                 }
             );
-        } else {
-            next();
-        }
+        };
+
+        callback(doc ? doc.password : undefined, passwordSetter) || next();
     });
 };
 
@@ -55,48 +44,34 @@ module.exports.userSubscribe = function (name, game, enabled, callback) {
 
 module.exports.gameAction = function (game, callback, fail) {
     db.update('games', game, function (doc, setter, next) {
-        var resultPlayers = undefined;
-        var resultData = undefined;
-        var resultCallback = undefined;
-
-        if (doc) {
-            // notice: .buffer is required for binary data
-            callback(doc.players, doc.data.buffer, function (players, gameData, callback) {
-                resultPlayers = players;
-                resultData = gameData;
-                resultCallback = callback;
-            });
-        } else {
-            fail(function (players, gameData, callback) {
-                resultPlayers = players;
-                resultData = gameData;
-                resultCallback = callback;
-            });
-        }
-
-        if (resultPlayers !== undefined || resultData !== undefined) {
+        var gameDataSetter = function (players, gameData, callback) {
             // generate an unique id (assumed unique)
             var diff = {uid: Number(new Date())};
 
-            if (resultPlayers !== undefined) {
-                diff.players = resultPlayers;
+            if (players !== undefined) {
+                diff.players = players;
             }
-            if (resultData !== undefined) {
-                if (resultData.length < config.coreMinDataSize) {
+            if (gameData !== undefined) {
+                if (gameData.length < config.coreMinDataSize) {
                     throw Error('broken data');
                 }
-                diff.data = resultData;
+                diff.data = gameData;
             }
 
             setter(
                 diff,
                 function () {
-                    resultCallback();
+                    callback();
                     next();
                 }
             );
+        };
+
+        if (doc) {
+            // notice: .buffer is required for binary data
+            callback(doc.players, doc.data.buffer, gameDataSetter) || next();
         } else {
-            next();
+            fail(gameDataSetter) || next();
         }
     });
 };

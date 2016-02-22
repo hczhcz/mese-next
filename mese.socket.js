@@ -42,6 +42,8 @@ module.exports = function (socket) {
 
                         // notice: admin user should login again here
                     });
+
+                    return true; // need setter
                 } else if (password === data.password) {
                     authName = data.name;
 
@@ -85,6 +87,8 @@ module.exports = function (socket) {
                     setter(data.newPassword, function () {
                         socket.emit('password_ok');
                     });
+
+                    return true; // need setter
                 } else {
                     userLog('wrong password');
 
@@ -273,6 +277,8 @@ module.exports = function (socket) {
                                 afterClose(gameData, false);
                             }
                         );
+
+                        return true; // need setter
                     } else {
                         userLog('submission not allowed ' + data.game);
 
@@ -326,6 +332,8 @@ module.exports = function (socket) {
                     socket.emit('password_ok');
                     socket.emit('admin_password_ok');
                 });
+
+                return true; // need setter
             });
         });
 
@@ -385,6 +393,8 @@ module.exports = function (socket) {
                         setter(players, undefined, function () {
                             socket.emit('admin_transfer_ok');
                         });
+
+                        return true; // need setter
                     } else {
                         userLog('transferring not allowed ' + data.game);
 
@@ -476,6 +486,8 @@ module.exports = function (socket) {
                             });
                         }
                     );
+
+                    return true; // need setter
                 },
                 function (setter) {
                     userLog('game not found ' + data.game);

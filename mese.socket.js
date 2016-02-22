@@ -2,7 +2,7 @@
 
 var config = require('./mese.config');
 var util = require('./mese.util');
-var db = require('./mese.db');
+var access = require('./mese.access');
 var game = require('./mese.game');
 var admin = require('./mese.admin');
 
@@ -31,27 +31,21 @@ module.exports = function (socket) {
 
             userLog('login ' + data.name);
 
-            db.update('users', data.name, function (doc, setter, next) {
-                // notice: doc may exist before signing up
-                if (!doc || doc.password === undefined) {
-                    setter(
-                        {password: data.password},
-                        function (doc) {
-                            authName = data.name;
+            access.userAuth(data.name, function (password, setter) {
+                if (password === undefined) {
+                    setter(data.password, function () {
+                        authName = data.name;
 
-                            userLog('new user');
+                        userLog('new user');
 
-                            socket.emit('login_new', {name: authName});
-                            next();
+                        socket.emit('login_new', {name: authName});
 
-                            // notice: admin user should login again here
-                        }
-                    );
-                } else if (doc.password === data.password) {
+                        // notice: admin user should login again here
+                    });
+                } else if (password === data.password) {
                     authName = data.name;
 
                     socket.emit('login_ok', {name: authName});
-                    next();
 
                     if (
                         data.name === config.adminName
@@ -67,7 +61,6 @@ module.exports = function (socket) {
                     userLog('wrong password');
 
                     socket.emit('login_fail');
-                    next();
                 }
             });
         });
@@ -87,20 +80,15 @@ module.exports = function (socket) {
 
             userLog('change password');
 
-            db.update('users', authName, function (doc, setter, next) {
-                if (doc.password === data.password) {
-                    setter(
-                        {password: data.newPassword},
-                        function (doc) {
-                            socket.emit('password_ok');
-                            next();
-                        }
-                    );
+            access.userAuth(authName, function (password, setter) {
+                if (password === data.password) {
+                    setter(data.newPassword, function () {
+                        socket.emit('password_ok');
+                    });
                 } else {
                     userLog('wrong password');
 
                     socket.emit('password_fail');
-                    next();
                 }
             });
         });
@@ -118,7 +106,7 @@ module.exports = function (socket) {
 
             userLog('list');
 
-            db.get('users', authName, function (doc) {
+            access.user(authName, function (doc) {
                 socket.emit('subscribe_list', doc.subscribes || {});
             });
         });
@@ -142,7 +130,7 @@ module.exports = function (socket) {
                 userLog('unsubscribe ' + data.game);
             }
 
-            db.get('games', data.game, function (doc) {
+            access.game(data.game, function (doc) {
                 if (data.enabled && !doc) {
                     userLog('game not found ' + data.game);
 
@@ -151,19 +139,12 @@ module.exports = function (socket) {
                     return;
                 }
 
-                db.update('users', authName, function (doc, setter, next) {
-                    var subscribes = doc.subscribes || {};
-
-                    subscribes[data.game] = data.enabled;
-
-                    setter(
-                        {subscribes: subscribes},
-                        function (doc) {
-                            socket.emit('subscribe_update', subscribes);
-                            next();
-                        }
-                    );
-                });
+                access.userSubscribe(
+                    authName, data.game, data.enabled,
+                    function (subscribes) {
+                        socket.emit('subscribe_update', subscribes);
+                    }
+                );
             });
         });
 
@@ -182,7 +163,7 @@ module.exports = function (socket) {
 
             userLog('get report ' + data.game);
 
-            db.get('games', data.game, function (doc) {
+            access.game(data.game, function (doc) {
                 if (!doc) {
                     userLog('game not found ' + data.game);
 
@@ -252,90 +233,71 @@ module.exports = function (socket) {
 
             userLog('submit ' + data.game);
 
-            db.update('games', data.game, function (doc, setter, next) {
-                if (!doc) {
+            access.gameData(
+                data.game,
+                function (players, oldData, setter) {
+                    var player = undefined;
+
+                    for (var i in players) {
+                        if (players[i] === authName) {
+                            player = parseInt(i);
+                            break;
+                        }
+                    }
+
+                    if (player !== undefined) {
+                        var afterClose = function (gameData, snapshot) {
+                            if (!gameData || gameData.length != oldData.length) {
+                                throw Error('data broken');
+                            }
+
+                            setter(gameData, function () {
+                                // TODO: push updates?
+                            });
+
+                            // TODO
+                            // if (snapshot) {
+                            //     var diff = {};
+                            //     diff['data_' + uid] = gameData;
+
+                            //     // store snapshot
+                            //     setter(diff, function () {});
+                            // }
+                        };
+
+                        game.submit(
+                            oldData, player, data.period,
+                            data.price, data.prod, data.mk, data.ci, data.rd,
+                            function (gameData) {
+                                socket.emit('submit_ok');
+                            },
+                            function (gameData) {
+                                userLog('submission declined ' + data.game);
+
+                                socket.emit('submit_decline');
+                            },
+                            function (report) {
+                                socket.emit('report_early', report);
+                            },
+                            function (gameData) {
+                                afterClose(gameData, true);
+                            },
+                            function (gameData) {
+                                afterClose(gameData, false);
+                            }
+                        );
+                    } else {
+                        userLog('submission not allowed ' + data.game);
+
+                        socket.emit('submit_fail_player');
+                    }
+                },
+                function (setter) {
                     userLog('game not found ' + data.game);
 
                     socket.emit('submit_fail_game');
-                    next();
-
-                    return;
                 }
-
-                var player = undefined;
-
-                for (var i in doc.players) {
-                    if (doc.players[i] === authName) {
-                        player = parseInt(i);
-                        break;
-                    }
-                }
-
-                if (player !== undefined) {
-                    var oldData = doc.data.buffer; // MongoDB binary data
-
-                    var afterClose = function (gameData, snapshot) {
-                        if (!gameData || gameData.length != oldData.length) {
-                            throw Error('data broken');
-                        }
-
-                        // generate an unique id (assumed unique)
-                        var uid = Number(new Date());
-
-                        // store data
-                        setter(
-                            {
-                                uid: uid,
-                                data: gameData,
-                            },
-                            function (doc) {
-                                // TODO: push updates?
-                                next();
-                            }
-                        );
-
-                        if (snapshot) {
-                            var diff = {};
-                            diff['data_' + uid] = gameData;
-
-                            // store snapshot
-                            setter(
-                                diff,
-                                function (doc) {
-                                    // nothing
-                                }
-                            );
-                        }
-                    };
-
-                    game.submit(
-                        oldData, player, data.period,
-                        data.price, data.prod, data.mk, data.ci, data.rd,
-                        function (gameData) {
-                            socket.emit('submit_ok');
-                        },
-                        function (gameData) {
-                            userLog('submission declined ' + data.game);
-
-                            socket.emit('submit_decline');
-                        },
-                        function (report) {
-                            socket.emit('report_early', report);
-                        },
-                        function (gameData) {
-                            afterClose(gameData, true);
-                        },
-                        function (gameData) {
-                            afterClose(gameData, false);
-                        }
-                    );
-                } else {
-                    userLog('submission not allowed ' + data.game);
-
-                    socket.emit('submit_fail_player');
-                    next();
-                }
-            });
+            );
         });
 
         socket.on('admin_login', function (data) {
@@ -372,15 +334,11 @@ module.exports = function (socket) {
 
             userLog('admin change password');
 
-            db.update('users', authName, function (doc, setter, next) {
-                setter(
-                    {password: data.newPassword},
-                    function (doc) {
-                        socket.emit('password_ok');
-                        socket.emit('admin_password_ok');
-                        next();
-                    }
-                );
+            access.userAuth(authName, function (password, setter) {
+                setter(data.newPassword, function () {
+                    socket.emit('password_ok');
+                    socket.emit('admin_password_ok');
+                });
             });
         });
 
@@ -421,49 +379,37 @@ module.exports = function (socket) {
 
             userLog('admin transfer game ' + data.game + ' ' + data.name);
 
-            db.update('games', data.game, function (doc, setter, next) {
-                if (!doc) {
+            access.gamePlayers(
+                data.game,
+                function (players, setter) {
+                    var player = undefined;
+
+                    for (var i in players) {
+                        if (players[i] === authName) {
+                            player = parseInt(i);
+                            break;
+                        }
+                    }
+
+                    if (player !== undefined) {
+                        players[player] = data.name;
+
+                        // store data
+                        setter(players, function () {
+                            socket.emit('admin_transfer_ok');
+                        });
+                    } else {
+                        userLog('transferring not allowed ' + data.game);
+
+                        socket.emit('admin_transfer_fail_player');
+                    }
+                },
+                function (setter) {
                     userLog('game not found ' + data.game);
 
                     socket.emit('admin_transfer_fail_game');
-                    next();
-
-                    return;
                 }
-
-                var player = undefined;
-
-                for (var i in doc.players) {
-                    if (doc.players[i] === authName) {
-                        player = parseInt(i);
-                        break;
-                    }
-                }
-
-                if (player !== undefined) {
-                    // generate an unique id (assumed unique)
-                    var uid = Number(new Date());
-
-                    doc.players[player] = data.name;
-
-                    // store data
-                    setter(
-                        {
-                            uid: uid,
-                            players: doc.players,
-                        },
-                        function (doc) {
-                            socket.emit('admin_transfer_ok');
-                            next();
-                        }
-                    );
-                } else {
-                    userLog('transferring not allowed ' + data.game);
-
-                    socket.emit('admin_transfer_fail_player');
-                    next();
-                }
-            });
+            );
         });
 
         socket.on('admin_init', function (data) {
@@ -522,25 +468,24 @@ module.exports = function (socket) {
 
             userLog('admin alloc period ' + data.game);
 
-            db.update('games', data.game, function (doc, setter, next) {
-                if (!doc) {
+            access.gameData(
+                data.game,
+                function (players, oldData, setter) {
+                    admin.alloc(
+                        oldData, data.settings,
+                        function (gameData) {
+                            setter(gameData, function () {
+                                socket.emit('admin_alloc_ok');
+                            });
+                        }
+                    );
+                },
+                function (setter) {
                     userLog('game not found ' + data.game);
 
                     socket.emit('admin_alloc_fail_game');
-                    next();
-
-                    return;
                 }
-
-                var oldData = doc.data.buffer; // MongoDB binary data
-
-                admin.alloc(
-                    oldData, data.settings,
-                    function (gameData) {
-                        // TODO
-                    }
-                );
-            });
+            );
         });
 
         // socket.on('admin_revent', function (data) { // not implemented

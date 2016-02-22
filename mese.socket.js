@@ -247,10 +247,6 @@ module.exports = function (socket) {
 
                     if (player !== undefined) {
                         var afterClose = function (gameData, snapshot) {
-                            if (!gameData || gameData.length != oldData.length) {
-                                throw Error('data broken');
-                            }
-
                             setter(undefined, gameData, function () {
                                 // TODO: push updates?
                             });

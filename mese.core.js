@@ -29,7 +29,7 @@ var execCore = function (args, input, callback, fail) {
 };
 
 var stdFail = function (status, output) {
-    throw Error('exec fail: ' + status);
+    throw Error('exec fail ' + status);
 };
 
 var evalCallback = function (callback) {

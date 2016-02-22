@@ -1,5 +1,6 @@
 'use strict';
 
+var config = require('./mese.config');
 var db = require('./mese.db');
 
 module.exports.user = function (name, callback) {
@@ -81,6 +82,9 @@ module.exports.gameAction = function (game, callback, fail) {
                 diff.players = resultPlayers;
             }
             if (resultData !== undefined) {
+                if (resultData.length < config.coreMinDataSize) {
+                    throw Error('broken data');
+                }
                 diff.data = resultData;
             }
 

@@ -467,13 +467,12 @@ var initPlayerList = function (count) {
 };
 
 var showStatus = function (status) {
+    $('#report_players [bind]').removeClass('hint_next');
+
     for (var i = 0; status; ++i) {
         if (status & (1 << i)) {
             // done
             $('#report_players [bind=' + i + ']').addClass('hint_next');
-        } else {
-            // not done
-            $('#report_players [bind=' + i + ']').removeClass('hint_next');
         }
 
         status &= ~(1 << i);

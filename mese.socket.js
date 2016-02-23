@@ -453,7 +453,14 @@ module.exports = function (socket) {
                                     access.userSubscribe(
                                         data.players[i], data.game, true,
                                         function (subscribes) {
-                                            socket.emit('admin_init_invited', data.players[i]);
+                                            userLog('invited ' + data.players[i]);
+
+                                            socket.emit('admin_init_invite', data.players[i]);
+                                        },
+                                        function () {
+                                            userLog('invition not allowed');
+
+                                            socket.emit('admin_init_fail_invite');
                                         }
                                     );
                                 }

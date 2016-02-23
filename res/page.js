@@ -374,7 +374,11 @@ socket.on('subscribe_list', updateList);
 
 socket.on('subscribe_update', updateList);
 
-socket.on('subscribe_fail', function (data) {
+socket.on('subscribe_fail_list', function (data) {
+    message('List not found');
+});
+
+socket.on('subscribe_fail_game', function (data) {
     message('Game not found');
 });
 

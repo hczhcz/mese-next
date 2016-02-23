@@ -3,12 +3,14 @@
 var config = require('./mese.config');
 var db = require('./mese.db');
 
-module.exports.user = function (name, callback) {
-    db.get('users', name, callback);
-};
-
-module.exports.game = function (game, callback) {
-    db.get('games', game, callback);
+module.exports.user = function (name, callback, fail) {
+    db.get('users', name, function (doc) {
+        if (doc) {
+            callback(doc.subscribes || {});
+        } else {
+            fail();
+        }
+    });
 };
 
 module.exports.userAuth = function (name, callback) {
@@ -40,6 +42,17 @@ module.exports.userSubscribe = function (name, game, enabled, callback, fail) {
                     next();
                 }
             );
+        } else {
+            fail();
+        }
+    });
+};
+
+module.exports.game = function (game, callback, fail) {
+    db.get('games', game, function (doc) {
+        if (doc) {
+            // notice: .buffer is required for binary data
+            callback(doc.uid, doc.players, doc.data.buffer);
         } else {
             fail();
         }

@@ -110,9 +110,17 @@ module.exports = function (socket) {
 
             userLog('list');
 
-            access.user(authName, function (doc) {
-                socket.emit('subscribe_list', doc.subscribes || {});
-            });
+            access.user(
+                authName,
+                function (subscribes) {
+                    socket.emit('subscribe_list', subscribes);
+                },
+                function () {
+                    userLog('list not found');
+
+                    socket.emit('subscribe_fail_list');
+                }
+            );
         });
 
         socket.on('subscribe', function (data) {
@@ -134,22 +142,35 @@ module.exports = function (socket) {
                 userLog('unsubscribe ' + data.game);
             }
 
-            access.game(data.game, function (doc) {
-                if (data.enabled && !doc) {
-                    userLog('game not found ' + data.game);
-
-                    socket.emit('subscribe_fail');
-
-                    return;
-                }
-
+            var doSubscribe = function () {
                 access.userSubscribe(
                     authName, data.game, data.enabled,
                     function (subscribes) {
                         socket.emit('subscribe_update', subscribes);
+                    },
+                    function () {
+                        userLog('subscription not allowed');
+
+                        socket.emit('subscribe_fail_player');
                     }
                 );
-            });
+            };
+
+            access.game(
+                data.game,
+                function (uid, players, gameData) {
+                    doSubscribe();
+                },
+                function () {
+                    if (data.enabled) {
+                        userLog('game not found ' + data.game);
+
+                        socket.emit('subscribe_fail_game');
+                    } else {
+                        doSubscribe();
+                    }
+                }
+            );
         });
 
         socket.on('report', function (data) {
@@ -167,54 +188,54 @@ module.exports = function (socket) {
 
             userLog('get report ' + data.game);
 
-            access.game(data.game, function (doc) {
-                if (!doc) {
+            access.game(
+                data.game,
+                function (uid, players, gameData) {
+                    if (uid == data.uid) {
+                        return;
+                    }
+
+                    var player = undefined;
+
+                    for (var i in players) {
+                        if (players[i] === authName) {
+                            player = parseInt(i);
+                            break;
+                        }
+                    }
+
+                    game.print(
+                        gameData, player,
+                        function (report) {
+                            report.game = data.game;
+                            report.uid = uid;
+                            report.players = players;
+
+                            if (report.now_period != data.period) { // TODO: simplify
+                                socket.emit('report_player', report);
+                            } else {
+                                socket.emit('report_status', report.status);
+                            }
+                        },
+                        function (report) {
+                            report.game = data.game;
+                            report.uid = uid;
+                            report.players = players;
+
+                            if (report.now_period != data.period) { // TODO: simplify
+                                socket.emit('report_public', report);
+                            } else {
+                                socket.emit('report_status', report.status);
+                            }
+                        }
+                    );
+                },
+                function () {
                     userLog('game not found ' + data.game);
 
                     socket.emit('report_fail');
-
-                    return;
                 }
-
-                if (doc.uid == data.uid) {
-                    return;
-                }
-
-                var player = undefined;
-
-                for (var i in doc.players) {
-                    if (doc.players[i] === authName) {
-                        player = parseInt(i);
-                        break;
-                    }
-                }
-
-                game.print(
-                    doc.data.buffer /* MongoDB binary data */, player,
-                    function (report) {
-                        report.game = data.game;
-                        report.uid = doc.uid;
-                        report.players = doc.players;
-
-                        if (report.now_period != data.period) { // TODO: simplify
-                            socket.emit('report_player', report);
-                        } else {
-                            socket.emit('report_status', report.status);
-                        }
-                    },
-                    function (report) {
-                        report.game = data.game;
-                        report.uid = doc.uid;
-                        report.players = doc.players;
-
-                        if (report.now_period != data.period) { // TODO: simplify
-                            socket.emit('report_public', report);
-                        } else {
-                            socket.emit('report_status', report.status);
-                        }
-                    }
-                );
-            });
+            );
         });
 
         socket.on('submit', function (data) {
@@ -430,6 +451,7 @@ module.exports = function (socket) {
             }
 
             userLog('admin create game ' + data.game + ' ' + data.preset);
+            userLog('alloc ' + data.settings.length + 'pd');
 
             if (data.players.length == 0 || data.players.length > config.coreMaxPlayer) {
                 userLog('player count not supported');
@@ -494,6 +516,7 @@ module.exports = function (socket) {
             }
 
             userLog('admin alloc period ' + data.game);
+            userLog('alloc ' + data.settings.length + 'pd');
 
             access.gameAction(
                 data.game,

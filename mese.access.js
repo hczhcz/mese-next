@@ -27,18 +27,22 @@ module.exports.userAuth = function (name, callback) {
     });
 };
 
-module.exports.userSubscribe = function (name, game, enabled, callback) {
+module.exports.userSubscribe = function (name, game, enabled, callback, fail) {
     db.update('users', name, function (doc, setter, next) {
-        var subscribes = doc.subscribes || {};
-        subscribes[game] = enabled;
+        if (doc) {
+            var subscribes = doc.subscribes || {};
+            subscribes[game] = enabled;
 
-        setter(
-            {subscribes: subscribes},
-            function () {
-                callback(subscribes);
-                next();
-            }
-        );
+            setter(
+                {subscribes: subscribes},
+                function () {
+                    callback(subscribes);
+                    next();
+                }
+            );
+        } else {
+            fail();
+        }
     });
 };
 

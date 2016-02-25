@@ -178,7 +178,6 @@ module.exports = function (socket) {
 
             if (
                 !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifyInt(data.period)
                 || !util.verifyNum(data.uid)
             ) {
                 userLog('bad socket request');
@@ -211,22 +210,14 @@ module.exports = function (socket) {
                             report.uid = uid;
                             report.players = players;
 
-                            if (report.now_period != data.period) { // TODO: simplify
-                                socket.emit('report_player', report);
-                            } else {
-                                socket.emit('report_status', report.status);
-                            }
+                            socket.emit('report_player', report);
                         },
                         function (report) {
                             report.game = data.game;
                             report.uid = uid;
                             report.players = players;
 
-                            if (report.now_period != data.period) { // TODO: simplify
-                                socket.emit('report_public', report);
-                            } else {
-                                socket.emit('report_status', report.status);
-                            }
+                            socket.emit('report_public', report);
                         }
                     );
                 },

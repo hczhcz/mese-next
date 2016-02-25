@@ -393,6 +393,7 @@ $('.report_div [bind]')
 var currentGame = undefined;
 var currentPeriod = undefined;
 var currentUid = undefined;
+var currentSettings = undefined;
 
 var verboseEnabled = false;
 
@@ -482,7 +483,6 @@ var showStatus = function (status) {
 var loadReport = function (game) {
     socket.emit('report', {
         game: game,
-        period: -1, // force reload
         uid: -1, // force reload
     });
 };
@@ -499,7 +499,6 @@ var reloadReport = function () {
     if (!$('#report').hasClass('hide')) {
         socket.emit('report', {
             game: currentGame,
-            period: currentPeriod,
             uid: currentUid,
         });
     }
@@ -569,39 +568,44 @@ socket.on('report_player', function (data) {
     if (data.next_settings) {
         showReport($('#report_settings'), data.next_settings, 'next');
 
-        $('#submit_price')
-            .attr('min', data.next_settings.limits.price_min)
-            .attr('max', data.next_settings.limits.price_max)
-            .val(data.decisions.price);
-        $('#submit_prod')
-            .attr('min', 0)
-            .attr('max', data.data_early.balance.size)
-            .val(
+        var settingsStr = JSON.stringify(data.next_settings);
+        if (settingsStr !== currentSettings) {
+            $('#submit_price')
+                .attr('min', data.next_settings.limits.price_min)
+                .attr('max', data.next_settings.limits.price_max)
+                .val(data.decisions.price);
+            $('#submit_prod')
+                .attr('min', 0)
+                .attr('max', data.data_early.balance.size)
+                .val(
+                    Math.round(
+                        data.data_early.balance.size
+                        * data.data_early.production.prod_rate
+                    )
+                );
+            $('#submit_prod_rate').text(
                 Math.round(
-                    data.data_early.balance.size
-                    * data.data_early.production.prod_rate
+                    100 * data.data_early.production.prod_rate
                 )
             );
-        $('#submit_prod_rate').text(
-            Math.round(
-                100 * data.data_early.production.prod_rate
-            )
-        );
-        $('#submit_mk')
-            .attr('min', 0)
-            .attr('max', data.next_settings.limits.mk_limit)
-            .val(data.decisions.mk);
-        $('#submit_ci')
-            .attr('min', 0)
-            .attr('max', data.next_settings.limits.ci_limit)
-            .val(data.decisions.ci);
-        $('#submit_rd')
-            .attr('min', 0)
-            .attr('max', data.next_settings.limits.rd_limit)
-            .val(data.decisions.rd);
+            $('#submit_mk')
+                .attr('min', 0)
+                .attr('max', data.next_settings.limits.mk_limit)
+                .val(data.decisions.mk);
+            $('#submit_ci')
+                .attr('min', 0)
+                .attr('max', data.next_settings.limits.ci_limit)
+                .val(data.decisions.ci);
+            $('#submit_rd')
+                .attr('min', 0)
+                .attr('max', data.next_settings.limits.rd_limit)
+                .val(data.decisions.rd);
+        }
 
+        currentSettings = settingsStr;
         $('#submit input').attr('disabled', false);
     } else {
+        currentSettings = undefined;
         $('#submit input').attr('disabled', true);
     }
 
@@ -632,13 +636,10 @@ socket.on('report_public', function (data) {
         showReport($('#report_settings'), data.next_settings, 'next');
     }
 
+    currentSettings = undefined;
     $('#submit').addClass('hide');
 
     $('#report').removeClass('hide');
-});
-
-socket.on('report_status', function (data) {
-    showStatus(data);
 });
 
 socket.on('report_fail', function (data) {

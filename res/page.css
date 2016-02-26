@@ -22,6 +22,13 @@ body {
     font-family: sans-serif;
 }
 
+h2 {
+    margin: 0.25em 0;
+}
+h3 {
+    margin: 0.5em 0;
+}
+
 .hide {
     display: none;
 }
@@ -122,10 +129,6 @@ body {
 #util td {
     padding: 0.25em 0;
 }
-
-#util h3 {
-    padding: 0.25em 0;
-}
 #util p {
     padding: 0.25em 0;
 }
@@ -170,13 +173,6 @@ body {
     z-index: 1;
 
     font-family: monospace;
-}
-
-#report h2 {
-    margin: 0.25em 0;
-}
-#report h3 {
-    margin: 0.5em 0;
 }
 
 .report_div {
@@ -226,7 +222,7 @@ body {
     font-family: monospace;
 }
 #submit_prod {
-    width: 60% !important;
+    max-width: 60%;
 }
 #submit input[type=submit] {
     width: 100%;

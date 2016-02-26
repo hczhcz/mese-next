@@ -214,6 +214,12 @@ $('#login_password').keypress(function (event) {
     }
 });
 
+$('#login_remember').keypress(function (event) {
+    if (event.which == 13) {
+        $('#login_submit').click();
+    }
+});
+
 $('#login_submit').click(function (event) {
     event.preventDefault();
 

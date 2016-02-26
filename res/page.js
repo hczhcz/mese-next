@@ -153,14 +153,11 @@ $('#util td').dblclick(function (event) {
 
 // login
 
-var currentName = undefined;
-
 var loginDone = function (name, reg) {
-    currentName = name;
-
     $('#user_name').text(
-        reg ? currentName + ' (new user)' : currentName
+        reg ? name + ' (new user)' : name
     );
+    $('#submit_name').text(name); // notice: #submit_??? is in #report
 
     $('#user').removeClass('hide');
     $('#login').addClass('hide');
@@ -418,7 +415,6 @@ var initReport = function (game, period, uid) {
 
     $('#submit_game').text(currentGame);
     $('#submit_period').text(currentPeriod);
-    $('#submit_name').text(currentName);
 
     $('.report_div [target]').addClass('hide');
 };

@@ -108,13 +108,13 @@ var showSide = function () {
                 // IE8 workaround
                 if ($('#side').position().left != 0) {
                     $('#side').css('left', '0');
-                    $('#report').css('left', '16em');
+                    $('body').css('padding-left', '16em');
                 }
             });
-        $('#report')
+        $('body')
             .clearQueue()
             .stop()
-            .animate({left: '16rem'});
+            .animate({'padding-left': '16rem'});
     }
 };
 
@@ -130,13 +130,13 @@ var hideSide = function () {
                 // IE8 workaround
                 if ($('#side').position().left == 0) {
                     $('#side').css('left', '-15.5em');
-                    $('#report').css('left', '0.5em');
+                    $('body').css('padding-left', '0.5em');
                 }
             });
-        $('#report')
+        $('body')
             .clearQueue()
             .stop()
-            .animate({left: '0.5rem'}, 1000);
+            .animate({'padding-left': '0.5rem'}, 1000);
     }
 };
 

@@ -7,6 +7,11 @@
 }
 
 body {
+    margin: 0;
+    padding: 0;
+    padding-left: 16em;
+    padding-left: 16rem;
+
     background: #F0F0F0;
     color: #202020;
     -ms-text-size-adjust: none;
@@ -153,10 +158,6 @@ body {
 /* report */
 
 #report {
-    position: absolute;
-    left: 16em;
-    left: 16rem;
-    top: 0;
     padding: 1em;
     padding: 1rem;
     z-index: 1;

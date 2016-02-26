@@ -383,9 +383,9 @@ socket.on('subscribe_fail_game', function (data) {
 
 // DOM change
 $('.report_div [bind]')
-    .append('<span target="last"><span></span>&nbsp;</span>')
-    .append('<span target="now"><span></span></span>')
-    .append('<span target="next">&nbsp;<span></span></span>');
+    .append('<span class="last"><span></span>&nbsp;</span>')
+    .append('<span class="now"><span></span></span>')
+    .append('<span class="next">&nbsp;<span></span></span>');
 
 var currentGame = undefined;
 var currentPeriod = undefined;
@@ -416,7 +416,9 @@ var initReport = function (game, period, uid) {
     $('#submit_game').text(currentGame);
     $('#submit_period').text(currentPeriod);
 
-    $('.report_div [target]').addClass('hide');
+    $('.last').addClass('hide');
+    $('.now').addClass('hide');
+    $('.next').addClass('hide');
 };
 
 var showReport = function (head, data, tail, xbind /* patch */) {
@@ -425,7 +427,7 @@ var showReport = function (head, data, tail, xbind /* patch */) {
     }
 
     if (typeof data == 'string' || typeof data == 'number') {
-        var target = head.find('[target=' + tail + ']');
+        var target = head.find('.' + tail);
 
         if (target.length == 1) {
             target.find('span').text(data);
@@ -452,8 +454,8 @@ var initPlayerList = function (count) {
 
     // add items
 
-    var spanLast = '<span target="last"><span></span>&nbsp;</span>';
-    var spanNow = '<span target="now"><span></span></span>';
+    var spanLast = '<span class="last"><span></span>&nbsp;</span>';
+    var spanNow = '<span class="now"><span></span></span>';
 
     for (var i = 0; i < count; ++i) {
         $('#report_players')
@@ -464,12 +466,12 @@ var initPlayerList = function (count) {
 };
 
 var showStatus = function (status) {
-    $('#report_players [bind]').removeClass('hint_next');
+    $('#report_players [bind]').removeClass('next');
 
     for (var i = 0; status; ++i) {
         if (status & (1 << i)) {
             // done
-            $('#report_players [bind=' + i + ']').addClass('hint_next');
+            $('#report_players [bind=' + i + ']').addClass('next');
         }
 
         status &= ~(1 << i);

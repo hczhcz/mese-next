@@ -25,9 +25,16 @@ body {
 .hide {
     display: none;
 }
-
 .wrong {
     color: red;
+}
+.last {
+    color: gray;
+}
+.now {
+}
+.next {
+    color: blue;
 }
 
 .box {
@@ -201,15 +208,6 @@ body {
 }
 .report_div tr>:first-child {
     text-align: left;
-}
-
-.report_div [target=last], .hint_last {
-    color: gray;
-}
-.report_div [target=now], .hint_now {
-}
-.report_div [target=next], .hint_next {
-    color: blue;
 }
 
 .report_button {

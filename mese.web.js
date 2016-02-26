@@ -21,7 +21,7 @@ module.exports = function (req, res) {
             res.end(libJQuery);
         } else if (req.url == '/socket.io.min.js') {
             res.writeHead(200, {
-                'Content-Type': 'application/javascript'
+                'Content-Type': 'application/javascript',
             });
 
             res.end(libSocketIO);
@@ -32,6 +32,18 @@ module.exports = function (req, res) {
                 } else {
                     res.writeHead(200, {
                         'Content-Type': 'application/javascript',
+                    });
+
+                    res.end(data);
+                }
+            });
+        } else if (req.url == '/page.css') {
+            fs.readFile('./res/page.css', function (err, data) {
+                if (err) {
+                    throw err;
+                } else {
+                    res.writeHead(200, {
+                        'Content-Type': 'text/css',
                     });
 
                     res.end(data);

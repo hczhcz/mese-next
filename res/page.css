@@ -181,20 +181,11 @@ h3 {
 
     font-size: 75%;
 }
-.report_list_div {
-    width: 72em;
-
-    overflow-x: auto;
-    white-space: nowrap;
-}
 
 .content_div table {
     width: 100%;
 
     table-layout: fixed;
-}
-.report_list_div table {
-    table-layout: auto;
 }
 
 .content_div table tr>* {
@@ -204,6 +195,19 @@ h3 {
 }
 .content_div table tr>:first-child {
     text-align: left;
+}
+
+/* report */
+
+#report_list_div {
+    width: 72em;
+
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+#report_list {
+    table-layout: auto;
 }
 
 .report_button {

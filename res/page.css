@@ -125,7 +125,6 @@ h3 {
     margin: 0;
     padding: 0;
 }
-
 #util td {
     padding: 0.25em 0;
 }
@@ -175,29 +174,37 @@ h3 {
     font-family: monospace;
 }
 
-.content_div {
+.content>tbody>tr>th {
     vertical-align: top;
-    width: 36em;
+
+    text-align: left;
+}
+.content>tbody>tr>td {
+    vertical-align: top;
 
     font-size: 75%;
 }
 
-.content_div table {
+.content table {
     width: 100%;
 
     table-layout: fixed;
 }
 
-.content_div table tr>* {
+.content table>tbody>tr>* {
     vertical-align: baseline;
 
     text-align: right;
 }
-.content_div table tr>:first-child {
+.content table>tbody>tr>:first-child {
     text-align: left;
 }
 
 /* report */
+
+#report>tbody>tr>td {
+    width: 36em;
+}
 
 #report_list_div {
     width: 72em;

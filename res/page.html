@@ -65,17 +65,17 @@
 
     <table id='report' class='content hide'>
         <tr>
-            <td colspan='2'>
+            <th colspan='2'>
                 <h2>
                     Period <span id='report_period'></span> of Game "<span id='report_game'></span>"
                     <!-- TODO: iOS 8 Safari does not show "⟳" -->
                     <span id='report_refresh' class='report_button box'>⟳</span>
                     <span id='report_expand' class='report_button box'>+</span>
                 </h2>
-            </td>
+            </th>
         </tr>
         <tr>
-            <td id='report_data_early' class='content_div'>
+            <td id='report_data_early'>
                 <h3>Early Report</h3>
                 <table bind='production'>
                     <tr><th>Production</th><th>You</th><th>Average</th></tr>
@@ -105,7 +105,7 @@
                     <tr><td>Total R &amp; D</td><td bind='history_rd'></td></tr>
                 </table>
             </td>
-            <td id='report_data' class='content_div'>
+            <td id='report_data'>
                 <h3>Result Report</h3>
                 <table bind='orders'>
                     <tr><th>Units</th><th>You</th><th>Average</th></tr>
@@ -138,7 +138,7 @@
             </td>
         </tr>
         <tr>
-            <td class='content_div' colspan='2'>
+            <td colspan='2'>
                 <h3>Players' Details</h3>
                 <div id='report_list_div'>
                     <table id='report_list'>
@@ -157,7 +157,7 @@
             </td>
         </tr>
         <tr>
-            <td id='report_settings' class='content_div'>
+            <td id='report_settings'>
                 <h3>Settings</h3>
                 <table bind='limits'>
                     <tr><th>Limits</th></tr>
@@ -183,7 +183,7 @@
                     <tr><td>Tax rate</td><td bind='tax_rate'></td></tr>
                 </table>
             </td>
-            <td id='report_decisions' class='content_div'>
+            <td id='report_decisions'>
                 <h3>Decisions</h3>
                 <table>
                     <tr><th>Average Prices</th></tr>

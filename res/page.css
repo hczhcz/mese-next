@@ -165,9 +165,9 @@ h3 {
     background: #C0C0C0;
 }
 
-/* report */
+/* content */
 
-#report {
+.content {
     padding: 1em;
     padding: 1rem;
     z-index: 1;
@@ -175,7 +175,7 @@ h3 {
     font-family: monospace;
 }
 
-.report_div {
+.content_div {
     vertical-align: top;
     width: 36em;
 
@@ -188,7 +188,7 @@ h3 {
     white-space: nowrap;
 }
 
-.report_div table {
+.content_div table {
     width: 100%;
 
     table-layout: fixed;
@@ -197,12 +197,12 @@ h3 {
     table-layout: auto;
 }
 
-.report_div tr>* {
+.content_div table tr>* {
     vertical-align: baseline;
 
     text-align: right;
 }
-.report_div tr>:first-child {
+.content_div table tr>:first-child {
     text-align: left;
 }
 

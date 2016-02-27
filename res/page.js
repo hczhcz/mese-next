@@ -388,7 +388,7 @@ socket.on('subscribe_fail_game', function (data) {
 // report
 
 // DOM change
-$('.report_div [bind]')
+$('#report [bind]')
     .append('<span class="last"><span></span>&nbsp;</span>')
     .append('<span class="now"><span></span></span>')
     .append('<span class="next">&nbsp;<span></span></span>');
@@ -442,7 +442,7 @@ var showReport = function (head, data, tail, xbind /* patch */) {
         for (var i in data) {
             // top-level bind
             if (xbind && data[i] instanceof Array /* notice: optimization */) {
-                showReport($('.report_div [xbind=' + i + ']'), data[i], tail);
+                showReport($('#report [xbind=' + i + ']'), data[i], tail);
             }
 
             // path-based bind

@@ -415,9 +415,8 @@ var initReport = function (game, period, uid) {
 
     $('#subscribe_game').val(currentGame);
 
-    $('#report_title').text(
-        'Period ' + (currentPeriod - 1) + ' of Game "' + currentGame + '"'
-    );
+    $('#report_game').text(currentGame);
+    $('#report_period').text(currentPeriod - 1);
 
     $('#submit_game').text(currentGame);
     $('#submit_period').text(currentPeriod);

@@ -29,7 +29,7 @@ module.exports.get = function (lv1, lv2, callback) {
         .toArray(function (err, docs) {
             if (err) {
                 throw err;
-            } else if (docs.length == 1) {
+            } else if (docs.length == 1) { // notice: never > 1
                 callback(docs[0]);
             } else {
                 callback(undefined);

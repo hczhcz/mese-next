@@ -38,7 +38,7 @@ module.exports = function (socket) {
 
                         userLog('new user');
 
-                        socket.emit('login_new', {name: authName});
+                        socket.emit('login_new', authName);
 
                         // notice: admin user should login again here
                     });
@@ -47,7 +47,7 @@ module.exports = function (socket) {
                 } else if (password === data.password) {
                     authName = data.name;
 
-                    socket.emit('login_ok', {name: authName});
+                    socket.emit('login_ok', authName);
 
                     if (
                         data.name === config.adminName
@@ -321,7 +321,7 @@ module.exports = function (socket) {
 
             authName = data.name;
 
-            socket.emit('login_ok', {name: authName});
+            socket.emit('login_ok', authName);
             socket.emit('admin_login_ok');
         });
 

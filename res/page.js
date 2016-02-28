@@ -245,15 +245,15 @@ $('#login_submit').click(function (event) {
 });
 
 socket.on('login_new', function (data) {
-    loginDone(data.name, true);
+    loginDone(data, true);
 
-    message('New user: ' + data.name);
+    message('New user: ' + data);
 });
 
 socket.on('login_ok', function (data) {
-    loginDone(data.name, false);
+    loginDone(data, false);
 
-    message('Login: ' + data.name);
+    message('Login: ' + data);
 });
 
 socket.on('login_fail', function (data) {

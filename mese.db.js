@@ -37,6 +37,24 @@ module.exports.get = function (lv1, lv2, callback) {
         });
 };
 
+module.exports.list = function (lv1, callback) {
+    collections[lv1]
+        .find({}, {_id: 1})
+        .toArray(function (err, docs) {
+            if (err) {
+                throw err;
+            } else {
+                var list = [];
+
+                for (var i in docs) {
+                    list.push(docs[i]._id);
+                }
+
+                callback(list);
+            }
+        });
+};
+
 module.exports.update = function (lv1, lv2, callback) {
     var setter = function (diff, callback) {
         collections[lv1].updateOne(

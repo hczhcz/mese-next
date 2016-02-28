@@ -349,6 +349,26 @@ module.exports = function (socket) {
             });
         });
 
+        socket.on('admin_list', function (data) {
+            // args: (nothing)
+
+            if (
+                !authSudo
+            ) {
+                userLog('bad socket request');
+
+                return;
+            }
+
+            userLog('admin list');
+
+            access.users(function (userList) {
+                access.games(function (gameList) {
+                    socket.emit('admin_list', {users: userList, games: gameList});
+                });
+            });
+        });
+
         socket.on('admin_report', function (data) {
             // args: game
 

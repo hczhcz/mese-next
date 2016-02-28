@@ -13,6 +13,10 @@ module.exports.user = function (name, callback, fail) {
     });
 };
 
+module.exports.users = function (callback) {
+    db.list('users', callback);
+};
+
 module.exports.userAuth = function (name, callback) {
     db.update('users', name, function (doc, setter, next) {
         var passwordSetter = function (password, callback) {
@@ -57,6 +61,10 @@ module.exports.game = function (game, callback, fail) {
             fail();
         }
     });
+};
+
+module.exports.games = function (callback) {
+    db.list('games', callback);
 };
 
 module.exports.gameAction = function (game, callback, fail) {

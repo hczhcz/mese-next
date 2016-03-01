@@ -9,9 +9,9 @@ var db = require('./mese.db');
 var socket = require('./mese.socket');
 var web = require('./mese.web');
 
-process.on('uncaughtException', function (e) {
+process.on('uncaughtException', function (err) {
     util.log('uncaught exception');
-    util.log(e.stack || e);
+    util.log(err.stack || err);
 });
 
 util.log('db init ' + config.db);

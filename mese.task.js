@@ -28,8 +28,8 @@ module.exports = function (lv1, lv2, callback) {
                     function () {
                         task.functions.shift()(next);
                     },
-                    function (e) {
-                        util.log(e.stack || e);
+                    function (err) {
+                        util.log(err.stack || err);
 
                         next();
                     }

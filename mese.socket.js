@@ -1,12 +1,14 @@
 'use strict';
 
+var io = require('socket.io');
+
 var config = require('./mese.config');
 var util = require('./mese.util');
 var access = require('./mese.access');
 var game = require('./mese.game');
 var admin = require('./mese.admin');
 
-module.exports = function (socket) {
+var handler = function (socket) {
     util.domainRunCatched([socket], function () {
         util.log('connect ' + socket.conn.remoteAddress);
 
@@ -558,4 +560,8 @@ module.exports = function (socket) {
             util.log('disconnect ' + socket.conn.remoteAddress);
         });
     });
+};
+
+module.exports = function (server) {
+    io(server).on('connection', handler);
 };

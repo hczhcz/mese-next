@@ -59,7 +59,7 @@ MESE-Next Server may require:
 
 * Node.js 0.12+
 * MongoDB 2.x
-* Node.js packages: `mongodb` and `socket.io`
+* Node.js packages: MongoDB, Express 4 & Compression, Socket.IO
 * MESE-Next Engine (released in MESE China Group)
 
 Installation
@@ -72,7 +72,7 @@ Before running MESE-Next, you may need the following steps:
 1. Clone this repository;
 2. Install Node.js and MongoDB;
 3. Install NPM (Node.js Package Manager);
-4. Install required packages: `mongodb`, `socket.io`;
+4. Install required packages: `mongodb`, `express`, `compression` and `socket.io`;
 5. Get MESE-NEXT Engine from our group or by contacting us, and put it under the same directory as MESE-Next Server's;
 6. Edit `mese.config.js` if you want to change some configurations;
 7. Now, you could run `mese.js` using Node.js.

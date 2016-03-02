@@ -314,30 +314,6 @@ socket.on('password_fail', function (data) {
 
 var currentList = undefined;
 
-var updateList = function (data) {
-    currentList = data;
-
-    $('#list_content').empty();
-
-    for (var i in currentList) {
-        if (currentList[i]) {
-            $('#list_content').prepend(
-                $('<input type="button" />')
-                    .val(i)
-                    .click(function (game) {
-                        return function (event) {
-                            event.preventDefault();
-
-                            loadReport(game);
-                        }
-                    } (i))
-            );
-        }
-    }
-
-    $('#list').removeClass('hide');
-};
-
 // auto refresh
 setInterval(
     function () {
@@ -373,9 +349,29 @@ $('#subscribe_submit').click(function (event) {
     });
 });
 
-socket.on('subscribe_list', updateList);
+socket.on('subscribe_data', function (data) {
+    currentList = data;
 
-socket.on('subscribe_update', updateList);
+    $('#list_content').empty();
+
+    for (var i in currentList) {
+        if (currentList[i]) {
+            $('#list_content').prepend(
+                $('<input type="button" />')
+                    .val(i)
+                    .click(function (game) {
+                        return function (event) {
+                            event.preventDefault();
+
+                            loadReport(game);
+                        }
+                    } (i))
+            );
+        }
+    }
+
+    $('#list').removeClass('hide');
+});
 
 socket.on('subscribe_fail_list', function (data) {
     message('List not found');

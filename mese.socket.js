@@ -115,7 +115,7 @@ var handler = function (socket) {
             access.user(
                 authName,
                 function (subscribes) {
-                    socket.emit('subscribe_list', subscribes);
+                    socket.emit('subscribe_data', subscribes);
                 },
                 function () {
                     userLog('list not found');
@@ -148,7 +148,7 @@ var handler = function (socket) {
                 access.userSubscribe(
                     authName, data.game, data.enabled,
                     function (subscribes) {
-                        socket.emit('subscribe_update', subscribes);
+                        socket.emit('subscribe_data', subscribes);
                     },
                     function () {
                         userLog('subscription not allowed');
@@ -366,7 +366,7 @@ var handler = function (socket) {
 
             access.users(function (userList) {
                 access.games(function (gameList) {
-                    socket.emit('admin_list', {users: userList, games: gameList});
+                    socket.emit('admin_list_data', {users: userList, games: gameList});
                 });
             });
         });
@@ -388,7 +388,7 @@ var handler = function (socket) {
             admin.print(
                 gameData,
                 function (report) {
-                    socket.emit('admin_report', report);
+                    socket.emit('admin_report_data', report);
                 }
             );
         });

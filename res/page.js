@@ -381,6 +381,10 @@ socket.on('subscribe_fail_list', function (data) {
     message('List not found');
 });
 
+socket.on('subscribe_fail_player', function (data) {
+    message('Subscription not allowed');
+});
+
 socket.on('subscribe_fail_game', function (data) {
     message('Game not found');
 });
@@ -708,10 +712,10 @@ socket.on('submit_decline', function (data) {
     message('Submission declined');
 });
 
-socket.on('submit_fail_game', function (data) {
-    message('Game not found');
-});
-
 socket.on('submit_fail_player', function (data) {
     message('Submission not allowed');
+});
+
+socket.on('submit_fail_game', function (data) {
+    message('Game not found');
 });

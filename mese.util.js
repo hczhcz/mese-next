@@ -26,6 +26,10 @@ module.exports.log = function (info) {
     );
 };
 
+module.exports.err = function (err) {
+    module.exports.log(err.stack || ('Error ' + typeof err + ': ' + err));
+};
+
 module.exports.verifyBool = function (bool) {
     return typeof bool == 'boolean';
 };
@@ -94,8 +98,6 @@ module.exports.domainRun = function (emitters, callback, fail) {
 module.exports.domainRunCatched = function (emitters, callback) {
     module.exports.domainRun(
         emitters, callback,
-        function (e) {
-            module.exports.log(e.stack || e);
-        }
+        module.exports.err
     );
 };

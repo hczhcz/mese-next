@@ -8,7 +8,7 @@ var socket = require('./mese.socket');
 
 process.on('uncaughtException', function (err) {
     util.log('uncaught exception');
-    util.log(err.stack || err);
+    util.err(err);
 });
 
 util.log('db init ' + config.db);

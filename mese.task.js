@@ -29,7 +29,7 @@ module.exports = function (lv1, lv2, callback) {
                         task.functions.shift()(next);
                     },
                     function (err) {
-                        util.log(err.stack || err);
+                        util.err(err);
 
                         next();
                     }

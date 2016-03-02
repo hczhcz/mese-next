@@ -25,8 +25,8 @@ module.exports = function (port, plugin, callback) {
         if (err.status == 404) {
             util.log('web not found ' + req.path);
         } else {
-            util.log('web error');
-            util.log(err.stack || err);
+            util.log('web error ' + err.status + ' ' + req.path);
+            util.err(err);
         }
 
         res.status(err.status || 500);

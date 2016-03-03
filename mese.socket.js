@@ -393,6 +393,23 @@ var handler = function (socket) {
             );
         });
 
+        socket.on('admin_message', function (data) {
+            // args: message
+
+            if (
+                !authSudo
+                || !util.verifierStr(/^.+$/)(data.message)
+            ) {
+                userLog('bad socket request');
+
+                return;
+            }
+
+            userLog('admin message ' + data.message);
+
+            socket.server.emit('message', data.message);
+        });
+
         socket.on('admin_init', function (data) {
             // args: game, players, preset, settings
 

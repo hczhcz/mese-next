@@ -92,6 +92,10 @@ $('#message').hover(showMessage, hideMessage);
 $('#message').click(removeMessage);
 $('#message').on('touchstart', removeMessage);
 
+socket.on('message', function (data) {
+    message(data);
+});
+
 // side
 
 var sideEnabled = true;

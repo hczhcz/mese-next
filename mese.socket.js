@@ -307,6 +307,23 @@ var handler = function (socket) {
             );
         });
 
+        socket.on('admin_message', function (data) {
+            // args: message
+
+            if (
+                !authSudo
+                || !util.verifierStr(/^.+$/)(data.message) // TODO: max length?
+            ) {
+                userLog('bad socket request');
+
+                return;
+            }
+
+            userLog('admin message ' + data.message);
+
+            socket.server.emit('message', data.message);
+        });
+
         socket.on('admin_login', function (data) {
             // args: name
 
@@ -393,21 +410,54 @@ var handler = function (socket) {
             );
         });
 
-        socket.on('admin_message', function (data) {
-            // args: message
+        socket.on('admin_transfer', function (data) {
+            // args: game, name
 
             if (
                 !authSudo
-                || !util.verifierStr(/^.+$/)(data.message)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin message ' + data.message);
+            userLog('admin transfer game ' + data.game + ' ' + data.name);
 
-            socket.server.emit('message', data.message);
+            access.gameAction(
+                data.game,
+                function (players, oldData, setter) {
+                    var player = undefined;
+
+                    for (var i in players) {
+                        if (players[i] === authName) {
+                            player = parseInt(i);
+                            break;
+                        }
+                    }
+
+                    if (player !== undefined) {
+                        players[player] = data.name;
+
+                        // store data
+                        setter(players, undefined, function () {
+                            socket.emit('admin_transfer_ok');
+                        });
+
+                        return true; // need setter
+                    } else {
+                        userLog('transferring not allowed ' + data.game);
+
+                        socket.emit('admin_transfer_fail_player');
+                    }
+                },
+                function (setter) {
+                    userLog('game not found ' + data.game);
+
+                    socket.emit('admin_transfer_fail_game');
+                }
+            );
         });
 
         socket.on('admin_init', function (data) {
@@ -516,56 +566,6 @@ var handler = function (socket) {
                     userLog('game not found ' + data.game);
 
                     socket.emit('admin_alloc_fail_game');
-                }
-            );
-        });
-
-        socket.on('admin_transfer', function (data) {
-            // args: game, name
-
-            if (
-                !authSudo
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
-            ) {
-                userLog('bad socket request');
-
-                return;
-            }
-
-            userLog('admin transfer game ' + data.game + ' ' + data.name);
-
-            access.gameAction(
-                data.game,
-                function (players, oldData, setter) {
-                    var player = undefined;
-
-                    for (var i in players) {
-                        if (players[i] === authName) {
-                            player = parseInt(i);
-                            break;
-                        }
-                    }
-
-                    if (player !== undefined) {
-                        players[player] = data.name;
-
-                        // store data
-                        setter(players, undefined, function () {
-                            socket.emit('admin_transfer_ok');
-                        });
-
-                        return true; // need setter
-                    } else {
-                        userLog('transferring not allowed ' + data.game);
-
-                        socket.emit('admin_transfer_fail_player');
-                    }
-                },
-                function (setter) {
-                    userLog('game not found ' + data.game);
-
-                    socket.emit('admin_transfer_fail_game');
                 }
             );
         });

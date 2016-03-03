@@ -41,9 +41,9 @@
             </tr>
             <tr id='password' class='hide'>
                 <td>
-                    <p>Old password</p>
+                    <p>Old Password</p>
                     <p><input id='password_old' type='password' maxlength='32' /></p>
-                    <p>New password</p>
+                    <p>New Password</p>
                     <p><input id='password_new' type='password' maxlength='32' /></p>
                     <p><input id='password_submit' type='submit' value='Change Password' /></p>
                 </td>
@@ -231,6 +231,65 @@
                         <td><input id='submit_submit' type='submit' value='Submit' /></td>
                     </tr>
                 </table>
+            </td>
+        </tr>
+    </table>
+
+    <table id='admin' class='content'>
+        <tr>
+            <th colspan='4'>
+                <h2>
+                    Admin Control Panel
+                </h2>
+            </th>
+        </tr>
+        <tr>
+            <td rowspan='3'>
+                <h3>Users</h3>
+                <h3>Games</h3>
+            </td>
+            <td>
+                <h3>Message Broadcast</h3>
+                <input id='admin_message_content' type='text' maxlength='256' />
+                <input id='admin_message_submit' type='submit' value='Send' />
+            </td>
+            <td>
+                <h3>Switch User</h3>
+                <input id='admin_login_name' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' />
+                <input id='admin_login_submit' type='submit' value='Login' />
+            </td>
+            <td>
+                <h3>Change Password</h3>
+                <input id='admin_password_new' type='text' maxlength='32' />
+                <input id='admin_password_submit' type='submit' value='Change' />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Game</h3>
+                <input id='admin_game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' />
+            </td>
+            <td>
+                <h3>Summary Report</h3>
+                <input id='admin_report_submit' type='submit' value='Get' />
+            </td>
+            <td>
+                <h3>Transfer Game</h3>
+                <input id='admin_transfer_name' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' />
+                <input id='admin_transfer_submit' type='submit' value='Transfer' />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Settings</h3>
+            </td>
+            <td>
+                <h3>New Game</h3>
+                <input id='admin_init_submit' type='submit' value='Create Game' />
+            </td>
+            <td>
+                <h3>New Period</h3>
+                <input id='admin_alloc_submit' type='submit' value='Allocate Period' />
             </td>
         </tr>
     </table>

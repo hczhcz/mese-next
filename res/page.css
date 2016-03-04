@@ -246,3 +246,10 @@ h3 {
 #admin>tbody>tr>td {
     width: 18em;
 }
+
+#admin input {
+    width: 100%;
+}
+#admin select {
+    width: 100%;
+}

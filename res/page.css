@@ -253,3 +253,6 @@ h3 {
 #admin select {
     width: 100%;
 }
+#admin textarea {
+    width: 100%;
+}

@@ -3,8 +3,8 @@
 var config = require('./mese.config');
 var db = require('./mese.db');
 
-module.exports.user = function (name, callback, fail) {
-    db.get('users', name, function (doc) {
+module.exports.user = function (user, callback, fail) {
+    db.get('users', user, function (doc) {
         if (doc) {
             callback(doc.subscribes || {});
         } else {
@@ -17,8 +17,8 @@ module.exports.users = function (callback) {
     db.list('users', callback);
 };
 
-module.exports.userAuth = function (name, callback) {
-    db.update('users', name, function (doc, setter, next) {
+module.exports.userAuth = function (user, callback) {
+    db.update('users', user, function (doc, setter, next) {
         var passwordSetter = function (password, callback) {
             setter(
                 {password: password},
@@ -33,8 +33,8 @@ module.exports.userAuth = function (name, callback) {
     });
 };
 
-module.exports.userSubscribe = function (name, game, enabled, callback, fail) {
-    db.update('users', name, function (doc, setter, next) {
+module.exports.userSubscribe = function (user, game, enabled, callback, fail) {
+    db.update('users', user, function (doc, setter, next) {
         if (doc) {
             var subscribes = doc.subscribes || {};
             subscribes[game] = enabled;

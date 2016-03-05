@@ -12,18 +12,18 @@ var handler = function (socket) {
     util.domainRunCatched([socket], function () {
         util.log('connect ' + socket.conn.remoteAddress);
 
-        var authName = undefined;
+        var authUser = undefined;
         var authSudo = false;
 
         var userLog = function (info) {
-            util.log('[' + (authName || socket.conn.remoteAddress) + '] ' + info);
+            util.log('[' + (authUser || socket.conn.remoteAddress) + '] ' + info);
         };
 
         socket.on('login', function (data) {
-            // args: name, password
+            // args: user, password
 
             if (
-                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
+                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.user)
                 || !util.verifierStr(/^.+$/)(data.password)
             ) {
                 userLog('bad socket request');
@@ -31,28 +31,28 @@ var handler = function (socket) {
                 return;
             }
 
-            userLog('login ' + data.name);
+            userLog('login ' + data.user);
 
-            access.userAuth(data.name, function (password, setter) {
+            access.userAuth(data.user, function (password, setter) {
                 if (password === undefined) {
                     setter(data.password, function () {
-                        authName = data.name;
+                        authUser = data.user;
 
                         userLog('new user');
 
-                        socket.emit('login_new', authName);
+                        socket.emit('login_new', authUser);
 
                         // notice: admin user should login again here
                     });
 
                     return true; // need setter
                 } else if (password === data.password) {
-                    authName = data.name;
+                    authUser = data.user;
 
-                    socket.emit('login_ok', authName);
+                    socket.emit('login_ok', authUser);
 
                     if (
-                        data.name === config.adminName
+                        data.user === config.adminUser
                         && data.password === config.adminPassword
                     ) {
                         authSudo = true;
@@ -73,7 +73,7 @@ var handler = function (socket) {
             // args: password, newPassword
 
             if (
-                authName === undefined
+                authUser === undefined
                 || !util.verifierStr(/^.+$/)(data.password)
                 || !util.verifierStr(/^.+$/)(data.newPassword)
             ) {
@@ -84,7 +84,7 @@ var handler = function (socket) {
 
             userLog('change password');
 
-            access.userAuth(authName, function (password, setter) {
+            access.userAuth(authUser, function (password, setter) {
                 if (password === data.password) {
                     setter(data.newPassword, function () {
                         socket.emit('password_ok');
@@ -103,7 +103,7 @@ var handler = function (socket) {
             // args: (nothing)
 
             if (
-                authName === undefined
+                authUser === undefined
             ) {
                 userLog('bad socket request');
 
@@ -113,7 +113,7 @@ var handler = function (socket) {
             userLog('list');
 
             access.user(
-                authName,
+                authUser,
                 function (subscribes) {
                     socket.emit('subscribe_data', subscribes);
                 },
@@ -129,7 +129,7 @@ var handler = function (socket) {
             // args: game, enabled
 
             if (
-                authName === undefined
+                authUser === undefined
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyBool(data.enabled)
             ) {
@@ -146,7 +146,7 @@ var handler = function (socket) {
 
             var doSubscribe = function () {
                 access.userSubscribe(
-                    authName, data.game, data.enabled,
+                    authUser, data.game, data.enabled,
                     function (subscribes) {
                         socket.emit('subscribe_data', subscribes);
                     },
@@ -199,7 +199,7 @@ var handler = function (socket) {
                     var player = undefined;
 
                     for (var i in players) {
-                        if (players[i] === authName) {
+                        if (players[i] === authUser) {
                             player = parseInt(i);
                             break;
                         }
@@ -235,7 +235,7 @@ var handler = function (socket) {
             // args: game, period, price, prod, mk, ci, rd
 
             if (
-                authName === undefined
+                authUser === undefined
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
                 || !util.verifyInt(data.period)
                 || !util.verifyNum(data.price)
@@ -257,7 +257,7 @@ var handler = function (socket) {
                     var player = undefined;
 
                     for (var i in players) {
-                        if (players[i] === authName) {
+                        if (players[i] === authUser) {
                             player = parseInt(i);
                             break;
                         }
@@ -325,22 +325,22 @@ var handler = function (socket) {
         });
 
         socket.on('admin_login', function (data) {
-            // args: name
+            // args: user
 
             if (
                 !authSudo
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.user)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin login ' + data.name);
+            userLog('admin login ' + data.user);
 
-            authName = data.name;
+            authUser = data.user;
 
-            socket.emit('login_ok', authName);
+            socket.emit('login_ok', authUser);
         });
 
         socket.on('admin_password', function (data) {
@@ -357,7 +357,7 @@ var handler = function (socket) {
 
             userLog('admin change password');
 
-            access.userAuth(authName, function (password, setter) {
+            access.userAuth(authUser, function (password, setter) {
                 setter(data.newPassword, function () {
                     socket.emit('password_ok');
                 });
@@ -409,19 +409,19 @@ var handler = function (socket) {
         });
 
         socket.on('admin_transfer', function (data) {
-            // args: game, name
+            // args: game, user
 
             if (
                 !authSudo
                 || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.name)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.user)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin transfer game ' + data.game + ' ' + data.name);
+            userLog('admin transfer game ' + data.game + ' ' + data.user);
 
             access.gameAction(
                 data.game,
@@ -429,14 +429,14 @@ var handler = function (socket) {
                     var player = undefined;
 
                     for (var i in players) {
-                        if (players[i] === authName) {
+                        if (players[i] === authUser) {
                             player = parseInt(i);
                             break;
                         }
                     }
 
                     if (player !== undefined) {
-                        players[player] = data.name;
+                        players[player] = data.user;
 
                         // store data
                         setter(players, undefined, function () {

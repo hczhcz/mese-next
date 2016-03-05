@@ -341,7 +341,6 @@ var handler = function (socket) {
             authName = data.name;
 
             socket.emit('login_ok', authName);
-            socket.emit('admin_login_ok');
         });
 
         socket.on('admin_password', function (data) {
@@ -361,7 +360,6 @@ var handler = function (socket) {
             access.userAuth(authName, function (password, setter) {
                 setter(data.newPassword, function () {
                     socket.emit('password_ok');
-                    socket.emit('admin_password_ok');
                 });
 
                 return true; // need setter
@@ -506,13 +504,11 @@ var handler = function (socket) {
                                         data.players[i], data.game, true,
                                         function (subscribes) {
                                             userLog('invited ' + data.players[i]);
-
-                                            socket.emit('admin_init_invite', data.players[i]);
                                         },
                                         function () {
-                                            userLog('invition not allowed');
+                                            userLog('invition not allowed ' + data.players[i]);
 
-                                            socket.emit('admin_init_fail_invite');
+                                            socket.emit('admin_init_fail_invite', data.players[i]);
                                         }
                                     );
                                 }

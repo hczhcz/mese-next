@@ -719,3 +719,70 @@ socket.on('submit_fail_player', function (data) {
 socket.on('submit_fail_game', function (data) {
     message('Game not found');
 });
+
+// admin
+
+socket.on('admin_auth_ok', function (data) {
+    $('#admin').removeClass('hide');
+
+    socket.emit('admin_list');
+});
+
+socket.on('admin_list_data', function (data) {
+    // notice: use html string when data size becomes large
+
+    $('#admin_users').empty();
+    for (var i in data.users) {
+        $('#admin_users').prepend(
+            $('<option>').text(data.users[i])
+        );
+    }
+
+    $('#admin_games').empty();
+    for (var i in data.games) {
+        $('#admin_games').prepend(
+            $('<option>').text(data.games[i])
+        );
+    }
+});
+
+socket.on('admin_report_data', function (data) {
+    // TODO
+    console.log(data);
+});
+
+socket.on('admin_transfer_ok', function (data) {
+    message('Game transferred');
+});
+
+socket.on('admin_transfer_fail_player', function (data) {
+    message('Transferring not allowed');
+});
+
+socket.on('admin_transfer_fail_game', function (data) {
+    message('Game not found');
+});
+
+socket.on('admin_init_fail_number', function (data) {
+    message('Player count not supported');
+});
+
+socket.on('admin_init_fail_game', function (data) {
+    message('Game exists');
+});
+
+socket.on('admin_init_fail_invite', function (data) {
+    message('Invition not allowed: ' + data);
+});
+
+socket.on('admin_init_ok', function (data) {
+    message('Game created');
+});
+
+socket.on('admin_alloc_ok', function (data) {
+    message('Period allocated');
+});
+
+socket.on('admin_alloc_fail_game', function (data) {
+    message('Game not found');
+});

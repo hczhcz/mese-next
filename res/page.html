@@ -15,7 +15,7 @@
             <tr id='user' class='hide'>
                 <td>
                     <h3><span id='side_hide'>←</span> MESE-Next</h3>
-                    <p>Current User<br>- <span id='user_name'></span></p>
+                    <p>Current User<br>- <span id='user_user'></span></p>
                     <p>Latest Message<br>- <span id='user_message'></span></p>
                 </td>
             </tr>
@@ -27,7 +27,7 @@
             <tr id='login'>
                 <td>
                     <p>Name</p>
-                    <p><input id='login_name' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></p>
+                    <p><input id='login_user' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></p>
                     <p>Password</p>
                     <p><input id='login_password' type='password' maxlength='32' /></p>
                     <p><input id='login_remember' type='checkbox' />Remember</p>
@@ -194,7 +194,7 @@
                     <tr><th>Next Submission</th></tr>
                     <tr><td>Game</td><td></td><td id='submit_game'></td></tr>
                     <tr><td>Period</td><td></td><td id='submit_period'></td></tr>
-                    <tr><td>Player name</td><td></td><td id='submit_name'></td></tr>
+                    <tr><td>Player name</td><td></td><td id='submit_user'></td></tr>
                     <tr>
                         <td>Price</td>
                         <td bind='price'></td>
@@ -294,7 +294,7 @@
                     <tr><th>From</th></tr>
                     <tr><td>???</td></tr>
                     <tr><th>To</th></tr>
-                    <tr><td><input id='admin_transfer_name' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
+                    <tr><td><input id='admin_transfer_user' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
                     <tr><td><input id='admin_transfer_submit' type='submit' value='Transfer' /></td></tr>
                 </table>
                 <h3>New Game</h3>

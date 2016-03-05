@@ -157,11 +157,11 @@ $('#util td').dblclick(function (event) {
 
 // login
 
-var loginDone = function (name, reg) {
-    $('#user_name').text(
-        reg ? name + ' (new user)' : name
+var loginDone = function (user, reg) {
+    $('#user_user').text(
+        reg ? user + ' (new user)' : user
     );
-    $('#submit_name').text(name); // notice: #submit_??? is in #report
+    $('#submit_user').text(user); // notice: #submit_user is in #report
 
     $('#user').removeClass('hide');
     $('#login').addClass('hide');
@@ -186,7 +186,7 @@ var autoLogin = function () {
         var loginInfoObj = JSON.parse(loginInfo);
 
         socket.emit('login', loginInfoObj);
-        $('#login_name').val(loginInfoObj.name);
+        $('#login_user').val(loginInfoObj.user);
     }
 };
 
@@ -198,15 +198,15 @@ $('#login_show').click(function () {
     $('#login_show').addClass('hide');
 });
 
-$('#login_name').change(function () {
-    if (/^[A-Za-z0-9_ ]+$/.test($('#login_name').val())) {
-        $('#login_name').removeClass('wrong');
+$('#login_user').change(function () {
+    if (/^[A-Za-z0-9_ ]+$/.test($('#login_user').val())) {
+        $('#login_user').removeClass('wrong');
     } else {
-        $('#login_name').addClass('wrong');
+        $('#login_user').addClass('wrong');
     }
 });
 
-$('#login_name').keypress(function (event) {
+$('#login_user').keypress(function (event) {
     if (event.which == 13) {
         $('#login_password').focus();
     }
@@ -227,7 +227,7 @@ $('#login_remember').keypress(function (event) {
 $('#login_submit').click(function (event) {
     event.preventDefault();
 
-    var name = $('#login_name').val();
+    var user = $('#login_user').val();
     var password = $('#login_password').val();
     $('#login_password').val('');
 
@@ -236,14 +236,14 @@ $('#login_submit').click(function (event) {
         localStorage.setItem(
             'MESE_login',
             JSON.stringify({
-                name: name,
+                user: user,
                 password: password, // TODO: hash?
             })
         );
     }
 
     socket.emit('login', {
-        name: name,
+        user: user,
         password: password, // TODO: hash?
     });
 });

@@ -15,8 +15,8 @@
             <tr id='user' class='hide'>
                 <td>
                     <h3><span id='side_hide'>←</span> MESE-Next</h3>
-                    <p>Current User<br>- <span id='user_user'></span></p>
-                    <p>Latest Message<br>- <span id='user_message'></span></p>
+                    <p>Current User<br>- <span var='user'></span></p>
+                    <p>Latest Message<br>- <span var='message'></span></p>
                 </td>
             </tr>
             <tr id='login_show' class='hide'>
@@ -67,8 +67,8 @@
         <tr>
             <th colspan='2'>
                 <h2>
-                    Period <span id='report_period'></span> of Game "<span id='report_game'></span>"
-                    <!-- TODO: iOS 8 Safari does not show "⟳" -->
+                    Period <span var='period'></span> of Game "<span var='game'></span>"
+                    <!-- TODO: iOS 8 Safari does not show '⟳' -->
                     <span id='report_refresh' class='report_button box'>⟳</span>
                     <span id='report_expand' class='report_button box'>+</span>
                 </h2>
@@ -192,9 +192,9 @@
                 </table>
                 <table id='submit'>
                     <tr><th>Next Submission</th></tr>
-                    <tr><td>Game</td><td></td><td id='submit_game'></td></tr>
-                    <tr><td>Period</td><td></td><td id='submit_period'></td></tr>
-                    <tr><td>Player name</td><td></td><td id='submit_user'></td></tr>
+                    <tr><td>Game</td><td></td><td var='game'></td></tr>
+                    <tr><td>Period</td><td></td><td var='next_period'></td></tr>
+                    <tr><td>Player name</td><td></td><td var='user'></td></tr>
                     <tr>
                         <td>Price</td>
                         <td bind='price'></td>
@@ -274,7 +274,7 @@
                 <h3>Change Password</h3>
                 <table>
                     <tr><th>User</th></tr>
-                    <tr><td>???</td></tr>
+                    <tr><td var='user'></td></tr>
                     <tr><th>New Password</th></tr>
                     <tr><td><input id='admin_password_new' type='text' maxlength='32' /></td></tr>
                     <tr><td><input id='admin_password_submit' type='submit' value='Change' /></td></tr>
@@ -284,15 +284,15 @@
                 <h3>Summary Report</h3>
                 <table>
                     <tr><th>Game</th></tr>
-                    <tr><td>???</td></tr>
+                    <tr><td var='game'></td></tr>
                     <tr><td><input id='admin_report_submit' type='submit' value='Generate' /></td></tr>
                 </table>
                 <h3>Change User</h3>
                 <table>
                     <tr><th>Game</th></tr>
-                    <tr><td>???</td></tr>
+                    <tr><td var='game'></td></tr>
                     <tr><th>From</th></tr>
-                    <tr><td>???</td></tr>
+                    <tr><td var='user'></td></tr>
                     <tr><th>To</th></tr>
                     <tr><td><input id='admin_transfer_user' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
                     <tr><td><input id='admin_transfer_submit' type='submit' value='Transfer' /></td></tr>
@@ -303,6 +303,8 @@
                 </table>
                 <h3>New Period</h3>
                 <table>
+                    <tr><th>Game</th></tr>
+                    <tr><td var='game'></td></tr>
                     <tr><td><input id='admin_alloc_submit' type='submit' value='Allocate' /></td></tr>
                 </table>
             </td>

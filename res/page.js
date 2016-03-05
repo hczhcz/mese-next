@@ -73,7 +73,7 @@ var message = function (message) {
         $('#message p:first').remove();
     }
 
-    $('#user_message').text(message);
+    $('[var=message]').text(message);
 
     showMessage();
     hideMessage();
@@ -157,11 +157,8 @@ $('#util td').dblclick(function (event) {
 
 // login
 
-var loginDone = function (user, reg) {
-    $('#user_user').text(
-        reg ? user + ' (new user)' : user
-    );
-    $('#submit_user').text(user); // notice: #submit_user is in #report
+var loginDone = function (user) {
+    $('[var=user]').text(user);
 
     $('#user').removeClass('hide');
     $('#login').addClass('hide');
@@ -249,13 +246,13 @@ $('#login_submit').click(function (event) {
 });
 
 socket.on('login_new', function (data) {
-    loginDone(data, true);
+    loginDone(data);
 
     message('New user: ' + data);
 });
 
 socket.on('login_ok', function (data) {
-    loginDone(data, false);
+    loginDone(data);
 
     message('Login: ' + data);
 });
@@ -419,11 +416,9 @@ var initReport = function (game, period, uid) {
 
     $('#subscribe_game').val(currentGame);
 
-    $('#report_game').text(currentGame);
-    $('#report_period').text(currentPeriod - 1);
-
-    $('#submit_game').text(currentGame);
-    $('#submit_period').text(currentPeriod);
+    $('[var=game]').text(currentGame);
+    $('[var=period]').text(currentPeriod - 1);
+    $('[var=next_period]').text(currentPeriod);
 
     $('.last').addClass('hide');
     $('.now').addClass('hide');

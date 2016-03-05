@@ -741,6 +741,12 @@ socket.on('admin_list_data', function (data) {
     }
 });
 
+$('#admin_report_submit').click(function () {
+    socket.emit('admin_report', {
+        game: currentGame,
+    });
+});
+
 socket.on('admin_report_data', function (data) {
     $('#admin_report').val(JSON.stringify(data)); // TODO: format?
 });

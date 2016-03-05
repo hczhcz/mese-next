@@ -579,6 +579,11 @@ var handler = function (socket) {
         // socket.on('admin_revent', function (data) { // not implemented
         // });
 
+        socket.on('error', function (err) {
+            util.log('socket error');
+            util.err(err);
+        });
+
         socket.on('disconnect', function () {
             util.log('disconnect ' + socket.conn.remoteAddress);
         });

@@ -400,10 +400,20 @@ var handler = function (socket) {
 
             userLog('admin get report ' + data.game);
 
-            admin.print(
-                gameData,
-                function (report) {
-                    socket.emit('admin_report_data', report);
+            access.game(
+                data.game,
+                function (uid, players, gameData) {
+                    admin.print(
+                        gameData,
+                        function (report) {
+                            socket.emit('admin_report_data', report);
+                        }
+                    );
+                },
+                function () {
+                    userLog('game not found ' + data.game);
+
+                    socket.emit('admin_report_fail');
                 }
             );
         });

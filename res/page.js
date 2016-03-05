@@ -187,7 +187,7 @@ var autoLogin = function () {
     }
 };
 
-$('#login_show').click(function () {
+$('#login_show_submit').click(function () {
     // reset auto login
     localStorage.removeItem('MESE_login');
 
@@ -266,7 +266,7 @@ socket.on('login_fail', function (data) {
 
 // password
 
-$('#password_show').click(function () {
+$('#password_show_submit').click(function () {
     $('#password').removeClass('hide');
     $('#password_show').addClass('hide');
 });
@@ -742,8 +742,11 @@ socket.on('admin_list_data', function (data) {
 });
 
 socket.on('admin_report_data', function (data) {
-    // TODO
-    console.log(data);
+    $('#admin_report').val(JSON.stringify(data)); // TODO: format?
+});
+
+socket.on('admin_report_fail', function (data) {
+    message('Game not found');
 });
 
 socket.on('admin_transfer_ok', function (data) {

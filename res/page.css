@@ -244,7 +244,7 @@ h3 {
 /* admin */
 
 #admin>tbody>tr>td {
-    width: 18em;
+    width: 24em;
 }
 
 #admin input {
@@ -255,4 +255,5 @@ h3 {
 }
 #admin textarea {
     width: 100%;
+    height: 12em;
 }

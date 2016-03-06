@@ -48,6 +48,12 @@ module.exports.verifierStr = function (re) {
     };
 };
 
+module.exports.verifierText = function () {
+    return function (str) {
+        return typeof str == 'string' && str.length <= 256;
+    };
+};
+
 module.exports.verifierArr = function (verifier) {
     return function (arr) {
         if (!arr instanceof Array) {

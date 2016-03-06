@@ -312,7 +312,7 @@ var handler = function (socket) {
 
             if (
                 !authSudo
-                || !util.verifierStr(/^.+$/)(data.message) // TODO: max length?
+                || !util.verifierText()(data.message)
             ) {
                 userLog('bad socket request');
 

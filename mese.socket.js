@@ -110,7 +110,7 @@ var handler = function (socket) {
                 return;
             }
 
-            userLog('list');
+            userLog('list games');
 
             access.user(
                 authUser,
@@ -139,9 +139,9 @@ var handler = function (socket) {
             }
 
             if (data.enabled) {
-                userLog('subscribe ' + data.game);
+                userLog('subscribe game ' + data.game);
             } else {
-                userLog('unsubscribe ' + data.game);
+                userLog('unsubscribe game ' + data.game);
             }
 
             var doSubscribe = function () {
@@ -377,7 +377,7 @@ var handler = function (socket) {
                 return;
             }
 
-            userLog('admin list');
+            userLog('admin list all');
 
             access.users(function (userList) {
                 access.games(function (gameList) {
@@ -488,8 +488,8 @@ var handler = function (socket) {
                 return;
             }
 
-            userLog('admin create game ' + data.game + ' ' + data.preset);
-            userLog('alloc ' + data.settings.length + 'pd');
+            userLog('admin init game ' + data.game + ' ' + data.preset);
+            userLog('allocated ' + data.settings.length + 'pd');
 
             if (data.players.length == 0 || data.players.length > config.coreMaxPlayer) {
                 userLog('player count not supported');
@@ -552,7 +552,7 @@ var handler = function (socket) {
             }
 
             userLog('admin alloc period ' + data.game);
-            userLog('alloc ' + data.settings.length + 'pd');
+            userLog('allocated ' + data.settings.length + 'pd');
 
             access.gameAction(
                 data.game,

@@ -35,7 +35,7 @@ module.exports.alloc = function (
         core.alloc(
             gameData, settings[0],
             allocator(settings.slice(1), callback)
-        )
+        );
     } else {
         callback(gameData);
     }

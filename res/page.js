@@ -365,7 +365,7 @@ socket.on('subscribe_data', function (data) {
                             event.preventDefault();
 
                             loadReport(game);
-                        }
+                        };
                     } (i))
             );
         }

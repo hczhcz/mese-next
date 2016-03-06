@@ -203,12 +203,11 @@ h3 {
 /* report */
 
 #report>tbody>tr>td {
-    width: 36em;
+    min-width: 36em;
+    max-width: 36em;
 }
 
 #report_list_div {
-    width: 72em;
-
     overflow-x: auto;
     white-space: nowrap;
 }
@@ -244,7 +243,8 @@ h3 {
 /* admin */
 
 #admin>tbody>tr>td {
-    width: 24em;
+    min-width: 24em;
+    max-width: 24em;
 }
 
 #admin input {

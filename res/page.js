@@ -776,7 +776,7 @@ var parseSettings = function (text) {
     var result = [];
 
     for (var i in data) {
-        result.push(eval('{' + data[i] + '}'));
+        result.push(eval('({' + data[i] + '})'));
     }
 
     return result;

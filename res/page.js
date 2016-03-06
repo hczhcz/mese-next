@@ -772,7 +772,7 @@ $('#admin_password_submit').click(function () {
 // TODO: $('#admin_games')
 
 var parseSettings = function (text) {
-    var data = text.split('---');
+    var data = text.split(/-{3,}/);
     var result = [];
 
     for (var i in data) {

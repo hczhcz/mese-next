@@ -753,7 +753,16 @@ socket.on('admin_list_data', function (data) {
 
 // admin: users
 
-// TODO: $('#admin_users')
+$('#admin_users').change(function () {
+    var list = $('#admin_users').val();
+
+    if (list.length == 1) {
+        $('#admin_login_user').val(list[0]);
+        $('#admin_transfer_user').val(list[0]);
+    } else if (list.length > 1) {
+        $('#admin_init_players').val(list.join(','));
+    }
+});
 
 $('#admin_login_submit').click(function () {
     socket.emit('admin_login', {
@@ -769,7 +778,9 @@ $('#admin_password_submit').click(function () {
 
 // admin: games
 
-// TODO: $('#admin_games')
+$('#admin_games').change(function () {
+    $('#admin_game_game').val($('#admin_games').val());
+});
 
 var parseSettings = function (text) {
     var data = text.split(/-{3,}/);

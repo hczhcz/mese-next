@@ -13,10 +13,18 @@ module.exports.init = function (
     count, preset, settings,
     callback
 ) {
-    core.init(
-        count, preset, settings[0],
-        allocator(settings.slice(1), callback)
-    );
+    if (settings.length > 0) {
+        core.init(
+            count, preset, settings[0],
+            allocator(settings.slice(1), callback)
+        );
+    } else {
+        // notice: typically never reach
+        core.init(
+            count, preset, {},
+            callback
+        );
+    }
 };
 
 module.exports.alloc = function (

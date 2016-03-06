@@ -771,6 +771,17 @@ $('#admin_password_submit').click(function () {
 
 // TODO: $('#admin_games')
 
+var parseSettings = function (text) {
+    var data = text.split('---');
+    var result = [];
+
+    for (var i in data) {
+        result.push(eval('{' + data[i] + '}'));
+    }
+
+    return result;
+};
+
 $('#admin_game_submit').click(function () {
     // load player / public report
     loadReport($('#admin_game_game').val());
@@ -803,7 +814,7 @@ $('#admin_init_submit').click(function () {
         game: $('#admin_init_game').val(),
         players: $('#admin_init_players').val().split(','),
         preset: $('#admin_init_preset').val(),
-        settings: eval($('#admin_settings').val()),
+        settings: parseSettings($('#admin_settings').val()),
     });
 });
 
@@ -811,7 +822,7 @@ $('#admin_alloc_submit').click(function () {
     if (currentGame) {
         socket.emit('admin_alloc', {
             game: currentGame,
-            settings: eval($('#admin_settings').val()),
+            settings: parseSettings($('#admin_settings').val()),
         });
     } else {
         // TODO

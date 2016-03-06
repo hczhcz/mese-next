@@ -346,7 +346,7 @@ $('#subscribe_submit').click(function (event) {
 
     socket.emit('subscribe', {
         game: game,
-        enabled: !currentList[$('#subscribe_game').val()],
+        enabled: !currentList[game],
     });
 });
 
@@ -717,6 +717,19 @@ socket.on('submit_fail_game', function (data) {
 
 // admin
 
+$('#admin_message_submit').click(function () {
+    socket.emit('admin_message', {
+        message: $('#admin_message_content').val(),
+    });
+});
+
+$('#admin_list_refresh').click(function () {
+    socket.emit('admin_list');
+});
+
+// TODO: $('#admin_users')
+// TODO: $('#admin_games')
+
 socket.on('admin_auth_ok', function (data) {
     $('#admin').removeClass('hide');
 
@@ -741,10 +754,34 @@ socket.on('admin_list_data', function (data) {
     }
 });
 
-$('#admin_report_submit').click(function () {
-    socket.emit('admin_report', {
-        game: currentGame,
+// admin: users
+
+$('#admin_login_submit').click(function () {
+    socket.emit('admin_login', {
+        user: $('#admin_login_user').val(),
     });
+});
+
+$('#admin_password_submit').click(function () {
+    socket.emit('admin_password', {
+        newPassword: $('#admin_password_new').val(),
+    });
+});
+
+// admin: games
+
+$('#admin_game_submit').click(function () {
+    loadReport($('#admin_game_game').val());
+});
+
+$('#admin_report_submit').click(function () {
+    if (currentGame) {
+        socket.emit('admin_report', {
+            game: currentGame,
+        });
+    } else {
+        // TODO
+    }
 });
 
 socket.on('admin_report_data', function (data) {
@@ -766,6 +803,8 @@ socket.on('admin_transfer_fail_player', function (data) {
 socket.on('admin_transfer_fail_game', function (data) {
     message('Game not found');
 });
+
+// admin: init & alloc
 
 socket.on('admin_init_fail_number', function (data) {
     message('Player count not supported');

@@ -94,7 +94,7 @@ module.exports.gameAction = function (game, callback, fail) {
 
         if (doc) {
             // notice: .buffer is required for binary data
-            callback(doc.players, doc.data.buffer, gameDataSetter) || next();
+            callback(doc.players, doc.data.buffer, gameDataSetter, next) || next();
         } else {
             fail(gameDataSetter) || next();
         }

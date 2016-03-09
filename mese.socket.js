@@ -253,7 +253,7 @@ var handler = function (socket) {
 
             access.gameAction(
                 args.game,
-                function (players, oldData, setter) {
+                function (players, oldData, setter, next) {
                     var player = undefined;
 
                     for (var i in players) {
@@ -267,30 +267,33 @@ var handler = function (socket) {
                         game.submit(
                             oldData, player, args.period,
                             args.price, args.prod, args.mk, args.ci, args.rd,
-                            function (gameData, accepted) {
+                            function (accepted, closed, gameData) {
                                 if (accepted) {
+                                    if (closed) {
+                                        userLog('submission accepted and peroid closed');
+                                    } else {
+                                        userLog('submission accepted');
+                                    }
+
+                                    setter(undefined, gameData, function () {
+                                        // TODO: push updates?
+                                    });
+
                                     socket.emit('submit_ok');
                                 } else {
                                     userLog('submission declined ' + args.game);
+
+                                    next(); // manually finish
 
                                     socket.emit('submit_decline');
                                 }
                             },
                             function (report) {
                                 socket.emit('report_early', report);
-                            },
-                            function (gameData, closed) {
-                                if (closed) {
-                                    userLog('closed');
-                                }
-
-                                setter(undefined, gameData, function () {
-                                    // TODO: push updates?
-                                });
                             }
                         );
 
-                        return true; // need setter
+                        return true; // need setter() or next()
                     } else {
                         userLog('submission not allowed ' + args.game);
 

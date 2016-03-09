@@ -5,22 +5,26 @@ var core = require('./mese.core');
 module.exports.submit = function (
     gameData, player, period,
     price, prod, mk, ci, rd,
-    callback, fail, printCallback, closeCallback, closeFail
+    submitCallback, printCallback, closeCallback
 ) {
     core.submit(
         gameData, player, period,
         price, prod, mk, ci, rd,
         function (gameData) {
-            callback(gameData);
+            submitCallback(gameData, true);
 
             core.printPlayerEarly(gameData, player, printCallback);
-            core.close(gameData, closeCallback, closeFail);
+            core.close(gameData, function (gameData) {
+                closeCallback(gameData, true);
+            }, function (gameData) {
+                closeCallback(gameData, false);
+            });
         },
         function (gameData) {
-            fail(gameData);
+            submitCallback(gameData, false);
 
             core.printPlayerEarly(gameData, player, printCallback);
-            closeFail(gameData); // would not close if submission is declined
+            closeCallback(gameData, false); // would not close if submission is declined
         }
     );
 };

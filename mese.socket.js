@@ -264,31 +264,29 @@ var handler = function (socket) {
                     }
 
                     if (player !== undefined) {
-                        var afterClose = function (gameData, snapshot) {
-                            setter(undefined, gameData, function () {
-                                // TODO: push updates?
-                            });
-                        };
-
                         game.submit(
                             oldData, player, args.period,
                             args.price, args.prod, args.mk, args.ci, args.rd,
-                            function (gameData) {
-                                socket.emit('submit_ok');
-                            },
-                            function (gameData) {
-                                userLog('submission declined ' + args.game);
+                            function (gameData, accepted) {
+                                if (accepted) {
+                                    socket.emit('submit_ok');
+                                } else {
+                                    userLog('submission declined ' + args.game);
 
-                                socket.emit('submit_decline');
+                                    socket.emit('submit_decline');
+                                }
                             },
                             function (report) {
                                 socket.emit('report_early', report);
                             },
-                            function (gameData) {
-                                afterClose(gameData, true);
-                            },
-                            function (gameData) {
-                                afterClose(gameData, false);
+                            function (gameData, closed) {
+                                if (closed) {
+                                    userLog('closed');
+                                }
+
+                                setter(undefined, gameData, function () {
+                                    // TODO: push updates?
+                                });
                             }
                         );
 

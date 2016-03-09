@@ -19,24 +19,24 @@ var handler = function (socket) {
             util.log('[' + (authUser || socket.conn.remoteAddress) + '] ' + info);
         };
 
-        socket.on('login', function (data) {
+        socket.on('login', function (args) {
             // args: user, password
 
             if (
-                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.user)
-                || !util.verifierStr(/^.+$/)(data.password)
+                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
+                || !util.verifierStr(/^.+$/)(args.password)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('login ' + data.user);
+            userLog('login ' + args.user);
 
-            access.userAuth(data.user, function (password, setter) {
+            access.userAuth(args.user, function (password, setter) {
                 if (password === undefined) {
-                    setter(data.password, function () {
-                        authUser = data.user;
+                    setter(args.password, function () {
+                        authUser = args.user;
 
                         userLog('new user');
 
@@ -46,14 +46,14 @@ var handler = function (socket) {
                     });
 
                     return true; // need setter
-                } else if (password === data.password) {
-                    authUser = data.user;
+                } else if (password === args.password) {
+                    authUser = args.user;
 
                     socket.emit('login_ok', authUser);
 
                     if (
-                        data.user === config.adminUser
-                        && data.password === config.adminPassword
+                        args.user === config.adminUser
+                        && args.password === config.adminPassword
                     ) {
                         authSudo = true;
 
@@ -69,13 +69,13 @@ var handler = function (socket) {
             });
         });
 
-        socket.on('password', function (data) {
+        socket.on('password', function (args) {
             // args: password, newPassword
 
             if (
                 authUser === undefined
-                || !util.verifierStr(/^.+$/)(data.password)
-                || !util.verifierStr(/^.+$/)(data.newPassword)
+                || !util.verifierStr(/^.+$/)(args.password)
+                || !util.verifierStr(/^.+$/)(args.newPassword)
             ) {
                 userLog('bad socket request');
 
@@ -85,8 +85,8 @@ var handler = function (socket) {
             userLog('change password');
 
             access.userAuth(authUser, function (password, setter) {
-                if (password === data.password) {
-                    setter(data.newPassword, function () {
+                if (password === args.password) {
+                    setter(args.newPassword, function () {
                         socket.emit('password_ok');
                     });
 
@@ -99,7 +99,7 @@ var handler = function (socket) {
             });
         });
 
-        socket.on('list', function (data) {
+        socket.on('list', function (args) {
             // args: (nothing)
 
             if (
@@ -125,28 +125,28 @@ var handler = function (socket) {
             );
         });
 
-        socket.on('subscribe', function (data) {
+        socket.on('subscribe', function (args) {
             // args: game, enabled
 
             if (
                 authUser === undefined
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifyBool(data.enabled)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+                || !util.verifyBool(args.enabled)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            if (data.enabled) {
-                userLog('subscribe game ' + data.game);
+            if (args.enabled) {
+                userLog('subscribe game ' + args.game);
             } else {
-                userLog('unsubscribe game ' + data.game);
+                userLog('unsubscribe game ' + args.game);
             }
 
             var doSubscribe = function () {
                 access.userSubscribe(
-                    authUser, data.game, data.enabled,
+                    authUser, args.game, args.enabled,
                     function (subscribes) {
                         socket.emit('subscribe_data', subscribes);
                     },
@@ -159,13 +159,13 @@ var handler = function (socket) {
             };
 
             access.game(
-                data.game,
+                args.game,
                 function (uid, players, gameData) {
                     doSubscribe();
                 },
                 function () {
-                    if (data.enabled) {
-                        userLog('game not found ' + data.game);
+                    if (args.enabled) {
+                        userLog('game not found ' + args.game);
 
                         socket.emit('subscribe_fail_game');
                     } else {
@@ -175,24 +175,24 @@ var handler = function (socket) {
             );
         });
 
-        socket.on('report', function (data) {
+        socket.on('report', function (args) {
             // args: game, period, uid
 
             if (
-                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifyNum(data.uid)
+                !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+                || !util.verifyNum(args.uid)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('get report ' + data.game);
+            userLog('get report ' + args.game);
 
             access.game(
-                data.game,
+                args.game,
                 function (uid, players, gameData) {
-                    if (uid == data.uid) {
+                    if (uid == args.uid) {
                         return;
                     }
 
@@ -208,14 +208,14 @@ var handler = function (socket) {
                     game.print(
                         gameData, player,
                         function (report) {
-                            report.game = data.game;
+                            report.game = args.game;
                             report.uid = uid;
                             report.players = players;
 
                             socket.emit('report_player', report);
                         },
                         function (report) {
-                            report.game = data.game;
+                            report.game = args.game;
                             report.uid = uid;
                             report.players = players;
 
@@ -224,35 +224,35 @@ var handler = function (socket) {
                     );
                 },
                 function () {
-                    userLog('game not found ' + data.game);
+                    userLog('game not found ' + args.game);
 
                     socket.emit('report_fail');
                 }
             );
         });
 
-        socket.on('submit', function (data) {
+        socket.on('submit', function (args) {
             // args: game, period, price, prod, mk, ci, rd
 
             if (
                 authUser === undefined
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifyInt(data.period)
-                || !util.verifyNum(data.price)
-                || !util.verifyInt(data.prod)
-                || !util.verifyNum(data.mk)
-                || !util.verifyNum(data.ci)
-                || !util.verifyNum(data.rd)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+                || !util.verifyInt(args.period)
+                || !util.verifyNum(args.price)
+                || !util.verifyInt(args.prod)
+                || !util.verifyNum(args.mk)
+                || !util.verifyNum(args.ci)
+                || !util.verifyNum(args.rd)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('submit ' + data.game);
+            userLog('submit ' + args.game);
 
             access.gameAction(
-                data.game,
+                args.game,
                 function (players, oldData, setter) {
                     var player = undefined;
 
@@ -271,13 +271,13 @@ var handler = function (socket) {
                         };
 
                         game.submit(
-                            oldData, player, data.period,
-                            data.price, data.prod, data.mk, data.ci, data.rd,
+                            oldData, player, args.period,
+                            args.price, args.prod, args.mk, args.ci, args.rd,
                             function (gameData) {
                                 socket.emit('submit_ok');
                             },
                             function (gameData) {
-                                userLog('submission declined ' + data.game);
+                                userLog('submission declined ' + args.game);
 
                                 socket.emit('submit_decline');
                             },
@@ -294,61 +294,61 @@ var handler = function (socket) {
 
                         return true; // need setter
                     } else {
-                        userLog('submission not allowed ' + data.game);
+                        userLog('submission not allowed ' + args.game);
 
                         socket.emit('submit_fail_player');
                     }
                 },
                 function (setter) {
-                    userLog('game not found ' + data.game);
+                    userLog('game not found ' + args.game);
 
                     socket.emit('submit_fail_game');
                 }
             );
         });
 
-        socket.on('admin_message', function (data) {
+        socket.on('admin_message', function (args) {
             // args: message
 
             if (
                 !authSudo
-                || !util.verifierText()(data.message)
+                || !util.verifierText()(args.message)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin message ' + data.message);
+            userLog('admin message ' + args.message);
 
-            socket.server.emit('message', data.message);
+            socket.server.emit('message', args.message);
         });
 
-        socket.on('admin_login', function (data) {
+        socket.on('admin_login', function (args) {
             // args: user
 
             if (
                 !authSudo
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.user)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin login ' + data.user);
+            userLog('admin login ' + args.user);
 
-            authUser = data.user;
+            authUser = args.user;
 
             socket.emit('login_ok', authUser);
         });
 
-        socket.on('admin_password', function (data) {
+        socket.on('admin_password', function (args) {
             // args: newPassword
 
             if (
                 !authSudo
-                || !util.verifierStr(/^.+$/)(data.newPassword)
+                || !util.verifierStr(/^.+$/)(args.newPassword)
             ) {
                 userLog('bad socket request');
 
@@ -358,7 +358,7 @@ var handler = function (socket) {
             userLog('admin change password');
 
             access.userAuth(authUser, function (password, setter) {
-                setter(data.newPassword, function () {
+                setter(args.newPassword, function () {
                     socket.emit('password_ok');
                 });
 
@@ -366,7 +366,7 @@ var handler = function (socket) {
             });
         });
 
-        socket.on('admin_list', function (data) {
+        socket.on('admin_list', function (args) {
             // args: (nothing)
 
             if (
@@ -386,22 +386,22 @@ var handler = function (socket) {
             });
         });
 
-        socket.on('admin_report', function (data) {
+        socket.on('admin_report', function (args) {
             // args: game
 
             if (
                 !authSudo
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin get report ' + data.game);
+            userLog('admin get report ' + args.game);
 
             access.game(
-                data.game,
+                args.game,
                 function (uid, players, gameData) {
                     admin.print(
                         gameData,
@@ -411,30 +411,30 @@ var handler = function (socket) {
                     );
                 },
                 function () {
-                    userLog('game not found ' + data.game);
+                    userLog('game not found ' + args.game);
 
                     socket.emit('admin_report_fail');
                 }
             );
         });
 
-        socket.on('admin_transfer', function (data) {
+        socket.on('admin_transfer', function (args) {
             // args: game, user
 
             if (
                 !authSudo
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.user)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin transfer game ' + data.game + ' ' + data.user);
+            userLog('admin transfer game ' + args.game + ' ' + args.user);
 
             access.gameAction(
-                data.game,
+                args.game,
                 function (players, oldData, setter) {
                     var player = undefined;
 
@@ -446,7 +446,7 @@ var handler = function (socket) {
                     }
 
                     if (player !== undefined) {
-                        players[player] = data.user;
+                        players[player] = args.user;
 
                         // store data
                         setter(players, undefined, function () {
@@ -455,70 +455,70 @@ var handler = function (socket) {
 
                         return true; // need setter
                     } else {
-                        userLog('transferring not allowed ' + data.game);
+                        userLog('transferring not allowed ' + args.game);
 
                         socket.emit('admin_transfer_fail_player');
                     }
                 },
                 function (setter) {
-                    userLog('game not found ' + data.game);
+                    userLog('game not found ' + args.game);
 
                     socket.emit('admin_transfer_fail_game');
                 }
             );
         });
 
-        socket.on('admin_init', function (data) {
+        socket.on('admin_init', function (args) {
             // args: game, players, preset, settings
 
             if (
                 !authSudo
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
-                || !util.verifierArr(util.verifierStr(/^[A-Za-z0-9_ ]+$/))(data.players)
-                || !util.verifierStr(/^[A-Za-z0-9_]+$/)(data.preset)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+                || !util.verifierArr(util.verifierStr(/^[A-Za-z0-9_ ]+$/))(args.players)
+                || !util.verifierStr(/^[A-Za-z0-9_]+$/)(args.preset)
                 || !util.verifierArr(
                         util.verifierObj(
                             util.verifierStr(/^[A-Za-z0-9_]+$/),
                             util.verifyNum
                         )
-                    )(data.settings)
+                    )(args.settings)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin init game ' + data.game + ' ' + data.preset);
-            userLog('allocated ' + data.settings.length + 'pd');
+            userLog('admin init game ' + args.game + ' ' + args.preset);
+            userLog('allocated ' + args.settings.length + 'pd');
 
-            if (data.players.length == 0 || data.players.length > config.coreMaxPlayer) {
+            if (args.players.length == 0 || args.players.length > config.coreMaxPlayer) {
                 userLog('player count not supported');
 
                 socket.emit('admin_init_fail_number');
             }
 
             access.gameAction(
-                data.game,
+                args.game,
                 function (players, oldData, setter) {
-                    userLog('game exists ' + data.game);
+                    userLog('game exists ' + args.game);
 
                     socket.emit('admin_init_fail_game');
                 },
                 function (setter) {
                     admin.init(
-                        data.players.length, data.preset, data.settings,
+                        args.players.length, args.preset, args.settings,
                         function (gameData) {
-                            setter(data.players, gameData, function () {
-                                for (var i in data.players) {
+                            setter(args.players, gameData, function () {
+                                for (var i in args.players) {
                                     access.userSubscribe(
-                                        data.players[i], data.game, true,
+                                        args.players[i], args.game, true,
                                         function (subscribes) {
-                                            userLog('invited ' + data.players[i]);
+                                            userLog('invited ' + args.players[i]);
                                         },
                                         function () {
-                                            userLog('invition not allowed ' + data.players[i]);
+                                            userLog('invition not allowed ' + args.players[i]);
 
-                                            socket.emit('admin_init_fail_invite', data.players[i]);
+                                            socket.emit('admin_init_fail_invite', args.players[i]);
                                         }
                                     );
                                 }
@@ -533,32 +533,32 @@ var handler = function (socket) {
             );
         });
 
-        socket.on('admin_alloc', function (data) {
+        socket.on('admin_alloc', function (args) {
             // args: game, settings
 
             if (
                 !authSudo
-                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(data.game)
+                || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
                 || !util.verifierArr(
                         util.verifierObj(
                             util.verifierStr(/^[A-Za-z0-9_]+$/),
                             util.verifyNum
                         )
-                    )(data.settings)
+                    )(args.settings)
             ) {
                 userLog('bad socket request');
 
                 return;
             }
 
-            userLog('admin alloc period ' + data.game);
-            userLog('allocated ' + data.settings.length + 'pd');
+            userLog('admin alloc period ' + args.game);
+            userLog('allocated ' + args.settings.length + 'pd');
 
             access.gameAction(
-                data.game,
+                args.game,
                 function (players, oldData, setter) {
                     admin.alloc(
-                        oldData, data.settings,
+                        oldData, args.settings,
                         function (gameData) {
                             setter(undefined, gameData, function () {
                                 socket.emit('admin_alloc_ok');
@@ -569,14 +569,14 @@ var handler = function (socket) {
                     return true; // need setter
                 },
                 function (setter) {
-                    userLog('game not found ' + data.game);
+                    userLog('game not found ' + args.game);
 
                     socket.emit('admin_alloc_fail_game');
                 }
             );
         });
 
-        // socket.on('admin_revent', function (data) { // not implemented
+        // socket.on('admin_revent', function (args) { // not implemented
         // });
 
         socket.on('error', function (err) {

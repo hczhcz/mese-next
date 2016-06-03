@@ -4,12 +4,14 @@ MESE-Next Server
 About MESE
 ---
 
-MESE (Management and Economics Simulation Exercise) is a business simulator which students create virtual companies, sell products, and compete in their companies' MPI (MESE Performance Index). MESE was created in 1980s and widely used by JA (Junior Achievement) in its course JA Economics before 2013.
+MESE (Management and Economics Simulation Exercise) is a business simulator which students create virtual companies, sell products, and compete in their companies' MPI (MESE Performance Index). The simulation is period-based. In each period, a virtual company will receive their reports and do five decisions: Price of their products, production in the next period, marketing investment, capital investment, and R&D investment.
+
+MESE was created in 1980s. It is widely used by JA (Junior Achievement) in its course *JA Economics* to teach students knowledge of company management and economic environment. There is also a web-based MESE variant called [JA Titan](http://titan.ja.org/). Unfortunately, the use of MESE / JA Titan is discontinued in 2013.
 
 MESE-Next
 ---
 
-MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next Server and compete with other players on the Internet. MESE-Next is made by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
+MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next Server and compete with other players on the Internet. MESE-Next is created by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
 
 > Workflow: MESE-Next Engine <=> MESE-Next Server <=> Web Browsers
 
@@ -19,12 +21,13 @@ MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an on
 * MESE-Next supports more than 8 players in the same game (32 players maximum by default);
 * MESE-Next supports more game settings;
 * MESE-Next provides 8p-feeling settings in any game;
-* Classic MESE have paper-based reports (for MESE-Next, you might print the web pages);
+* Classic MESE have paper-based reports (for MESE-Next, the reports are web pages);
 * Classic MESE supports bots;
+* There are some slight differences in their mathematical model;
 
-### Difference between MESE-Next and [JA Titan](http://titan.ja.org/)
+### Difference between MESE-Next and JA Titan
 
-* MESE-Next is not a single website but a deployable software;
+* MESE-Next is not a single website but a deployable web server;
 * MESE-Next supports higher maximum players, higher maximum periods, and more settings;
 * JA Titan supports pick-up games, and human-vs-bot games;
 
@@ -32,8 +35,9 @@ MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an on
 
 * MESE-Next does not need a MESE executable;
 * MESE-Next supports higher maximum players, and multiple games at the same time;
-* IMese supports encrypted connection, history record analysis, and messaging;
-* IMese only runs under Windows x86 environment;
+* IMese supports encrypted connection;
+* IMese has a history analysing and player ranking system ([here](https://github.com/hczhcz/mese-player-ranking) is a standalone system);
+* IMese only runs under x86 Windows environment;
 
 Client Side Requirements
 ---
@@ -67,9 +71,9 @@ Installation
 
 MESE-Next Server itself does not need installation.
 
-Before running MESE-Next, you may need the following steps:
+Before running MESE-Next, you may do the following steps:
 
-1. Clone this repository;
+1. Clone this repository or [download it](https://github.com/hczhcz/mese-next/archive/master.zip);
 2. Install Node.js and MongoDB;
 3. Install NPM (Node.js Package Manager);
 4. Install required packages: `mongodb`, `express`, `compression` and `socket.io`;
@@ -80,6 +84,6 @@ Before running MESE-Next, you may need the following steps:
 License
 ---
 
-MESE-Next - Copyright (C) hczhcz
+MESE-Next - Copyright (C) 2015-2016 hczhcz
 
-MESE-Next is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. As this distribution is not under any license, commercial use, public use, and redistribution outside GitHub are not allowed. Contact us if you need a licensed version.
+MESE-Next is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. As this distribution is not under any public license, commercial use, public use, and redistribution outside GitHub are not allowed. Contact us if you need a licensed version.

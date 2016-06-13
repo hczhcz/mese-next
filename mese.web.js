@@ -6,7 +6,7 @@ var compression = require('compression');
 
 var util = require('./mese.util');
 
-module.exports = function (port, plugin, callback) {
+module.exports = function (port, index, plugin, callback) {
     var app = express();
     var server = http.createServer(app);
 
@@ -17,7 +17,7 @@ module.exports = function (port, plugin, callback) {
 
     app.use(compression());
     app.use(express.static('./res', {
-        index: 'page.html',
+        index: index,
         fallthrough: false,
     }));
 

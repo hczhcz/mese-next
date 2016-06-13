@@ -16,7 +16,7 @@ util.log('db init ' + config.db);
 db.init(config.db, function () {
     util.log('server init ' + config.port);
 
-    web(config.port, function (server) {
+    web(config.port, 'page.html', function (server) {
         util.log('socket init');
 
         socket(server);

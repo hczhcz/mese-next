@@ -2,7 +2,7 @@
 
 var config = require('./mese.config');
 var util = require('./mese.util');
-var db = require('./mese.db');
+var access = require('./mese.access');
 var web = require('./mese.web');
 var socket = require('./mese.socket');
 
@@ -13,7 +13,7 @@ process.on('uncaughtException', function (err) {
 
 util.log('db init ' + config.db);
 
-db.init(config.db, function () {
+access.init(config.db, function () {
     util.log('server init ' + config.port);
 
     web(config.port, 'page.html', function (server) {

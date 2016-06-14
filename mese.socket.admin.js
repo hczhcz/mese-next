@@ -79,18 +79,22 @@ module.exports = function (socket, session) {
                     args.players.length, args.preset, args.settings,
                     function (gameData) {
                         setter(args.players, gameData, function () {
-                            for (var i in args.players) {
+                            var subscribe = function (player) {
                                 access.userSubscribe(
-                                    args.players[i], args.game, true,
+                                    player, args.game, true,
                                     function (subscribes) {
-                                        session.log('invited ' + args.players[i]);
+                                        session.log('invited ' + player);
                                     },
                                     function () {
-                                        session.log('invition not allowed ' + args.players[i]);
+                                        session.log('invition not allowed ' + player);
 
-                                        socket.emit('admin_init_fail_invite', args.players[i]);
+                                        socket.emit('admin_init_fail_invite', player);
                                     }
                                 );
+                            };
+
+                            for (var i in args.players) {
+                                subscribe(args.players[i]);
                             }
 
                             socket.emit('admin_init_ok');

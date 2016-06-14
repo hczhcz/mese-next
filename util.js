@@ -27,7 +27,7 @@ module.exports.log = function (info) {
 };
 
 module.exports.err = function (err) {
-    module.exports.log(err.stack || ('Error ' + typeof err + ': ' + err));
+    module.exports.log(err.stack || 'Error ' + typeof err + ': ' + err);
 };
 
 module.exports.domainRun = function (emitters, callback, fail) {

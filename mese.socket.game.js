@@ -30,7 +30,7 @@ module.exports = function (socket, session) {
 
                 for (var i in players) {
                     if (players[i] === session.user) {
-                        player = parseInt(i);
+                        player = parseInt(i, 10);
                         break;
                     }
                 }
@@ -88,7 +88,7 @@ module.exports = function (socket, session) {
 
                 for (var i in players) {
                     if (players[i] === session.user) {
-                        player = parseInt(i);
+                        player = parseInt(i, 10);
                         break;
                     }
                 }

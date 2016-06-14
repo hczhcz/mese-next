@@ -1,0 +1,163 @@
+'use strict';
+
+var config = require('./mese.config');
+var util = require('./mese.util');
+var access = require('./mese.access');
+
+module.exports = function (socket, session) {
+    socket.on('login', function (args) {
+        // args: user, password
+
+        if (
+            !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
+            || !util.verifierStr(/^.+$/)(args.password)
+        ) {
+            session.log('bad socket request');
+
+            return;
+        }
+
+        session.log('login ' + args.user);
+
+        access.userAuth(args.user, function (password, setter) {
+            if (password === undefined) {
+                setter(args.password, function () {
+                    session.user = args.user;
+
+                    session.log('new user');
+
+                    socket.emit('login_new', session.user);
+
+                    // notice: admin user should login again here
+                });
+
+                return true; // need setter
+            } else if (password === args.password) {
+                session.user = args.user;
+
+                socket.emit('login_ok', session.user);
+
+                if (
+                    args.user === config.adminUser
+                    && args.password === config.adminPassword
+                ) {
+                    session.sudo = true;
+
+                    session.log('admin auth');
+
+                    socket.emit('admin_auth_ok');
+                }
+            } else {
+                session.log('wrong password');
+
+                socket.emit('login_fail');
+            }
+        });
+    });
+
+    socket.on('password', function (args) {
+        // args: password, newPassword
+
+        if (
+            session.user === undefined
+            || !util.verifierStr(/^.+$/)(args.password)
+            || !util.verifierStr(/^.+$/)(args.newPassword)
+        ) {
+            session.log('bad socket request');
+
+            return;
+        }
+
+        session.log('change password');
+
+        access.userAuth(session.user, function (password, setter) {
+            if (password === args.password) {
+                setter(args.newPassword, function () {
+                    socket.emit('password_ok');
+                });
+
+                return true; // need setter
+            } else {
+                session.log('wrong password');
+
+                socket.emit('password_fail');
+            }
+        });
+    });
+
+    socket.on('list', function (args) {
+        // args: (nothing)
+
+        if (
+            session.user === undefined
+        ) {
+            session.log('bad socket request');
+
+            return;
+        }
+
+        session.log('list games');
+
+        access.user(
+            session.user,
+            function (subscribes) {
+                socket.emit('subscribe_data', subscribes);
+            },
+            function () {
+                session.log('list not found');
+
+                socket.emit('subscribe_fail_list');
+            }
+        );
+    });
+
+    socket.on('subscribe', function (args) {
+        // args: game, enabled
+
+        if (
+            session.user === undefined
+            || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !util.verifyBool(args.enabled)
+        ) {
+            session.log('bad socket request');
+
+            return;
+        }
+
+        if (args.enabled) {
+            session.log('subscribe game ' + args.game);
+        } else {
+            session.log('unsubscribe game ' + args.game);
+        }
+
+        var doSubscribe = function () {
+            access.userSubscribe(
+                session.user, args.game, args.enabled,
+                function (subscribes) {
+                    socket.emit('subscribe_data', subscribes);
+                },
+                function () {
+                    session.log('subscription not allowed');
+
+                    socket.emit('subscribe_fail_player');
+                }
+            );
+        };
+
+        access.game(
+            args.game,
+            function (uid, players, gameData) {
+                doSubscribe();
+            },
+            function () {
+                if (args.enabled) {
+                    session.log('game not found ' + args.game);
+
+                    socket.emit('subscribe_fail_game');
+                } else {
+                    doSubscribe();
+                }
+            }
+        );
+    });
+};

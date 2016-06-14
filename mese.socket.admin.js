@@ -11,7 +11,7 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
         ) {
             session.log('bad socket request');
 
@@ -43,13 +43,13 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !verify.verifierArr(verify.verifierStr(/^[A-Za-z0-9_ ]+$/))(args.players)
-            || !verify.verifierStr(/^[A-Za-z0-9_]+$/)(args.preset)
-            || !verify.verifierArr(
-                    verify.verifierObj(
-                        verify.verifierStr(/^[A-Za-z0-9_]+$/),
-                        verify.verifyNum
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.arr(verify.str(/^[A-Za-z0-9_ ]+$/))(args.players)
+            || !verify.str(/^[A-Za-z0-9_]+$/)(args.preset)
+            || !verify.arr(
+                    verify.obj(
+                        verify.str(/^[A-Za-z0-9_]+$/),
+                        verify.num()
                     )
                 )(args.settings)
         ) {
@@ -112,11 +112,11 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !verify.verifierArr(
-                    verify.verifierObj(
-                        verify.verifierStr(/^[A-Za-z0-9_]+$/),
-                        verify.verifyNum
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.arr(
+                    verify.obj(
+                        verify.str(/^[A-Za-z0-9_]+$/),
+                        verify.num()
                     )
                 )(args.settings)
         ) {

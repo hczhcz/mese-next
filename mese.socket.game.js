@@ -9,8 +9,8 @@ module.exports = function (socket, session) {
         // args: game, period, uid
 
         if (
-            !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !verify.verifyNum(args.uid)
+            !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.num()(args.uid)
         ) {
             session.log('bad socket request');
 
@@ -66,13 +66,13 @@ module.exports = function (socket, session) {
 
         if (
             session.user === undefined
-            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !verify.verifyInt(args.period)
-            || !verify.verifyNum(args.price)
-            || !verify.verifyInt(args.prod)
-            || !verify.verifyNum(args.mk)
-            || !verify.verifyNum(args.ci)
-            || !verify.verifyNum(args.rd)
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.int()(args.period)
+            || !verify.num()(args.price)
+            || !verify.int()(args.prod)
+            || !verify.num()(args.mk)
+            || !verify.num()(args.ci)
+            || !verify.num()(args.rd)
         ) {
             session.log('bad socket request');
 

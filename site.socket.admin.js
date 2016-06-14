@@ -9,7 +9,7 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.verifierText()(args.message)
+            || !verify.text()(args.message)
         ) {
             session.log('bad socket request');
 
@@ -26,7 +26,7 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.user)
         ) {
             session.log('bad socket request');
 
@@ -45,7 +45,7 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.verifierStr(/^.+$/)(args.newPassword)
+            || !verify.str(/^.+$/)(args.newPassword)
         ) {
             session.log('bad socket request');
 
@@ -88,8 +88,8 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.user)
         ) {
             session.log('bad socket request');
 

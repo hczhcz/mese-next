@@ -2,7 +2,7 @@
 
 var config = require('./config');
 var verify = require('./util.verify');
-var access = require('./mese.access');
+var access = require('./server.access');
 var admin = require('./mese.admin');
 
 module.exports = function (socket, session) {

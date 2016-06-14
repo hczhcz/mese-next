@@ -2,9 +2,9 @@
 
 var config = require('./config');
 var util = require('./util');
-var access = require('./mese.access');
-var web = require('./mese.web');
-var socket = require('./mese.socket');
+var access = require('./server.access');
+var web = require('./server.web');
+var socket = require('./server.socket');
 
 process.on('uncaughtException', function (err) {
     util.log('uncaught exception');

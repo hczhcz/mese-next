@@ -1,7 +1,7 @@
 'use strict';
 
 var config = require('./config');
-var db = require('./mese.db');
+var db = require('./util.db');
 
 module.exports.init = function (path, callback) {
     db.init(path, ['users', 'games'], callback);

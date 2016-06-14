@@ -1,7 +1,7 @@
 'use strict';
 
 var verify = require('./util.verify');
-var access = require('./mese.access');
+var access = require('./server.access');
 var game = require('./mese.game');
 
 module.exports = function (socket, session) {

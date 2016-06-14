@@ -2,12 +2,12 @@
 
 var util = require('./mese.util');
 
-var tasks = {
-    users: {},
-    games: {},
-};
+var tasks = {};
 
 module.exports = function (lv1, lv2, callback) {
+    if (!tasks[lv1]) {
+        tasks[lv1] = {};
+    }
     if (!tasks[lv1][lv2]) {
         tasks[lv1][lv2] = {
             active: false,

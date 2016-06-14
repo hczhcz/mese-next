@@ -4,19 +4,19 @@ var mongodb = require('mongodb').MongoClient;
 
 var task = require('./mese.task');
 
-var collections = undefined;
+var collections = {}; // add by init()
 
-module.exports.init = function (db, callback) {
+module.exports.init = function (path, lv1s, callback) {
     mongodb.connect(
-        db,
+        path,
         function (err, db) {
             if (err) {
                 throw err;
             } else {
-                collections = {
-                    users: db.collection('users'),
-                    games: db.collection('games'),
-                };
+                for (var i in lv1s) {
+                    collections[lv1s[i]] = db.collection(lv1s[i]);
+                }
+
                 callback();
             }
         }

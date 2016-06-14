@@ -3,6 +3,10 @@
 var config = require('./mese.config');
 var db = require('./mese.db');
 
+module.exports.init = function (path, callback) {
+    db.init(path, ['users', 'games'], callback);
+};
+
 module.exports.user = function (user, callback, fail) {
     db.get('users', user, function (doc) {
         if (doc) {

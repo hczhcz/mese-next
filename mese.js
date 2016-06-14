@@ -1,7 +1,7 @@
 'use strict';
 
-var config = require('./mese.config');
-var util = require('./mese.util');
+var config = require('./config');
+var util = require('./util');
 var access = require('./mese.access');
 var web = require('./mese.web');
 var socket = require('./mese.socket');

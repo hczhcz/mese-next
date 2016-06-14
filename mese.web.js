@@ -4,7 +4,7 @@ var http = require('http'); // TODO: https?
 var express = require('express');
 var compression = require('compression');
 
-var util = require('./mese.util');
+var util = require('./util');
 
 module.exports = function (port, index, plugin, callback) {
     var app = express();

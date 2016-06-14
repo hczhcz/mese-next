@@ -1,6 +1,6 @@
 'use strict';
 
-var config = require('./mese.config');
+var config = require('./config');
 var db = require('./mese.db');
 
 module.exports.init = function (path, callback) {

@@ -2,8 +2,8 @@
 
 var childProcess = require('child_process');
 
-var config = require('./mese.config');
-var util = require('./mese.util');
+var config = require('./config');
+var util = require('./util');
 
 var execCore = function (args, input, callback, fail) {
     util.log('exec ' + JSON.stringify(args));

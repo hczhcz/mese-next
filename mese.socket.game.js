@@ -1,6 +1,6 @@
 'use strict';
 
-var util = require('./mese.util');
+var verify = require('./util.verify');
 var access = require('./mese.access');
 var game = require('./mese.game');
 
@@ -9,8 +9,8 @@ module.exports = function (socket, session) {
         // args: game, period, uid
 
         if (
-            !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !util.verifyNum(args.uid)
+            !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.verifyNum(args.uid)
         ) {
             session.log('bad socket request');
 
@@ -66,13 +66,13 @@ module.exports = function (socket, session) {
 
         if (
             session.user === undefined
-            || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !util.verifyInt(args.period)
-            || !util.verifyNum(args.price)
-            || !util.verifyInt(args.prod)
-            || !util.verifyNum(args.mk)
-            || !util.verifyNum(args.ci)
-            || !util.verifyNum(args.rd)
+            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.verifyInt(args.period)
+            || !verify.verifyNum(args.price)
+            || !verify.verifyInt(args.prod)
+            || !verify.verifyNum(args.mk)
+            || !verify.verifyNum(args.ci)
+            || !verify.verifyNum(args.rd)
         ) {
             session.log('bad socket request');
 

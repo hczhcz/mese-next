@@ -1,7 +1,7 @@
 'use strict';
 
-var config = require('./mese.config');
-var util = require('./mese.util');
+var config = require('./config');
+var verify = require('./util.verify');
 var access = require('./mese.access');
 var admin = require('./mese.admin');
 
@@ -11,7 +11,7 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
         ) {
             session.log('bad socket request');
 
@@ -43,13 +43,13 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !util.verifierArr(util.verifierStr(/^[A-Za-z0-9_ ]+$/))(args.players)
-            || !util.verifierStr(/^[A-Za-z0-9_]+$/)(args.preset)
-            || !util.verifierArr(
-                    util.verifierObj(
-                        util.verifierStr(/^[A-Za-z0-9_]+$/),
-                        util.verifyNum
+            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.verifierArr(verify.verifierStr(/^[A-Za-z0-9_ ]+$/))(args.players)
+            || !verify.verifierStr(/^[A-Za-z0-9_]+$/)(args.preset)
+            || !verify.verifierArr(
+                    verify.verifierObj(
+                        verify.verifierStr(/^[A-Za-z0-9_]+$/),
+                        verify.verifyNum
                     )
                 )(args.settings)
         ) {
@@ -108,11 +108,11 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !util.verifierArr(
-                    util.verifierObj(
-                        util.verifierStr(/^[A-Za-z0-9_]+$/),
-                        util.verifyNum
+            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.verifierArr(
+                    verify.verifierObj(
+                        verify.verifierStr(/^[A-Za-z0-9_]+$/),
+                        verify.verifyNum
                     )
                 )(args.settings)
         ) {

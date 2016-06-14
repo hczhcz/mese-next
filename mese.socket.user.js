@@ -1,7 +1,7 @@
 'use strict';
 
-var config = require('./mese.config');
-var util = require('./mese.util');
+var config = require('./config');
+var verify = require('./util.verify');
 var access = require('./mese.access');
 
 module.exports = function (socket, session) {
@@ -9,8 +9,8 @@ module.exports = function (socket, session) {
         // args: user, password
 
         if (
-            !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
-            || !util.verifierStr(/^.+$/)(args.password)
+            !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.user)
+            || !verify.verifierStr(/^.+$/)(args.password)
         ) {
             session.log('bad socket request');
 
@@ -60,8 +60,8 @@ module.exports = function (socket, session) {
 
         if (
             session.user === undefined
-            || !util.verifierStr(/^.+$/)(args.password)
-            || !util.verifierStr(/^.+$/)(args.newPassword)
+            || !verify.verifierStr(/^.+$/)(args.password)
+            || !verify.verifierStr(/^.+$/)(args.newPassword)
         ) {
             session.log('bad socket request');
 
@@ -116,8 +116,8 @@ module.exports = function (socket, session) {
 
         if (
             session.user === undefined
-            || !util.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !util.verifyBool(args.enabled)
+            || !verify.verifierStr(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.verifyBool(args.enabled)
         ) {
             session.log('bad socket request');
 

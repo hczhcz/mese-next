@@ -4,7 +4,7 @@ var io = require('socket.io');
 
 var util = require('./mese.util');
 
-module.exports = function (server) {
+module.exports = function (server, handlers) {
     io(server).on('connection', function (socket) {
         util.domainRunCatched([socket], function () {
             util.log('connect ' + socket.conn.remoteAddress);
@@ -26,11 +26,9 @@ module.exports = function (server) {
                 util.log('disconnect ' + socket.conn.remoteAddress);
             });
 
-            // TODO
-            require('./mese.socket.user')(socket, session);
-            require('./mese.socket.game')(socket, session);
-            require('./mese.socket.admin')(socket, session);
-            require('./mese.socket.admin.game')(socket, session);
+            for (var i in handlers) {
+                handlers[i](socket, session);
+            }
         });
     });
 };

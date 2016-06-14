@@ -19,7 +19,15 @@ access.init(config.db, function () {
     web(config.port, 'page.html', function (server) {
         util.log('socket init');
 
-        socket(server);
+        socket(
+            server,
+            [
+                require('./mese.socket.user'),
+                require('./mese.socket.game'),
+                require('./mese.socket.admin'),
+                require('./mese.socket.admin.game'),
+            ]
+        );
     }, function () {
         util.log('ready');
     });

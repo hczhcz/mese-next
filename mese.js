@@ -22,10 +22,10 @@ access.init(config.db, function () {
         socket(
             server,
             [
-                require('./mese.socket.user'),
+                require('./site.socket.user'),
+                require('./site.socket.admin'),
                 require('./mese.socket.game'),
                 require('./mese.socket.admin'),
-                require('./mese.socket.admin.game'),
             ]
         );
     }, function () {

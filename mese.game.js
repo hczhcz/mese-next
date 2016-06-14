@@ -35,7 +35,7 @@ module.exports.print = function (
     gameData, player,
     playerCallback, publicCallback
 ) {
-    if (player !== undefined) {
+    if (player >= 0) {
         // as player
 
         core.printPlayer(gameData, player, playerCallback);

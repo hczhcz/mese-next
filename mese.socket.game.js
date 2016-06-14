@@ -26,7 +26,7 @@ module.exports = function (socket, session) {
                     return;
                 }
 
-                var player = undefined;
+                var player = -1;
 
                 for (var i in players) {
                     if (players[i] === session.user) {
@@ -84,7 +84,7 @@ module.exports = function (socket, session) {
         access.gameAction(
             args.game,
             function (players, oldData, setter, next) {
-                var player = undefined;
+                var player = -1;
 
                 for (var i in players) {
                     if (players[i] === session.user) {
@@ -93,7 +93,7 @@ module.exports = function (socket, session) {
                     }
                 }
 
-                if (player !== undefined) {
+                if (player >= 0) {
                     game.submit(
                         oldData, player, args.period,
                         args.price, args.prod, args.mk, args.ci, args.rd,

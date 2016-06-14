@@ -1,6 +1,5 @@
 'use strict';
 
-var config = require('./config');
 var db = require('./util.db');
 
 module.exports.init = function (path, callback) {
@@ -81,9 +80,6 @@ module.exports.gameAction = function (game, callback, fail) {
                 diff.players = players;
             }
             if (gameData !== undefined) {
-                if (gameData.length < config.coreMinDataSize) {
-                    throw Error('broken data');
-                }
                 diff.data = gameData;
             }
 

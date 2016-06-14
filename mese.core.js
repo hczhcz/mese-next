@@ -32,6 +32,15 @@ var stdFail = function (status, output) {
     throw Error('exec fail ' + status);
 };
 
+var dataCallback = function (callback) {
+    return function (data) {
+        if (data.length < config.coreMinDataSize) {
+            throw Error('broken data');
+        }
+        callback(data);
+    };
+};
+
 var evalCallback = function (callback) {
     return function (data) {
         callback(eval('(' + data + ')'));
@@ -49,7 +58,7 @@ module.exports.init = function (count, preset, settings, callback) {
     execCore(
         args,
         undefined,
-        callback,
+        dataCallback(callback),
         stdFail
     );
 };
@@ -65,7 +74,7 @@ module.exports.alloc = function (gameData, settings, callback) {
     execCore(
         args,
         gameData,
-        callback,
+        dataCallback(callback),
         stdFail
     );
 };
@@ -78,7 +87,7 @@ module.exports.submit = function (
     execCore(
         ['submit', player, period, price, prod, mk, ci, rd],
         gameData,
-        callback,
+        dataCallback(callback),
         function (status, output) {
             if (status == 1) {
                 fail(output);
@@ -93,7 +102,7 @@ module.exports.close = function (gameData, callback, fail) {
     execCore(
         ['close'],
         gameData,
-        callback,
+        dataCallback(callback),
         function (status, output) {
             if (status == 1) {
                 fail(output);

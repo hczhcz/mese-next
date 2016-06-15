@@ -22,19 +22,13 @@ var loginDone = function (user) {
 };
 
 var autoLogin = function () {
-    // auto login
-    var loginInfo = localStorage.getItem('MESE_login');
-    if (loginInfo) {
-        var loginInfoObj = JSON.parse(loginInfo);
-
-        socket.emit('login', loginInfoObj);
-        $('#login_user').val(loginInfoObj.user);
-    }
+    getLogin(function (login) {
+        socket.emit('login', login);
+    });
 };
 
 $('#login_show_submit').click(function () {
-    // reset auto login
-    localStorage.removeItem('MESE_login');
+    resetLogin();
 
     $('#login').removeClass('hide');
     $('#login_show').addClass('hide');
@@ -74,20 +68,16 @@ $('#login_submit').click(function (event) {
     $('#login_password').val('');
 
     // auto login
-    if ($('#login_remember').prop('checked')) {
-        localStorage.setItem(
-            'MESE_login',
-            JSON.stringify({
-                user: user,
-                password: password,
-            })
-        );
-    }
-
-    socket.emit('login', {
-        user: user,
-        password: password,
-    });
+    setLogin(
+        {
+            user: user,
+            password: password,
+        },
+        $('#login_remember').prop('checked'),
+        function (login) {
+            socket.emit('login', login);
+        }
+    );
 });
 
 socket.on('login_new', function (data) {
@@ -103,8 +93,7 @@ socket.on('login_ok', function (data) {
 });
 
 socket.on('login_fail', function (data) {
-    // reset auto login
-    localStorage.removeItem('MESE_login');
+    resetLogin();
 
     message('Wrong password');
 });
@@ -112,6 +101,8 @@ socket.on('login_fail', function (data) {
 // password
 
 $('#password_show_submit').click(function () {
+    resetLogin();
+
     $('#password').removeClass('hide');
     $('#password_show').addClass('hide');
 });
@@ -143,16 +134,10 @@ $('#password_submit').click(function (event) {
 });
 
 socket.on('password_ok', function (data) {
-    // reset auto login
-    localStorage.removeItem('MESE_login');
-
     message('Password changed');
 });
 
 socket.on('password_fail', function (data) {
-    // reset auto login
-    // localStorage.removeItem('MESE_login');
-
     message('Wrong password');
 });
 

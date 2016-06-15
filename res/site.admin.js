@@ -10,6 +10,29 @@ $('#admin_list_refresh').click(function () {
     socket.emit('admin_list');
 });
 
+$('#admin_users').change(function () {
+    var list = $('#admin_users').val();
+
+    if (list.length == 1) {
+        $('#admin_login_user').val(list[0]);
+        $('#admin_transfer_user').val(list[0]);
+    } else if (list.length > 1) {
+        $('#admin_init_players').val(list.join(','));
+    }
+});
+
+$('#admin_login_submit').click(function () {
+    socket.emit('admin_login', {
+        user: $('#admin_login_user').val(),
+    });
+});
+
+$('#admin_password_submit').click(function () {
+    socket.emit('admin_password', {
+        newPassword: sha($('#admin_password_new').val()),
+    });
+});
+
 socket.on('admin_auth_ok', function (data) {
     $('#admin').removeClass('hide');
 
@@ -32,29 +55,4 @@ socket.on('admin_list_data', function (data) {
             $('<option>').text(data.games[i])
         );
     }
-});
-
-// users
-
-$('#admin_users').change(function () {
-    var list = $('#admin_users').val();
-
-    if (list.length == 1) {
-        $('#admin_login_user').val(list[0]);
-        $('#admin_transfer_user').val(list[0]);
-    } else if (list.length > 1) {
-        $('#admin_init_players').val(list.join(','));
-    }
-});
-
-$('#admin_login_submit').click(function () {
-    socket.emit('admin_login', {
-        user: $('#admin_login_user').val(),
-    });
-});
-
-$('#admin_password_submit').click(function () {
-    socket.emit('admin_password', {
-        newPassword: sha($('#admin_password_new').val()),
-    });
 });

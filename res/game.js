@@ -2,6 +2,12 @@
 
 // report
 
+// DOM change
+$('#report [bind]')
+    .append('<span class="last"><span></span>&nbsp;</span>')
+    .append('<span class="now"><span></span></span>')
+    .append('<span class="next">&nbsp;<span></span></span>');
+
 var currentGame = undefined;
 var currentPeriod = undefined;
 var currentUid = undefined;

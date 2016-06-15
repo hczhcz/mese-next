@@ -1,7 +1,5 @@
 'use strict';
 
-// message
-
 var windowActive = false;
 
 var showMessage = function () {
@@ -73,7 +71,3 @@ $(window).blur(function () {
 $('#message').hover(showMessage, hideMessage);
 $('#message').click(removeMessage);
 $('#message').on('touchstart', removeMessage);
-
-socket.on('message', function (data) {
-    message(data);
-});

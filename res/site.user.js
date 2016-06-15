@@ -70,7 +70,7 @@ $('#login_submit').click(function (event) {
     event.preventDefault();
 
     var user = $('#login_user').val();
-    var password = $('#login_password').val();
+    var password = sha($('#login_password').val());
     $('#login_password').val('');
 
     // auto login
@@ -79,14 +79,14 @@ $('#login_submit').click(function (event) {
             'MESE_login',
             JSON.stringify({
                 user: user,
-                password: password, // TODO: hash?
+                password: password,
             })
         );
     }
 
     socket.emit('login', {
         user: user,
-        password: password, // TODO: hash?
+        password: password,
     });
 });
 
@@ -131,14 +131,14 @@ $('#password_new').keypress(function (event) {
 $('#password_submit').click(function (event) {
     event.preventDefault();
 
-    var password = $('#password_old').val();
-    var newPassword = $('#password_new').val();
+    var password = sha($('#password_old').val());
+    var newPassword = sha($('#password_new').val());
     $('#password_old').val('');
     $('#password_new').val('');
 
     socket.emit('password', {
-        password: password, // TODO: hash?
-        newPassword: newPassword, // TODO: hash?
+        password: password,
+        newPassword: newPassword,
     });
 });
 

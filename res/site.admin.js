@@ -55,6 +55,6 @@ $('#admin_login_submit').click(function () {
 
 $('#admin_password_submit').click(function () {
     socket.emit('admin_password', {
-        newPassword: $('#admin_password_new').val(),
+        newPassword: sha($('#admin_password_new').val()),
     });
 });

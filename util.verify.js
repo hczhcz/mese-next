@@ -30,6 +30,12 @@ module.exports.text = function () {
     };
 };
 
+module.exports.hash = function (len) {
+    return function (str) {
+        return typeof str == 'string' && str.length == len;
+    };
+};
+
 module.exports.arr = function (verifier) {
     return function (arr) {
         if (!arr instanceof Array) {

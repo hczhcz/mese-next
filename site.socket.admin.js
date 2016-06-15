@@ -45,7 +45,7 @@ module.exports = function (socket, session) {
 
         if (
             !session.sudo
-            || !verify.str(/^.+$/)(args.newPassword)
+            || !verify.hash(32)(args.newPassword)
         ) {
             session.log('bad socket request');
 

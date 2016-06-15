@@ -10,7 +10,7 @@ module.exports = function (socket, session) {
 
         if (
             !verify.str(/^[A-Za-z0-9_ ]+$/)(args.user)
-            || !verify.str(/^.+$/)(args.password)
+            || !verify.hash(32)(args.password)
         ) {
             session.log('bad socket request');
 
@@ -60,8 +60,8 @@ module.exports = function (socket, session) {
 
         if (
             session.user === undefined
-            || !verify.str(/^.+$/)(args.password)
-            || !verify.str(/^.+$/)(args.newPassword)
+            || !verify.hash(32)(args.password)
+            || !verify.hash(32)(args.newPassword)
         ) {
             session.log('bad socket request');
 

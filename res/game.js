@@ -11,7 +11,6 @@ var verboseEnabled = false;
 
 var initReport = function (game, period, uid) {
     if (game !== currentGame) {
-        hideSide();
         message('Game: ' + game);
     }
     if (game === currentGame && period !== currentPeriod) {

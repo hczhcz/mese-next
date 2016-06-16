@@ -85,6 +85,12 @@
                     <tr><td>Marginal cost</td><td bind='prod_cost_marginal'></td></tr>
                     <tr><td>Total prod cost</td><td bind='prod_cost'></td><td bind='average_prod_cost'></td></tr>
                 </table>
+                <table bind='goods'>
+                    <tr><th>Goods</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Goods</td><td bind='goods'></td><td bind='average_goods'></td></tr>
+                    <tr><td>Cost of goods</td><td bind='goods_cost'></td></tr>
+                    <tr><td>Ideal sales income</td><td bind='goods_max_sales'></td></tr>
+                </table>
                 <table bind='balance'>
                     <tr><th>Balance</th><th>You</th><th>Average</th></tr>
                     <tr><td>Deprecation</td><td bind='deprecation'></td></tr>
@@ -94,10 +100,6 @@
                     <tr class='report_verbose hide'><td>Early balance</td><td bind='balance_early'></td></tr>
                     <tr><td>Early loan</td><td bind='loan_early'></td></tr>
                     <tr><td>Interest</td><td bind='interest'></td></tr>
-
-                    <tr><td>Goods</td><td bind='goods'></td><td bind='average_goods'></td></tr>
-                    <tr><td>Cost of goods</td><td bind='goods_cost'></td></tr>
-                    <tr><td>Ideal sales income</td><td bind='goods_max_sales'></td></tr>
                 </table>
                 <table bind='history'>
                     <tr><th>History</th><th>You</th><th>Average</th></tr>
@@ -114,18 +116,19 @@
                     <tr><td>Inventory</td><td bind='inventory'></td><td bind='average_inventory'></td></tr>
                     <tr><td>Unfilled</td><td bind='unfilled'></td><td bind='average_unfilled'></td></tr>
                 </table>
-                <table bind='balance'>
-                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
+                <table bind='goods'>
+                    <tr><th>Goods</th><th>You</th><th>Average</th></tr>
                     <tr><td>Cost of goods sold</td><td bind='goods_cost_sold'></td><td bind='average_goods_cost_sold'></td></tr>
                     <tr><td>Cost of inventory</td><td bind='goods_cost_inventory'></td></tr>
-
+                </table>
+                <table bind='balance'>
+                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
                     <tr><td>Sales income</td><td bind='sales'></td><td bind='average_sales'></td></tr>
                     <tr class='report_verbose hide'><td>Inventory charge</td><td bind='inventory_charge'></td></tr>
                     <tr><td>Cost before tax</td><td bind='cost_before_tax'></td><td bind='average_cost_before_tax'></td></tr>
                     <tr><td>Profit before tax</td><td bind='profit_before_tax'></td><td bind='average_profit_before_tax'></td></tr>
                     <tr class='report_verbose hide'><td>Tax charge</td><td bind='tax_charge'></td><td bind='average_tax_charge'></td></tr>
                     <tr><td>Profit</td><td bind='profit'></td><td bind='average_profit'></td></tr>
-
                     <tr class='report_verbose hide'><td>Balance</td><td bind='balance'></td></tr>
                     <tr><td>Loan</td><td bind='loan'></td></tr>
                     <tr><td>Cash</td><td bind='cash'></td></tr>
@@ -171,7 +174,6 @@
                 <table bind='production'>
                     <tr><th>Production</th></tr>
                     <tr><td>Balanced prod rate</td><td bind='prod_rate_balanced'></td></tr>
-
                     <tr><td>Unit fee</td><td bind='unit_fee'></td></tr>
                     <tr><td>Deprecation rate</td><td bind='deprecation_rate'></td></tr>
                 </table>

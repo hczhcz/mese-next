@@ -5,11 +5,12 @@ var engine = require('./rtmese.engine');
 
 // events: {tick: {key: value, ...}, ...}
 // submissions: {tick: {player: [...]}, ...}
-module.exports.init = function (count, events) {
+module.exports.init = function (count, final, events) {
     var game = engine.init(count);
 
     game.tick_delta = config.rtmeseDelta;
     game.now_tick = 0;
+    game.final_tick = final;
     game.events = events;
     game.submissions = {};
 };
@@ -45,4 +46,6 @@ module.exports.exec = function (game) {
     game.now_tick += 1;
 
     engine.exec(game, game.tick_delta);
+
+    return game.now_tick < game.final_tick;
 };

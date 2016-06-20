@@ -1,9 +1,13 @@
 'use strict';
 
-module.exports.init = function (count) {
+module.exports.init = function (count, final, delta) {
     var game = {
         player_count: count,
+        final_tick: final,
+        now_tick: 0,
         now_period: 1,
+        delta: delta,
+
         settings: {
             price_max: 99,
             price_min: 12,
@@ -64,6 +68,7 @@ module.exports.init = function (count) {
             mpi_factor_e: 10,
             mpi_factor_f: 10,
         },
+
         decisions: {
             price: [],
             prod_rate: [],
@@ -71,6 +76,7 @@ module.exports.init = function (count) {
             ci: [],
             rd: [],
         },
+
         data: {
             prod: [],
             prod_over: [],
@@ -169,7 +175,7 @@ module.exports.init = function (count) {
     return game;
 };
 
-module.exports.exec = function (game, delta) {
+module.exports.exec = function (game) {
     var minmax = function (a, min, max) {
         return Math.min(Math.max(a, min), max);
     };
@@ -194,7 +200,8 @@ module.exports.exec = function (game, delta) {
         }
     };
 
-    game.now_period += delta;
+    game.now_tick += 1;
+    game.now_period += game.delta;
 
     each(function (i) {
         // check decisions
@@ -240,20 +247,20 @@ module.exports.exec = function (game, delta) {
             + game.data.prod_cost_unit[i];
         game.data.prod_cost[i] = game.data.prod_cost_unit[i] * game.data.prod[i];
 
-        game.data.goods[i] = game.data.inventory[i] + game.data.prod[i] * delta;
+        game.data.goods[i] = game.data.inventory[i] + game.data.prod[i] * game.delta;
         game.data.goods_predicted[i] = game.data.inventory[i] + game.data.prod[i];
-        game.data.goods_cost[i] = game.data.goods_cost_inventory[i] + game.data.prod_cost[i] * delta;
+        game.data.goods_cost[i] = game.data.goods_cost_inventory[i] + game.data.prod_cost[i] * game.delta;
         game.data.goods_cost_predicted[i] = game.data.goods_cost_inventory[i] + game.data.prod_cost[i];
         game.data.goods_max_sales[i] = game.decisions.price[i] * game.data.goods_predicted[i];
 
         game.data.deprecation[i] = game.data.capital[i] * game.settings.deprecation_rate;
-        game.data.capital[i] += (game.decisions.ci[i] - game.data.deprecation[i]) * delta;
+        game.data.capital[i] += (game.decisions.ci[i] - game.data.deprecation[i]) * game.delta;
         game.data.size[i] = game.data.capital[i] / game.settings.unit_fee;
 
         game.data.spending[i] = game.data.prod_cost[i]
             + game.decisions.ci[i] - game.data.deprecation[i]
             + game.decisions.mk[i] + game.decisions.rd[i];
-        game.data.balance_early[i] = game.data.cash[i] - game.data.loan[i] - game.data.spending[i] * delta;
+        game.data.balance_early[i] = game.data.cash[i] - game.data.loan[i] - game.data.spending[i] * game.delta;
         game.data.loan_early[i] = Math.max(- game.data.balance_early[i], 0);
         game.data.interest[i] = (
             game.data.balance_early[i] >= 0 ?
@@ -268,8 +275,8 @@ module.exports.exec = function (game, delta) {
         //     game.decisions.rd[i] = 0;
         // }
 
-        game.data.history_mk[i] += game.decisions.mk[i] * delta;
-        game.data.history_rd[i] += game.decisions.rd[i] * delta;
+        game.data.history_mk[i] += game.decisions.mk[i] * game.delta;
+        game.data.history_rd[i] += game.decisions.rd[i] * game.delta;
     });
 
     var sum_mk = sum(game.decisions.mk);
@@ -330,14 +337,14 @@ module.exports.exec = function (game, delta) {
         game.data.share_compressed[i] = Math.min(game.data.share[i] * game.settings.price_overload / game.decisions.price[i], game.data.share[i]);
 
         game.data.orders[i] = game.data.orders_demand * game.data.share_compressed[i];
-        game.data.sold[i] = Math.min(game.data.orders[i], game.data.goods[i] / delta);
-        game.data.inventory[i] = game.data.goods[i] - game.data.sold[i] * delta;
+        game.data.sold[i] = Math.min(game.data.orders[i], game.data.goods[i] / game.delta);
+        game.data.inventory[i] = game.data.goods[i] - game.data.sold[i] * game.delta;
         game.data.unfilled[i] = game.data.orders[i] - game.data.sold[i];
 
         // goods
 
         game.data.goods_cost_sold[i] = game.data.goods_cost[i] * div(game.data.sold[i], game.data.goods[i], 0);
-        game.data.goods_cost_inventory[i] = game.data.goods_cost[i] - game.data.goods_cost_sold[i] * delta;
+        game.data.goods_cost_inventory[i] = game.data.goods_cost[i] - game.data.goods_cost_sold[i] * game.delta;
 
         // cash flow
 
@@ -361,10 +368,10 @@ module.exports.exec = function (game, delta) {
                 game.data.profit[i]
                 - game.decisions.ci[i] + game.data.deprecation[i]
                 + game.data.goods_cost_sold[i] - game.data.prod_cost[i]
-            ) * delta;
+            ) * game.delta;
         game.data.loan[i] = Math.max(game.data.loan_early[i], game.data.loan_early[i] - game.data.balance[i]);
         game.data.cash[i] = Math.max(game.data.balance[i], 0);
-        game.data.retern[i] += game.data.profit[i] * delta;
+        game.data.retern[i] += game.data.profit[i] * game.delta;
     });
 
     game.data.average_price = div(sum(game.data.sales), sum(game.data.sold), game.data.average_price_given);
@@ -393,4 +400,6 @@ module.exports.exec = function (game, delta) {
         game.data.mpi[i] = game.data.mpi_a[i] + game.data.mpi_b[i] + game.data.mpi_c[i]
             + game.data.mpi_d[i] + game.data.mpi_e[i] + game.data.mpi_f[i];
     });
+
+    return game.now_tick < game.final_tick;
 };

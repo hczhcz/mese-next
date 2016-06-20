@@ -20,7 +20,7 @@ var execCore = function (args, input, callback, fail) {
     });
 
     proc.on('close', function (status) {
-        if (status != 0) {
+        if (status !== 0) {
             fail(status, Buffer.concat(output));
         } else {
             callback(Buffer.concat(output));
@@ -89,7 +89,7 @@ module.exports.submit = function (
         gameData,
         dataCallback(callback),
         function (status, output) {
-            if (status == 1) {
+            if (status === 1) {
                 fail(output);
             } else {
                 stdFail(status, output);
@@ -104,7 +104,7 @@ module.exports.close = function (gameData, callback, fail) {
         gameData,
         dataCallback(callback),
         function (status, output) {
-            if (status == 1) {
+            if (status === 1) {
                 fail(output);
             } else {
                 stdFail(status, output);

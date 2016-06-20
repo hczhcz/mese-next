@@ -34,7 +34,7 @@ var hideSide = function () {
             .stop()
             .animate({left: '-15.5rem'}, 1000, function () {
                 // IE8 workaround
-                if ($('#side').position().left == 0) {
+                if ($('#side').position().left === 0) {
                     $('#side').css('left', '-15.5em');
                     $('body').css('padding-left', '0.5em');
                 }

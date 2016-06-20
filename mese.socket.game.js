@@ -22,7 +22,7 @@ module.exports = function (socket, session) {
         access.game(
             args.game,
             function (uid, players, gameData) {
-                if (uid == args.uid) {
+                if (uid === args.uid) {
                     return;
                 }
 

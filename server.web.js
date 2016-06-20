@@ -22,7 +22,7 @@ module.exports = function (port, index, plugin, callback) {
     }));
 
     app.use(function (err, req, res, next) {
-        if (err.status == 404) {
+        if (err.status === 404) {
             util.log('web not found ' + req.path);
         } else {
             util.log('web error ' + err.status + ' ' + req.path);

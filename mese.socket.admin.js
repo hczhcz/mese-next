@@ -26,6 +26,10 @@ module.exports = function (socket, session) {
                 admin.print(
                     gameData,
                     function (report) {
+                        report.game = args.game;
+                        report.uid = uid;
+                        report.players = players;
+
                         socket.emit('admin_report_data', report);
                     }
                 );

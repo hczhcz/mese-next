@@ -12,10 +12,10 @@ module.exports.submit = function (
 
     game.submissions[game.now_tick][player] = [
         price, prod_rate, mk, ci, rd
-    ]);
+    ];
 };
 
-module.exports.printReport = function (
+module.exports.print = function (
     game, player,
     playerCallback, publicCallback
 ) {

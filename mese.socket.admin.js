@@ -111,7 +111,7 @@ module.exports = function (socket, session) {
         session.log('admin init game ' + args.game + ' ' + args.preset);
         session.log('allocated ' + args.settings.length + 'pd');
 
-        if (args.players.length == 0 || args.players.length > config.coreMaxPlayer) {
+        if (args.players.length == 0 || args.players.length > config.meseMaxPlayer) {
             session.log('player count not supported');
 
             socket.emit('admin_init_fail_number');

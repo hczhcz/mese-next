@@ -8,7 +8,7 @@ var util = require('./util');
 var execCore = function (args, input, callback, fail) {
     util.log('exec ' + JSON.stringify(args));
 
-    var proc = childProcess.spawn(config.core, args);
+    var proc = childProcess.spawn(config.meseEngine, args);
     var output = [];
 
     if (input !== undefined) {
@@ -34,7 +34,7 @@ var stdFail = function (status, output) {
 
 var dataCallback = function (callback) {
     return function (data) {
-        if (data.length < config.coreMinDataSize) {
+        if (data.length < config.meseMinDataSize) {
             throw Error('broken data');
         }
         callback(data);

@@ -15,19 +15,6 @@ module.exports.init = function (count, final, events) {
     game.submissions = {};
 };
 
-module.exports.submit = function (
-    game, player,
-    price, prod_rate, mk, ci, rd
-) {
-    if (!game.submissions[game.now_tick]) {
-        game.submissions[game.now_tick] = {};
-    }
-
-    game.submissions[game.now_tick][player] = [
-        price, prod_rate, mk, ci, rd
-    ]);
-};
-
 module.exports.exec = function (game) {
     var events = game.events[game.now_tick] || {};
     for (var i in events) {

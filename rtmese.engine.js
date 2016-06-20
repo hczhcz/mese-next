@@ -184,6 +184,7 @@ module.exports.exec = function (game) {
         return b == 0 ? e : a / b;
     };
 
+    // notice: also in report.printDataPublic
     var sum = function (data) {
         var s = 0;
 

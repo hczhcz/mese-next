@@ -1,6 +1,6 @@
 'use strict';
 
-var engine = require('./rtmese.engine');
+var report = require('./rtmese.report');
 
 module.exports.submit = function (
     game, player,
@@ -10,9 +10,7 @@ module.exports.submit = function (
         game.submissions[game.now_tick] = {};
     }
 
-    game.submissions[game.now_tick][player] = [
-        price, prod_rate, mk, ci, rd
-    ];
+    game.submissions[game.now_tick][player] = [price, prod_rate, mk, ci, rd];
 };
 
 module.exports.print = function (
@@ -22,10 +20,10 @@ module.exports.print = function (
     if (player >= 0) {
         // as player
 
-        core.printPlayer(gameData, player, playerCallback);
+        playerCallback(report.printPlayer(game, player));
     } else {
         // as guest
 
-        core.printPublic(gameData, publicCallback);
+        publicCallback(report.printPublic(game));
     }
 };

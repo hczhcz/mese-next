@@ -4,7 +4,6 @@ module.exports.init = function (count) {
     var game = {
         player_count: count,
         now_period: 1,
-        now_tick: 0;
         settings: {
             price_max: 99,
             price_min: 12,
@@ -196,7 +195,6 @@ module.exports.exec = function (game, delta) {
     };
 
     game.now_period += delta;
-    game.now_tick += 1;
 
     each(function (i) {
         // check decisions

@@ -1,13 +1,14 @@
 'use strict';
 
+var config = require('./config');
 var engine = require('./rtmese.engine');
 
 // events: {tick: {key: value, ...}, ...}
 // submissions: {tick: {player: [...]}, ...}
-module.exports.init = function (count, delta, events) {
+module.exports.init = function (count, events) {
     var game = engine.init(count);
 
-    game.tick_delta = delta;
+    game.tick_delta = config.rtmeseDelta;
     game.now_tick = 0;
     game.events = events;
     game.submissions = {};

@@ -66,9 +66,9 @@ module.exports.games = function (callback) {
     db.list('games', callback);
 };
 
-module.exports.game = function (game, callback, fail) {
+module.exports.game = function (type, game, callback, fail) {
     db.get('games', game, function (doc) {
-        if (doc) {
+        if (doc && doc.type === type) {
             // notice: .buffer is required for binary data
             callback(doc.uid, doc.players, doc.data.buffer);
         } else {
@@ -77,11 +77,27 @@ module.exports.game = function (game, callback, fail) {
     });
 };
 
-module.exports.gameAction = function (game, callback, fail) {
+module.exports.gameExist = function (game, callback, fail) {
+    db.get('games', game, function (doc) {
+        if (doc) {
+            callback();
+        } else {
+            fail();
+        }
+    });
+};
+
+module.exports.gameAction = function (
+    type, game,
+    existCallback, newCallback, fail
+) {
     db.update('games', game, function (doc, setter, next) {
         var gameDataSetter = function (players, gameData, callback) {
             // generate an unique id (assumed unique)
-            var diff = {uid: Number(new Date())};
+            var diff = {
+                uid: Number(new Date()),
+                type: type,
+            };
 
             if (players !== undefined) {
                 diff.players = players;
@@ -100,12 +116,18 @@ module.exports.gameAction = function (game, callback, fail) {
         };
 
         if (doc) {
-            // notice: .buffer is required for binary data
-            if (!callback(doc.players, doc.data.buffer, gameDataSetter, next)) {
-                next();
+            if (doc.type === type) {
+                // notice: .buffer is required for binary data
+                if (!existCallback(doc.players, doc.data.buffer, gameDataSetter, next)) {
+                    next();
+                }
+            } else {
+                if (!fail()) {
+                    next();
+                }
             }
         } else {
-            if (!fail(gameDataSetter)) {
+            if (!newCallback(gameDataSetter)) {
                 next();
             }
         }

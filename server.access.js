@@ -32,7 +32,9 @@ module.exports.userAuth = function (user, callback) {
             );
         };
 
-        callback(doc ? doc.password : undefined, passwordSetter) || next();
+        if (!callback(doc ? doc.password : undefined, passwordSetter)) {
+            next();
+        }
     });
 };
 
@@ -94,9 +96,13 @@ module.exports.gameAction = function (game, callback, fail) {
 
         if (doc) {
             // notice: .buffer is required for binary data
-            callback(doc.players, doc.data.buffer, gameDataSetter, next) || next();
+            if (!callback(doc.players, doc.data.buffer, gameDataSetter, next)) {
+                next();
+            }
         } else {
-            fail(gameDataSetter) || next();
+            if (!fail(gameDataSetter)) {
+                next();
+            }
         }
     });
 };

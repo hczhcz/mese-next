@@ -82,6 +82,10 @@ socket.on('admin_mese_transfer_fail_game', function (data) {
     message('Game not found');
 });
 
+socket.on('admin_mese_transfer_fail_type', function (data) {
+    message('Wrong game type');
+});
+
 socket.on('admin_mese_init_fail_number', function (data) {
     message('Player count not supported');
 });
@@ -98,10 +102,18 @@ socket.on('admin_mese_init_ok', function (data) {
     message('Game created');
 });
 
+socket.on('admin_mese_init_fail_type', function (data) {
+    message('Wrong game type');
+});
+
 socket.on('admin_mese_alloc_ok', function (data) {
     message('Period allocated');
 });
 
 socket.on('admin_mese_alloc_fail_game', function (data) {
     message('Game not found');
+});
+
+socket.on('admin_mese_alloc_fail_type', function (data) {
+    message('Wrong game type');
 });

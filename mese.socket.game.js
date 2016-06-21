@@ -20,7 +20,7 @@ module.exports = function (socket, session) {
         session.log('get report ' + args.game);
 
         access.game(
-            args.game,
+            'mese', args.game,
             function (uid, players, gameData) {
                 if (uid === args.uid) {
                     return;
@@ -82,7 +82,7 @@ module.exports = function (socket, session) {
         session.log('submit ' + args.game);
 
         access.gameAction(
-            args.game,
+            'mese', args.game,
             function (players, oldData, setter, next) {
                 var player = -1;
 
@@ -134,6 +134,11 @@ module.exports = function (socket, session) {
                 session.log('game not found ' + args.game);
 
                 socket.emit('mese_submit_fail_game');
+            },
+            function () {
+                session.log('wrong game type ' + args.game);
+
+                socket.emit('mese_submit_fail_type');
             }
         );
     });

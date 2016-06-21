@@ -327,3 +327,7 @@ socket.on('mese_submit_fail_player', function (data) {
 socket.on('mese_submit_fail_game', function (data) {
     message('Game not found');
 });
+
+socket.on('mese_submit_fail_type', function (data) {
+    message('Wrong game type');
+});

@@ -21,7 +21,7 @@ module.exports = function (socket, session) {
         session.log('admin get report ' + args.game);
 
         access.game(
-            args.game,
+            'mese', args.game,
             function (uid, players, gameData) {
                 admin.print(
                     gameData,
@@ -58,7 +58,7 @@ module.exports = function (socket, session) {
         session.log('admin transfer game ' + args.game + ' ' + args.user);
 
         access.gameAction(
-            args.game,
+            'mese', args.game,
             function (players, oldData, setter) {
                 var player = -1;
 
@@ -88,6 +88,11 @@ module.exports = function (socket, session) {
                 session.log('game not found ' + args.game);
 
                 socket.emit('admin_mese_transfer_fail_game');
+            },
+            function () {
+                session.log('wrong game type ' + args.game);
+
+                socket.emit('admin_mese_transfer_fail_type');
             }
         );
     });
@@ -122,7 +127,7 @@ module.exports = function (socket, session) {
         }
 
         access.gameAction(
-            args.game,
+            'mese', args.game,
             function (players, oldData, setter) {
                 session.log('game exists ' + args.game);
 
@@ -157,6 +162,11 @@ module.exports = function (socket, session) {
                 );
 
                 return true; // need setter
+            },
+            function () {
+                session.log('wrong game type ' + args.game);
+
+                socket.emit('admin_mese_init_fail_type');
             }
         );
     });
@@ -183,7 +193,7 @@ module.exports = function (socket, session) {
         session.log('allocated ' + args.settings.length + 'pd');
 
         access.gameAction(
-            args.game,
+            'mese', args.game,
             function (players, oldData, setter) {
                 admin.alloc(
                     oldData, args.settings,
@@ -200,6 +210,11 @@ module.exports = function (socket, session) {
                 session.log('game not found ' + args.game);
 
                 socket.emit('admin_mese_alloc_fail_game');
+            },
+            function () {
+                session.log('wrong game type ' + args.game);
+
+                socket.emit('admin_mese_alloc_fail_type');
             }
         );
     });

@@ -144,9 +144,9 @@ module.exports = function (socket, session) {
             );
         };
 
-        access.game(
+        access.gameExist(
             args.game,
-            function (uid, players, gameData) {
+            function () {
                 doSubscribe();
             },
             function () {

@@ -6,6 +6,10 @@ module.exports.init = function (path, callback) {
     db.init(path, ['users', 'games'], callback);
 };
 
+module.exports.users = function (callback) {
+    db.list('users', callback);
+};
+
 module.exports.user = function (user, callback, fail) {
     db.get('users', user, function (doc) {
         if (doc) {
@@ -14,10 +18,6 @@ module.exports.user = function (user, callback, fail) {
             fail();
         }
     });
-};
-
-module.exports.users = function (callback) {
-    db.list('users', callback);
 };
 
 module.exports.userAuth = function (user, callback) {
@@ -57,6 +57,10 @@ module.exports.userSubscribe = function (user, game, enabled, callback, fail) {
     });
 };
 
+module.exports.games = function (callback) {
+    db.list('games', callback);
+};
+
 module.exports.game = function (game, callback, fail) {
     db.get('games', game, function (doc) {
         if (doc) {
@@ -66,10 +70,6 @@ module.exports.game = function (game, callback, fail) {
             fail();
         }
     });
-};
-
-module.exports.games = function (callback) {
-    db.list('games', callback);
 };
 
 module.exports.gameAction = function (game, callback, fail) {

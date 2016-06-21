@@ -6,7 +6,7 @@ var access = require('./server.access');
 var admin = require('./mese.admin');
 
 module.exports = function (socket, session) {
-    socket.on('admin_report', function (args) {
+    socket.on('admin_mese_report', function (args) {
         // args: game
 
         if (
@@ -30,19 +30,19 @@ module.exports = function (socket, session) {
                         report.uid = uid;
                         report.players = players;
 
-                        socket.emit('admin_report_data', report);
+                        socket.emit('admin_mese_report_data', report);
                     }
                 );
             },
             function () {
                 session.log('game not found ' + args.game);
 
-                socket.emit('admin_report_fail');
+                socket.emit('admin_mese_report_fail');
             }
         );
     });
 
-    socket.on('admin_transfer', function (args) {
+    socket.on('admin_mese_transfer', function (args) {
         // args: game, user
 
         if (
@@ -74,25 +74,25 @@ module.exports = function (socket, session) {
 
                     // store data
                     setter(players, undefined, function () {
-                        socket.emit('admin_transfer_ok');
+                        socket.emit('admin_mese_transfer_ok');
                     });
 
                     return true; // need setter
                 } else {
                     session.log('transferring not allowed ' + args.game);
 
-                    socket.emit('admin_transfer_fail_player');
+                    socket.emit('admin_mese_transfer_fail_player');
                 }
             },
             function (setter) {
                 session.log('game not found ' + args.game);
 
-                socket.emit('admin_transfer_fail_game');
+                socket.emit('admin_mese_transfer_fail_game');
             }
         );
     });
 
-    socket.on('admin_init', function (args) {
+    socket.on('admin_mese_init', function (args) {
         // args: game, players, preset, settings
 
         if (
@@ -118,7 +118,7 @@ module.exports = function (socket, session) {
         if (args.players.length == 0 || args.players.length > config.meseMaxPlayer) {
             session.log('player count not supported');
 
-            socket.emit('admin_init_fail_number');
+            socket.emit('admin_mese_init_fail_number');
         }
 
         access.gameAction(
@@ -126,7 +126,7 @@ module.exports = function (socket, session) {
             function (players, oldData, setter) {
                 session.log('game exists ' + args.game);
 
-                socket.emit('admin_init_fail_game');
+                socket.emit('admin_mese_init_fail_game');
             },
             function (setter) {
                 admin.init(
@@ -142,7 +142,7 @@ module.exports = function (socket, session) {
                                     function () {
                                         session.log('invition not allowed ' + player);
 
-                                        socket.emit('admin_init_fail_invite', player);
+                                        socket.emit('admin_mese_init_fail_invite', player);
                                     }
                                 );
                             };
@@ -151,7 +151,7 @@ module.exports = function (socket, session) {
                                 subscribe(args.players[i]);
                             }
 
-                            socket.emit('admin_init_ok');
+                            socket.emit('admin_mese_init_ok');
                         });
                     }
                 );
@@ -161,7 +161,7 @@ module.exports = function (socket, session) {
         );
     });
 
-    socket.on('admin_alloc', function (args) {
+    socket.on('admin_mese_alloc', function (args) {
         // args: game, settings
 
         if (
@@ -189,7 +189,7 @@ module.exports = function (socket, session) {
                     oldData, args.settings,
                     function (gameData) {
                         setter(undefined, gameData, function () {
-                            socket.emit('admin_alloc_ok');
+                            socket.emit('admin_mese_alloc_ok');
                         });
                     }
                 );
@@ -199,11 +199,11 @@ module.exports = function (socket, session) {
             function (setter) {
                 session.log('game not found ' + args.game);
 
-                socket.emit('admin_alloc_fail_game');
+                socket.emit('admin_mese_alloc_fail_game');
             }
         );
     });
 
-    // socket.on('admin_revent', function (args) { // not implemented
+    // socket.on('admin_mese_revent', function (args) { // not implemented
     // });
 };

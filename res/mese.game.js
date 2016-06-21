@@ -96,7 +96,7 @@ var showStatus = function (status) {
 };
 
 var loadReport = function (game) {
-    socket.emit('report', {
+    socket.emit('mese_report', {
         game: game,
         uid: -1, // force reload
     });
@@ -112,7 +112,7 @@ var loadHash = function () {
 
 var reloadReport = function () {
     if (!$('#report').hasClass('hide')) {
-        socket.emit('report', {
+        socket.emit('mese_report', {
             game: currentGame,
             uid: currentUid,
         });
@@ -149,14 +149,14 @@ $('#report_expand').click(function () {
     }
 });
 
-socket.on('report_early', function (data) {
+socket.on('mese_report_early', function (data) {
     showStatus(data.status);
 
     showReport($('#report_decisions'), data.decisions, 'next');
     showReport($('#report_data_early'), data.data_early, 'next');
 });
 
-socket.on('report_player', function (data) {
+socket.on('mese_report_player', function (data) {
     initPlayerList(data.players.length); // prepare DOM
     initReport(data.game, data.now_period, data.uid);
 
@@ -229,7 +229,7 @@ socket.on('report_player', function (data) {
     $('#report').removeClass('hide');
 });
 
-socket.on('report_public', function (data) {
+socket.on('mese_report_public', function (data) {
     initPlayerList(data.players.length); // prepare DOM
     initReport(data.game, data.now_period, data.uid);
 
@@ -257,7 +257,7 @@ socket.on('report_public', function (data) {
     $('#report').removeClass('hide');
 });
 
-socket.on('report_fail', function (data) {
+socket.on('mese_report_fail', function (data) {
     message('Game not found');
 });
 
@@ -301,7 +301,7 @@ $('#submit_rd').change(function () {
 $('#submit_submit').click(function (event) {
     event.preventDefault();
 
-    socket.emit('submit', {
+    socket.emit('mese_submit', {
         game: currentGame,
         period: currentPeriod,
         price: parseFloat($('#submit_price').val()),
@@ -312,18 +312,18 @@ $('#submit_submit').click(function (event) {
     });
 });
 
-socket.on('submit_ok', function (data) {
+socket.on('mese_submit_ok', function (data) {
     message('Submission ok');
 });
 
-socket.on('submit_decline', function (data) {
+socket.on('mese_submit_decline', function (data) {
     message('Submission declined');
 });
 
-socket.on('submit_fail_player', function (data) {
+socket.on('mese_submit_fail_player', function (data) {
     message('Submission not allowed');
 });
 
-socket.on('submit_fail_game', function (data) {
+socket.on('mese_submit_fail_game', function (data) {
     message('Game not found');
 });

@@ -23,7 +23,7 @@ $('#admin_game_submit').click(function () {
 $('#admin_report_submit').click(function () {
     if (currentGame) {
         // load summary report
-        socket.emit('admin_report', {
+        socket.emit('admin_mese_report', {
             game: currentGame,
         });
     } else {
@@ -33,7 +33,7 @@ $('#admin_report_submit').click(function () {
 
 $('#admin_transfer_submit').click(function () {
     if (currentGame) {
-        socket.emit('admin_transfer', {
+        socket.emit('admin_mese_transfer', {
             game: currentGame,
             user: $('#admin_transfer_user').val(),
         });
@@ -43,7 +43,7 @@ $('#admin_transfer_submit').click(function () {
 });
 
 $('#admin_init_submit').click(function () {
-    socket.emit('admin_init', {
+    socket.emit('admin_mese_init', {
         game: $('#admin_init_game').val(),
         players: $('#admin_init_players').val().split(','),
         preset: $('#admin_init_preset').val(),
@@ -53,7 +53,7 @@ $('#admin_init_submit').click(function () {
 
 $('#admin_alloc_submit').click(function () {
     if (currentGame) {
-        socket.emit('admin_alloc', {
+        socket.emit('admin_mese_alloc', {
             game: currentGame,
             settings: parseSettings($('#admin_settings').val()),
         });
@@ -62,46 +62,46 @@ $('#admin_alloc_submit').click(function () {
     }
 });
 
-socket.on('admin_report_data', function (data) {
+socket.on('admin_mese_report_data', function (data) {
     $('#admin_report').val(JSON.stringify(data)); // TODO: format?
 });
 
-socket.on('admin_report_fail', function (data) {
+socket.on('admin_mese_report_fail', function (data) {
     message('Game not found');
 });
 
-socket.on('admin_transfer_ok', function (data) {
+socket.on('admin_mese_transfer_ok', function (data) {
     message('Game transferred');
 });
 
-socket.on('admin_transfer_fail_player', function (data) {
+socket.on('admin_mese_transfer_fail_player', function (data) {
     message('Transferring not allowed');
 });
 
-socket.on('admin_transfer_fail_game', function (data) {
+socket.on('admin_mese_transfer_fail_game', function (data) {
     message('Game not found');
 });
 
-socket.on('admin_init_fail_number', function (data) {
+socket.on('admin_mese_init_fail_number', function (data) {
     message('Player count not supported');
 });
 
-socket.on('admin_init_fail_game', function (data) {
+socket.on('admin_mese_init_fail_game', function (data) {
     message('Game exists');
 });
 
-socket.on('admin_init_fail_invite', function (data) {
+socket.on('admin_mese_init_fail_invite', function (data) {
     message('Invition not allowed: ' + data);
 });
 
-socket.on('admin_init_ok', function (data) {
+socket.on('admin_mese_init_ok', function (data) {
     message('Game created');
 });
 
-socket.on('admin_alloc_ok', function (data) {
+socket.on('admin_mese_alloc_ok', function (data) {
     message('Period allocated');
 });
 
-socket.on('admin_alloc_fail_game', function (data) {
+socket.on('admin_mese_alloc_fail_game', function (data) {
     message('Game not found');
 });

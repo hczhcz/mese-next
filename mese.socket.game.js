@@ -5,7 +5,7 @@ var access = require('./server.access');
 var game = require('./mese.game');
 
 module.exports = function (socket, session) {
-    socket.on('report', function (args) {
+    socket.on('mese_report', function (args) {
         // args: game, period, uid
 
         if (
@@ -42,26 +42,26 @@ module.exports = function (socket, session) {
                         report.uid = uid;
                         report.players = players;
 
-                        socket.emit('report_player', report);
+                        socket.emit('mese_report_player', report);
                     },
                     function (report) {
                         report.game = args.game;
                         report.uid = uid;
                         report.players = players;
 
-                        socket.emit('report_public', report);
+                        socket.emit('mese_report_public', report);
                     }
                 );
             },
             function () {
                 session.log('game not found ' + args.game);
 
-                socket.emit('report_fail');
+                socket.emit('mese_report_fail');
             }
         );
     });
 
-    socket.on('submit', function (args) {
+    socket.on('mese_submit', function (args) {
         // args: game, period, price, prod, mk, ci, rd
 
         if (
@@ -109,17 +109,17 @@ module.exports = function (socket, session) {
                                     // TODO: push updates?
                                 });
 
-                                socket.emit('submit_ok');
+                                socket.emit('mese_submit_ok');
                             } else {
                                 session.log('submission declined ' + args.game);
 
                                 next(); // manually finish
 
-                                socket.emit('submit_decline');
+                                socket.emit('mese_submit_decline');
                             }
                         },
                         function (report) {
-                            socket.emit('report_early', report);
+                            socket.emit('mese_report_early', report);
                         }
                     );
 
@@ -127,13 +127,13 @@ module.exports = function (socket, session) {
                 } else {
                     session.log('submission not allowed ' + args.game);
 
-                    socket.emit('submit_fail_player');
+                    socket.emit('mese_submit_fail_player');
                 }
             },
             function (setter) {
                 session.log('game not found ' + args.game);
 
-                socket.emit('submit_fail_game');
+                socket.emit('mese_submit_fail_game');
             }
         );
     });

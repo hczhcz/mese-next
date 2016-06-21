@@ -175,6 +175,7 @@ module.exports.init = function (count, final, delta) {
     return game;
 };
 
+// return true if not finished
 module.exports.exec = function (game) {
     var minmax = function (a, min, max) {
         return Math.min(Math.max(a, min), max);

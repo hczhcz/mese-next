@@ -24,7 +24,7 @@ module.exports.userAuth = function (user, callback) {
     db.update('users', user, function (doc, setter, next) {
         var passwordSetter = function (password, callback) {
             setter(
-                {password: password},
+                {password: new Buffer(password)},
                 function () {
                     callback();
                     next();
@@ -32,7 +32,12 @@ module.exports.userAuth = function (user, callback) {
             );
         };
 
-        if (!callback(doc ? doc.password : undefined, passwordSetter)) {
+        // notice: .buffer is required for binary data
+        if (!callback(
+            doc && doc.password ?
+            doc.password.buffer :
+            undefined, passwordSetter
+        )) {
             next();
         }
     });

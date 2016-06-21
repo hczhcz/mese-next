@@ -26,6 +26,8 @@ access.init(config.db, function () {
                 require('./site.socket.admin'),
                 require('./mese.socket.game'),
                 require('./mese.socket.admin'),
+                require('./rtmese.socket.game'),
+                require('./rtmese.socket.admin'),
             ]
         );
     }, function () {

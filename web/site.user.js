@@ -185,18 +185,20 @@ socket.on('subscribe_data', function (data) {
 
     $('#list_content').empty();
 
+    var loader = function (game) {
+        return function (event) {
+            event.preventDefault();
+
+            loadReport(game);
+        };
+    };
+
     for (var i in currentList) {
         if (currentList[i]) {
             $('#list_content').prepend(
                 $('<input type="button" />')
                     .val(i)
-                    .click(function (game) {
-                        return function (event) {
-                            event.preventDefault();
-
-                            loadReport(game);
-                        };
-                    } (i))
+                    .click(loader(i))
             );
         }
     }

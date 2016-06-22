@@ -42,17 +42,16 @@ socket.on('admin_auth_ok', function (data) {
 socket.on('admin_list_data', function (data) {
     // notice: use html string when data size becomes large
 
-    $('#admin_users').empty();
-    for (var i in data.users) {
-        $('#admin_users').prepend(
-            $('<option>').text(data.users[i])
-        );
-    }
+    var load = function (target, list) {
+        target.empty();
 
-    $('#admin_games').empty();
-    for (var i in data.games) {
-        $('#admin_games').prepend(
-            $('<option>').text(data.games[i])
-        );
-    }
+        for (var i in list) {
+            target.prepend(
+                $('<option>').text(list[i])
+            );
+        }
+    };
+
+    load($('#admin_users'), data.users);
+    load($('#admin_games'), data.games);
 });

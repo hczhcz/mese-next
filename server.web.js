@@ -16,7 +16,9 @@ module.exports = function (port, index, plugin, callback) {
     });
 
     app.use(compression());
-    app.use(express.static('./res', {
+
+    app.use('/lib', express.static('./lib', {}));
+    app.use('/', express.static('./web', {
         index: index,
         fallthrough: false,
     }));

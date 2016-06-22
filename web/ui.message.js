@@ -20,11 +20,11 @@ var showMessage = function () {
     ) {
         $('#message').css(
             'margin-left',
-            (-$('#message').outerWidth(true) / 2) + 'px'
+            Math.round(-0.5 * $('#message').outerWidth(true)) + 'px'
         );
         $('#message').css(
             'margin-top',
-            (-$('#message').outerHeight(true) / 2) + 'px'
+            Math.round(-0.5 * $('#message').outerHeight(true)) + 'px'
         );
     }
 };
@@ -45,15 +45,15 @@ var hideMessage = function () {
     }
 };
 
-var message = function (message) {
+var message = function (str) {
     $('#message').append(
-        $('<p />').text(message)
+        $('<p />').text(str)
     );
     if ($('#message p').length > 5) {
         $('#message p:first').remove();
     }
 
-    $('[var=message]').text(message);
+    $('[var=message]').text(str);
 
     showMessage();
     hideMessage();

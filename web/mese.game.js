@@ -85,13 +85,14 @@ var initPlayerList = function (count) {
 var showStatus = function (status) {
     $('#report_players [bind]').removeClass('next');
 
-    for (var i = 0; status; ++i) {
-        if (status & (1 << i)) {
+    var unhandled = status;
+    for (var i = 0; unhandled; ++i) {
+        if (unhandled & 1 << i) {
             // done
             $('#report_players [bind=' + i + ']').addClass('next');
         }
 
-        status &= ~(1 << i);
+        unhandled &= ~(1 << i);
     }
 };
 
@@ -305,7 +306,7 @@ $('#submit_submit').click(function (event) {
         game: currentGame,
         period: currentPeriod,
         price: parseFloat($('#submit_price').val()),
-        prod: parseInt($('#submit_prod').val()),
+        prod: parseInt($('#submit_prod').val(), 10),
         mk: parseFloat($('#submit_mk').val()),
         ci: parseFloat($('#submit_ci').val()),
         rd: parseFloat($('#submit_rd').val()),

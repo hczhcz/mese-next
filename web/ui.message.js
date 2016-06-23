@@ -1,6 +1,8 @@
 'use strict';
 
 define('ui.message', function (require, module) {
+    var bind = require('ui.bind');
+
     var windowActive = false;
 
     var showMessage = function () {
@@ -67,7 +69,7 @@ define('ui.message', function (require, module) {
             $('#message p:first').remove();
         }
 
-        $('[var=message]').text(str);
+        bind.variable('message', str);
 
         showMessage();
         hideMessage();

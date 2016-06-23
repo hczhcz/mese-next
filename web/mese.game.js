@@ -52,8 +52,6 @@ define('mese.game', function (require, module) {
         currentPeriod = period;
         currentUid = uid;
 
-        $('#subscribe_game').val(currentGame);
-
         bind.variable('game', currentGame);
         bind.variable('period', currentPeriod - 1);
         bind.variable('next_period', currentPeriod);

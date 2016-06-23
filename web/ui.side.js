@@ -3,7 +3,7 @@
 define('ui.side', function (require, module) {
     var sideEnabled = true;
 
-    var showSide = function () {
+    var show = function () {
         if (!sideEnabled) {
             sideEnabled = true;
 
@@ -25,7 +25,7 @@ define('ui.side', function (require, module) {
         }
     };
 
-    var hideSide = function () {
+    var hide = function () {
         if (sideEnabled) {
             sideEnabled = false;
 
@@ -47,11 +47,11 @@ define('ui.side', function (require, module) {
         }
     };
 
-    $('#side').click(showSide);
-    $('#side').on('touchstart', showSide);
-    $('#side').dblclick(hideSide);
+    $('#side').click(show);
+    $('#side').on('touchstart', show);
+    $('#side').dblclick(hide);
     $('#side_hide').click(function (event) {
-        hideSide();
+        hide();
         event.stopPropagation();
     });
     $('#util td').dblclick(function (event) {

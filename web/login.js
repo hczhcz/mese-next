@@ -5,16 +5,7 @@ define('login', function (require, module) {
 
     var currentLogin = undefined;
 
-    module.exports.sha = function (str) {
-        var shaObj = new jsSHA('SHA-256', 'TEXT');
-
-        shaObj.setHMACKey('MESE-Next', 'TEXT');
-        shaObj.update(str);
-
-        return shaObj.getHMAC('BYTES');
-    };
-
-    module.exports.get = function (callback) { // TODO: need export?
+    var get = function (callback) {
         if (currentLogin) {
             callback(currentLogin);
         } else {
@@ -25,6 +16,23 @@ define('login', function (require, module) {
                 callback(currentLogin);
             }
         }
+    };
+
+    socket.on('connect', function () { // notice: an extra hook
+        // auto login
+
+        get(function (login) {
+            socket.emit('login', login);
+        });
+    });
+
+    module.exports.sha = function (str) {
+        var shaObj = new jsSHA('SHA-256', 'TEXT');
+
+        shaObj.setHMACKey('MESE-Next', 'TEXT');
+        shaObj.update(str);
+
+        return shaObj.getHMAC('BYTES');
     };
 
     module.exports.set = function (login, save, callback) {
@@ -42,12 +50,4 @@ define('login', function (require, module) {
 
         localStorage.removeItem('MESE_login');
     };
-
-    socket.on('connect', function () { // notice: an extra hook
-        // auto login
-
-        module.exports.get(function (login) {
-            socket.emit('login', login);
-        });
-    });
 });

@@ -19,6 +19,25 @@ define('mese.game', function (require, module) {
 
     var verboseEnabled = false;
 
+    var initPlayerList = function (count) {
+        // remove items
+
+        $('#report_players [bind]').remove();
+        $('#report_list [xbind] [bind]').remove();
+
+        // add items
+
+        var spanLast = '<span class="last"><span></span>&nbsp;</span>';
+        var spanNow = '<span class="now"><span></span></span>';
+
+        for (var i = 0; i < count; ++i) {
+            $('#report_players')
+                .append('<th bind="' + i + '">' + spanNow + '</th>');
+            $('#report_list [xbind]')
+                .append('<td bind="' + i + '">' + spanLast + spanNow + '</td>');
+        }
+    };
+
     var initReport = function (game, period, uid) {
         if (game !== currentGame) {
             message('Game: ' + game);
@@ -40,6 +59,20 @@ define('mese.game', function (require, module) {
         $('.last').addClass('hide');
         $('.now').addClass('hide');
         $('.next').addClass('hide');
+    };
+
+    var showStatus = function (status) {
+        $('#report_players [bind]').removeClass('next');
+
+        var unhandled = status;
+        for (var i = 0; unhandled; ++i) {
+            if (unhandled & 1 << i) {
+                // done
+                $('#report_players [bind=' + i + ']').addClass('next');
+            }
+
+            unhandled &= ~(1 << i);
+        }
     };
 
     var showReport = function (head, data, tail, xbind /* patch */) {
@@ -64,39 +97,6 @@ define('mese.game', function (require, module) {
                 // path-based bind
                 showReport(head.find('[bind=' + i + ']'), data[i], tail, xbind);
             }
-        }
-    };
-
-    var initPlayerList = function (count) {
-        // remove items
-
-        $('#report_players [bind]').remove();
-        $('#report_list [xbind] [bind]').remove();
-
-        // add items
-
-        var spanLast = '<span class="last"><span></span>&nbsp;</span>';
-        var spanNow = '<span class="now"><span></span></span>';
-
-        for (var i = 0; i < count; ++i) {
-            $('#report_players')
-                .append('<th bind="' + i + '">' + spanNow + '</th>');
-            $('#report_list [xbind]')
-                .append('<td bind="' + i + '">' + spanLast + spanNow + '</td>');
-        }
-    };
-
-    var showStatus = function (status) {
-        $('#report_players [bind]').removeClass('next');
-
-        var unhandled = status;
-        for (var i = 0; unhandled; ++i) {
-            if (unhandled & 1 << i) {
-                // done
-                $('#report_players [bind=' + i + ']').addClass('next');
-            }
-
-            unhandled &= ~(1 << i);
         }
     };
 

@@ -5,6 +5,8 @@ define('site.user', function (require, module) {
     var socket = require('socket');
     var login = require('login');
 
+    module.exports.gameLoaders = {};
+
     // login
 
     var loginDone = function (user) {
@@ -17,13 +19,9 @@ define('site.user', function (require, module) {
         $('#password_show').removeClass('hide');
         $('#subscribe').removeClass('hide');
 
-        // update the game list
-        $('#list').addClass('hide');
         socket.emit('list');
 
-        if (currentGame) {
-            loadReport(currentGame);
-        }
+        module.exports.gameLoaders.default();
     };
 
     $('#login_show_submit').click(function () {
@@ -183,7 +181,7 @@ define('site.user', function (require, module) {
             return function (event) {
                 event.preventDefault();
 
-                loadReport(game);
+                module.exports.gameLoaders.mese(game); // TODO
             };
         };
 

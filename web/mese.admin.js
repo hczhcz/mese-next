@@ -25,6 +25,7 @@ define('mese.admin', function (require, module) {
     });
 
     $('#admin_report_submit').click(function () {
+        // TODO
         if (currentGame) {
             // load summary report
             socket.emit('admin_mese_report', {
@@ -36,6 +37,7 @@ define('mese.admin', function (require, module) {
     });
 
     $('#admin_transfer_submit').click(function () {
+        // TODO
         if (currentGame) {
             socket.emit('admin_mese_transfer', {
                 game: currentGame,
@@ -56,6 +58,7 @@ define('mese.admin', function (require, module) {
     });
 
     $('#admin_alloc_submit').click(function () {
+        // TODO
         if (currentGame) {
             socket.emit('admin_mese_alloc', {
                 game: currentGame,

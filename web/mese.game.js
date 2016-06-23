@@ -3,6 +3,7 @@
 define('mese.game', function (require, module) {
     var message = require('ui.message');
     var socket = require('socket');
+    var user = require('site.user')
 
     // report
 
@@ -327,4 +328,12 @@ define('mese.game', function (require, module) {
     socket.on('mese_submit_fail_type', function (data) {
         message('Wrong game type');
     });
+
+    user.gameLoaders.default = function () {
+        if (currentGame) {
+            loadReport(currentGame);
+        }
+    };
+
+    user.gameLoaders.mese = loadReport;
 });

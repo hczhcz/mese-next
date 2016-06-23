@@ -1,332 +1,337 @@
 'use strict';
 
-// report
+define('mese.game', function (require, module) {
+    var message = require('ui.message');
+    var socket = require('socket');
 
-// DOM change
-$('#report [bind]')
-    .append('<span class="last"><span></span>&nbsp;</span>')
-    .append('<span class="now"><span></span></span>')
-    .append('<span class="next">&nbsp;<span></span></span>');
+    // report
 
-var currentGame = undefined;
-var currentPeriod = undefined;
-var currentUid = undefined;
-var currentSettings = undefined;
+    // DOM change
+    $('#report [bind]')
+        .append('<span class="last"><span></span>&nbsp;</span>')
+        .append('<span class="now"><span></span></span>')
+        .append('<span class="next">&nbsp;<span></span></span>');
 
-var verboseEnabled = false;
+    var currentGame = undefined;
+    var currentPeriod = undefined;
+    var currentUid = undefined;
+    var currentSettings = undefined;
 
-var initReport = function (game, period, uid) {
-    if (game !== currentGame) {
-        message('Game: ' + game);
-    }
-    if (game === currentGame && period !== currentPeriod) {
-        message('Period: ' + period);
-    }
+    var verboseEnabled = false;
 
-    currentGame = game;
-    currentPeriod = period;
-    currentUid = uid;
-
-    $('#subscribe_game').val(currentGame);
-
-    $('[var=game]').text(currentGame);
-    $('[var=period]').text(currentPeriod - 1);
-    $('[var=next_period]').text(currentPeriod);
-
-    $('.last').addClass('hide');
-    $('.now').addClass('hide');
-    $('.next').addClass('hide');
-};
-
-var showReport = function (head, data, tail, xbind /* patch */) {
-    if (head.length == 0) {
-        return;
-    }
-
-    if (typeof data == 'string' || typeof data == 'number') {
-        var target = head.find('.' + tail);
-
-        if (target.length == 1) {
-            target.find('span').text(data);
-            target.removeClass('hide');
+    var initReport = function (game, period, uid) {
+        if (game !== currentGame) {
+            message('Game: ' + game);
         }
-    } else if (typeof data == 'object') {
-        for (var i in data) {
-            // top-level bind
-            if (xbind && data[i] instanceof Array /* notice: optimization */) {
-                showReport($('#report [xbind=' + i + ']'), data[i], tail);
+        if (game === currentGame && period !== currentPeriod) {
+            message('Period: ' + period);
+        }
+
+        currentGame = game;
+        currentPeriod = period;
+        currentUid = uid;
+
+        $('#subscribe_game').val(currentGame);
+
+        $('[var=game]').text(currentGame);
+        $('[var=period]').text(currentPeriod - 1);
+        $('[var=next_period]').text(currentPeriod);
+
+        $('.last').addClass('hide');
+        $('.now').addClass('hide');
+        $('.next').addClass('hide');
+    };
+
+    var showReport = function (head, data, tail, xbind /* patch */) {
+        if (head.length == 0) {
+            return;
+        }
+
+        if (typeof data == 'string' || typeof data == 'number') {
+            var target = head.find('.' + tail);
+
+            if (target.length == 1) {
+                target.find('span').text(data);
+                target.removeClass('hide');
+            }
+        } else if (typeof data == 'object') {
+            for (var i in data) {
+                // top-level bind
+                if (xbind && data[i] instanceof Array /* notice: optimization */) {
+                    showReport($('#report [xbind=' + i + ']'), data[i], tail);
+                }
+
+                // path-based bind
+                showReport(head.find('[bind=' + i + ']'), data[i], tail, xbind);
+            }
+        }
+    };
+
+    var initPlayerList = function (count) {
+        // remove items
+
+        $('#report_players [bind]').remove();
+        $('#report_list [xbind] [bind]').remove();
+
+        // add items
+
+        var spanLast = '<span class="last"><span></span>&nbsp;</span>';
+        var spanNow = '<span class="now"><span></span></span>';
+
+        for (var i = 0; i < count; ++i) {
+            $('#report_players')
+                .append('<th bind="' + i + '">' + spanNow + '</th>');
+            $('#report_list [xbind]')
+                .append('<td bind="' + i + '">' + spanLast + spanNow + '</td>');
+        }
+    };
+
+    var showStatus = function (status) {
+        $('#report_players [bind]').removeClass('next');
+
+        var unhandled = status;
+        for (var i = 0; unhandled; ++i) {
+            if (unhandled & 1 << i) {
+                // done
+                $('#report_players [bind=' + i + ']').addClass('next');
             }
 
-            // path-based bind
-            showReport(head.find('[bind=' + i + ']'), data[i], tail, xbind);
+            unhandled &= ~(1 << i);
         }
-    }
-};
+    };
 
-var initPlayerList = function (count) {
-    // remove items
-
-    $('#report_players [bind]').remove();
-    $('#report_list [xbind] [bind]').remove();
-
-    // add items
-
-    var spanLast = '<span class="last"><span></span>&nbsp;</span>';
-    var spanNow = '<span class="now"><span></span></span>';
-
-    for (var i = 0; i < count; ++i) {
-        $('#report_players')
-            .append('<th bind="' + i + '">' + spanNow + '</th>');
-        $('#report_list [xbind]')
-            .append('<td bind="' + i + '">' + spanLast + spanNow + '</td>');
-    }
-};
-
-var showStatus = function (status) {
-    $('#report_players [bind]').removeClass('next');
-
-    var unhandled = status;
-    for (var i = 0; unhandled; ++i) {
-        if (unhandled & 1 << i) {
-            // done
-            $('#report_players [bind=' + i + ']').addClass('next');
-        }
-
-        unhandled &= ~(1 << i);
-    }
-};
-
-var loadReport = function (game) {
-    socket.emit('mese_report', {
-        game: game,
-        uid: -1, // force reload
-    });
-};
-
-// load from url hash
-var loadHash = function () {
-    var urlHash = window.location.hash.slice(1);
-    if (urlHash) {
-        loadReport(urlHash);
-    }
-};
-loadHash();
-$(window).on('hashchange', loadHash);
-
-var reloadReport = function () {
-    if (!$('#report').hasClass('hide')) {
+    var loadReport = function (game) {
         socket.emit('mese_report', {
-            game: currentGame,
-            uid: currentUid,
+            game: game,
+            uid: -1, // force reload
         });
-    }
-};
+    };
 
-// auto refresh
-setInterval(
-    function () {
-        if (connected) {
-            reloadReport();
+    // load from url hash
+    var loadHash = function () {
+        var urlHash = window.location.hash.slice(1);
+        if (urlHash) {
+            loadReport(urlHash);
         }
-    },
-    30000
-);
+    };
+    loadHash();
+    $(window).on('hashchange', loadHash);
 
-$('#report_refresh').click(reloadReport);
+    var reloadReport = function () {
+        if (!$('#report').hasClass('hide')) {
+            socket.emit('mese_report', {
+                game: currentGame,
+                uid: currentUid,
+            });
+        }
+    };
 
-$('#report_expand').click(function () {
-    if (verboseEnabled) {
-        verboseEnabled = false;
+    // auto refresh
+    setInterval(
+        function () {
+            if (connected) {
+                reloadReport();
+            }
+        },
+        30000
+    );
 
-        $('.report_verbose').addClass('hide');
-        $('#report_expand').text('+');
-    } else {
-        verboseEnabled = true;
+    $('#report_refresh').click(reloadReport);
 
-        $('.report_verbose').removeClass('hide');
-        $('#report_expand').text('-');
-    }
-});
+    $('#report_expand').click(function () {
+        if (verboseEnabled) {
+            verboseEnabled = false;
 
-socket.on('mese_report_early', function (data) {
-    showStatus(data.status);
+            $('.report_verbose').addClass('hide');
+            $('#report_expand').text('+');
+        } else {
+            verboseEnabled = true;
 
-    showReport($('#report_decisions'), data.decisions, 'next');
-    showReport($('#report_data_early'), data.data_early, 'next');
-});
+            $('.report_verbose').removeClass('hide');
+            $('#report_expand').text('-');
+        }
+    });
 
-socket.on('mese_report_player', function (data) {
-    initPlayerList(data.players.length); // prepare DOM
-    initReport(data.game, data.now_period, data.uid);
+    socket.on('mese_report_early', function (data) {
+        showStatus(data.status);
 
-    showStatus(data.status);
-    showReport($('#report_players'), data.players, 'now');
+        showReport($('#report_decisions'), data.decisions, 'next');
+        showReport($('#report_data_early'), data.data_early, 'next');
+    });
 
-    if (data.now_period >= 3) {
-        // showReport($('#report_decisions'), data.last_decisions, 'last');
-        // showReport($('#report_data_early'), data.last_data_early, 'last');
-        showReport($('#report_data'), data.last_data, 'last');
-        showReport($('#report_decisions'), data.last_data_public.decisions, 'last', true);
-        showReport($('#report_data_early'), data.last_data_public.data_early, 'last');
-        showReport($('#report_data'), data.last_data_public.data, 'last', true);
-    }
+    socket.on('mese_report_player', function (data) {
+        initPlayerList(data.players.length); // prepare DOM
+        initReport(data.game, data.now_period, data.uid);
 
-    showReport($('#report_settings'), data.settings, 'now');
-    showReport($('#report_decisions'), data.decisions, 'now');
-    showReport($('#report_data_early'), data.data_early, 'now');
-    showReport($('#report_data'), data.data, 'now');
-    showReport($('#report_decisions'), data.data_public.decisions, 'now', true);
-    showReport($('#report_data_early'), data.data_public.data_early, 'now');
-    showReport($('#report_data'), data.data_public.data, 'now', true);
+        showStatus(data.status);
+        showReport($('#report_players'), data.players, 'now');
 
-    if (data.next_settings) {
-        showReport($('#report_settings'), data.next_settings, 'next');
+        if (data.now_period >= 3) {
+            // showReport($('#report_decisions'), data.last_decisions, 'last');
+            // showReport($('#report_data_early'), data.last_data_early, 'last');
+            showReport($('#report_data'), data.last_data, 'last');
+            showReport($('#report_decisions'), data.last_data_public.decisions, 'last', true);
+            showReport($('#report_data_early'), data.last_data_public.data_early, 'last');
+            showReport($('#report_data'), data.last_data_public.data, 'last', true);
+        }
 
-        var settingsStr = JSON.stringify(data.next_settings);
-        if (settingsStr !== currentSettings) {
-            $('#submit_price')
-                .attr('min', data.next_settings.limits.price_min)
-                .attr('max', data.next_settings.limits.price_max)
-                .val(data.decisions.price);
-            $('#submit_prod')
-                .attr('min', 0)
-                .attr('max', data.data_early.balance.size)
-                .val(
+        showReport($('#report_settings'), data.settings, 'now');
+        showReport($('#report_decisions'), data.decisions, 'now');
+        showReport($('#report_data_early'), data.data_early, 'now');
+        showReport($('#report_data'), data.data, 'now');
+        showReport($('#report_decisions'), data.data_public.decisions, 'now', true);
+        showReport($('#report_data_early'), data.data_public.data_early, 'now');
+        showReport($('#report_data'), data.data_public.data, 'now', true);
+
+        if (data.next_settings) {
+            showReport($('#report_settings'), data.next_settings, 'next');
+
+            var settingsStr = JSON.stringify(data.next_settings);
+            if (settingsStr !== currentSettings) {
+                $('#submit_price')
+                    .attr('min', data.next_settings.limits.price_min)
+                    .attr('max', data.next_settings.limits.price_max)
+                    .val(data.decisions.price);
+                $('#submit_prod')
+                    .attr('min', 0)
+                    .attr('max', data.data_early.balance.size)
+                    .val(
+                        Math.round(
+                            data.data_early.balance.size
+                            * data.data_early.production.prod_rate
+                        )
+                    );
+                $('#submit_prod_rate').text(
                     Math.round(
-                        data.data_early.balance.size
-                        * data.data_early.production.prod_rate
+                        100 * data.data_early.production.prod_rate
                     )
                 );
-            $('#submit_prod_rate').text(
-                Math.round(
-                    100 * data.data_early.production.prod_rate
-                )
-            );
-            $('#submit_mk')
-                .attr('min', 0)
-                .attr('max', data.next_settings.limits.mk_limit)
-                .val(data.decisions.mk);
-            $('#submit_ci')
-                .attr('min', 0)
-                .attr('max', data.next_settings.limits.ci_limit)
-                .val(data.decisions.ci);
-            $('#submit_rd')
-                .attr('min', 0)
-                .attr('max', data.next_settings.limits.rd_limit)
-                .val(data.decisions.rd);
+                $('#submit_mk')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.mk_limit)
+                    .val(data.decisions.mk);
+                $('#submit_ci')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.ci_limit)
+                    .val(data.decisions.ci);
+                $('#submit_rd')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.rd_limit)
+                    .val(data.decisions.rd);
+            }
+
+            currentSettings = settingsStr;
+            $('#submit input').attr('disabled', false);
+        } else {
+            currentSettings = undefined;
+            $('#submit input').attr('disabled', true);
         }
 
-        currentSettings = settingsStr;
-        $('#submit input').attr('disabled', false);
-    } else {
-        currentSettings = undefined;
-        $('#submit input').attr('disabled', true);
-    }
+        $('#submit').removeClass('hide');
 
-    $('#submit').removeClass('hide');
-
-    $('#report').removeClass('hide');
-});
-
-socket.on('mese_report_public', function (data) {
-    initPlayerList(data.players.length); // prepare DOM
-    initReport(data.game, data.now_period, data.uid);
-
-    showStatus(data.status);
-    showReport($('#report_players'), data.players, 'now');
-
-    if (data.now_period >= 3) {
-        showReport($('#report_decisions'), data.last_data_public.decisions, 'last', true);
-        showReport($('#report_data_early'), data.last_data_public.data_early, 'last');
-        showReport($('#report_data'), data.last_data_public.data, 'last', true);
-    }
-
-    showReport($('#report_settings'), data.settings, 'now');
-    showReport($('#report_decisions'), data.data_public.decisions, 'now', true);
-    showReport($('#report_data_early'), data.data_public.data_early, 'now');
-    showReport($('#report_data'), data.data_public.data, 'now', true);
-
-    if (data.next_settings) {
-        showReport($('#report_settings'), data.next_settings, 'next');
-    }
-
-    currentSettings = undefined;
-    $('#submit').addClass('hide');
-
-    $('#report').removeClass('hide');
-});
-
-socket.on('mese_report_fail', function (data) {
-    message('Game not found');
-});
-
-// submit
-
-$('#submit_price').change(function () {
-    $('#submit_price').val(
-        0.01 * Math.round(100 * $('#submit_price').val())
-    );
-});
-
-$('#submit_prod').change(function () {
-    $('#submit_prod').val(
-        Math.round($('#submit_prod').val())
-    );
-    $('#submit_prod_rate').text(
-        Math.round(
-            100 * $('#submit_prod').val() / $('#submit_prod').attr('max')
-        )
-    );
-});
-
-$('#submit_mk').change(function () {
-    $('#submit_mk').val(
-        0.01 * Math.round(100 * $('#submit_mk').val())
-    );
-});
-
-$('#submit_ci').change(function () {
-    $('#submit_ci').val(
-        0.01 * Math.round(100 * $('#submit_ci').val())
-    );
-});
-
-$('#submit_rd').change(function () {
-    $('#submit_rd').val(
-        0.01 * Math.round(100 * $('#submit_rd').val())
-    );
-});
-
-$('#submit_submit').click(function (event) {
-    event.preventDefault();
-
-    socket.emit('mese_submit', {
-        game: currentGame,
-        period: currentPeriod,
-        price: parseFloat($('#submit_price').val()),
-        prod: parseInt($('#submit_prod').val(), 10),
-        mk: parseFloat($('#submit_mk').val()),
-        ci: parseFloat($('#submit_ci').val()),
-        rd: parseFloat($('#submit_rd').val()),
+        $('#report').removeClass('hide');
     });
-});
 
-socket.on('mese_submit_ok', function (data) {
-    message('Submission ok');
-});
+    socket.on('mese_report_public', function (data) {
+        initPlayerList(data.players.length); // prepare DOM
+        initReport(data.game, data.now_period, data.uid);
 
-socket.on('mese_submit_decline', function (data) {
-    message('Submission declined');
-});
+        showStatus(data.status);
+        showReport($('#report_players'), data.players, 'now');
 
-socket.on('mese_submit_fail_player', function (data) {
-    message('Submission not allowed');
-});
+        if (data.now_period >= 3) {
+            showReport($('#report_decisions'), data.last_data_public.decisions, 'last', true);
+            showReport($('#report_data_early'), data.last_data_public.data_early, 'last');
+            showReport($('#report_data'), data.last_data_public.data, 'last', true);
+        }
 
-socket.on('mese_submit_fail_game', function (data) {
-    message('Game not found');
-});
+        showReport($('#report_settings'), data.settings, 'now');
+        showReport($('#report_decisions'), data.data_public.decisions, 'now', true);
+        showReport($('#report_data_early'), data.data_public.data_early, 'now');
+        showReport($('#report_data'), data.data_public.data, 'now', true);
 
-socket.on('mese_submit_fail_type', function (data) {
-    message('Wrong game type');
+        if (data.next_settings) {
+            showReport($('#report_settings'), data.next_settings, 'next');
+        }
+
+        currentSettings = undefined;
+        $('#submit').addClass('hide');
+
+        $('#report').removeClass('hide');
+    });
+
+    socket.on('mese_report_fail', function (data) {
+        message('Game not found');
+    });
+
+    // submit
+
+    $('#submit_price').change(function () {
+        $('#submit_price').val(
+            0.01 * Math.round(100 * $('#submit_price').val())
+        );
+    });
+
+    $('#submit_prod').change(function () {
+        $('#submit_prod').val(
+            Math.round($('#submit_prod').val())
+        );
+        $('#submit_prod_rate').text(
+            Math.round(
+                100 * $('#submit_prod').val() / $('#submit_prod').attr('max')
+            )
+        );
+    });
+
+    $('#submit_mk').change(function () {
+        $('#submit_mk').val(
+            0.01 * Math.round(100 * $('#submit_mk').val())
+        );
+    });
+
+    $('#submit_ci').change(function () {
+        $('#submit_ci').val(
+            0.01 * Math.round(100 * $('#submit_ci').val())
+        );
+    });
+
+    $('#submit_rd').change(function () {
+        $('#submit_rd').val(
+            0.01 * Math.round(100 * $('#submit_rd').val())
+        );
+    });
+
+    $('#submit_submit').click(function (event) {
+        event.preventDefault();
+
+        socket.emit('mese_submit', {
+            game: currentGame,
+            period: currentPeriod,
+            price: parseFloat($('#submit_price').val()),
+            prod: parseInt($('#submit_prod').val(), 10),
+            mk: parseFloat($('#submit_mk').val()),
+            ci: parseFloat($('#submit_ci').val()),
+            rd: parseFloat($('#submit_rd').val()),
+        });
+    });
+
+    socket.on('mese_submit_ok', function (data) {
+        message('Submission ok');
+    });
+
+    socket.on('mese_submit_decline', function (data) {
+        message('Submission declined');
+    });
+
+    socket.on('mese_submit_fail_player', function (data) {
+        message('Submission not allowed');
+    });
+
+    socket.on('mese_submit_fail_game', function (data) {
+        message('Game not found');
+    });
+
+    socket.on('mese_submit_fail_type', function (data) {
+        message('Wrong game type');
+    });
 });

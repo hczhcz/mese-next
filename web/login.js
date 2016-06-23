@@ -1,44 +1,50 @@
 'use strict';
 
-var sha = function (str) {
-    var shaObj = new jsSHA('SHA-256', 'TEXT');
+define('login', function (require, module) {
+    var socket = require('socket');
 
-    shaObj.setHMACKey('MESE-Next', 'TEXT');
-    shaObj.update(str);
+    var currentLogin = undefined;
 
-    return shaObj.getHMAC('BYTES');
-};
+    module.exports.sha = function (str) {
+        var shaObj = new jsSHA('SHA-256', 'TEXT');
 
-var currentLogin = undefined;
+        shaObj.setHMACKey('MESE-Next', 'TEXT');
+        shaObj.update(str);
 
-var getLogin = function (callback) {
-    if (currentLogin) {
-        callback(currentLogin);
-    } else {
-        var loginInfo = localStorage.getItem('MESE_login');
+        return shaObj.getHMAC('BYTES');
+    };
 
-        if (loginInfo) {
-            callback(JSON.parse(loginInfo));
+    module.exports.get = function (callback) { // TODO: need export?
+        if (currentLogin) {
+            callback(currentLogin);
+        } else {
+            var loginInfo = localStorage.getItem('MESE_login');
+
+            if (loginInfo) {
+                callback(JSON.parse(loginInfo));
+            }
         }
-    }
-};
+    };
 
-var setLogin = function (login, save, callback) {
-    currentLogin = login;
+    module.exports.set = function (login, save, callback) {
+        currentLogin = login;
 
-    if (save) {
-        localStorage.setItem('MESE_login', JSON.stringify(login));
-    }
+        if (save) {
+            localStorage.setItem('MESE_login', JSON.stringify(login));
+        }
 
-    callback(login);
-};
+        callback(login);
+    };
 
-var resetLogin = function () {
-    localStorage.removeItem('MESE_login');
-};
+    module.exports.reset = function () {
+        localStorage.removeItem('MESE_login');
+    };
 
-var autoLogin = function () {
-    getLogin(function (login) {
-        socket.emit('login', login);
+    socket.on('connect', function () {
+        // auto login
+
+        module.exports.get(function (login) {
+            socket.emit('login', login);
+        });
     });
-};
+});

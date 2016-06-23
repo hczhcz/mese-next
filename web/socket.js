@@ -1,21 +1,25 @@
 'use strict';
 
-var socket = io(window.location.origin);
+define('socket', function (require, module) {
+    var message = require('ui.message');
 
-var connected = false;
+    var socket = io(window.location.origin);
 
-socket.on('connect', function () {
-    connected = true;
-    message('Connected');
+    var connected = false;
 
-    autoLogin();
-});
+    socket.on('connect', function () {
+        connected = true;
+        message('Connected');
+    });
 
-socket.on('disconnect', function () {
-    connected = false;
-    message('Connection lost');
-});
+    socket.on('disconnect', function () {
+        connected = false;
+        message('Connection lost');
+    });
 
-socket.on('message', function (data) {
-    message(data);
+    socket.on('message', function (data) {
+        message(data);
+    });
+
+    module.exports = socket;
 });

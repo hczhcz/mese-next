@@ -25,27 +25,17 @@ define('mese.admin', function (require, module) {
     });
 
     $('#admin_report_submit').click(function () {
-        // TODO
-        if (currentGame) {
-            // load summary report
-            socket.emit('admin_mese_report', {
-                game: currentGame,
-            });
-        } else {
-            // TODO
-        }
+        // load summary report
+        socket.emit('admin_mese_report', {
+            game: $('#admin_report_game').val(),
+        });
     });
 
     $('#admin_transfer_submit').click(function () {
-        // TODO
-        if (currentGame) {
-            socket.emit('admin_mese_transfer', {
-                game: currentGame,
-                user: $('#admin_transfer_user').val(),
-            });
-        } else {
-            // TODO
-        }
+        socket.emit('admin_mese_transfer', {
+            game: $('#admin_transfer_game').val(),
+            user: $('#admin_transfer_user').val(),
+        });
     });
 
     $('#admin_init_submit').click(function () {
@@ -58,15 +48,10 @@ define('mese.admin', function (require, module) {
     });
 
     $('#admin_alloc_submit').click(function () {
-        // TODO
-        if (currentGame) {
-            socket.emit('admin_mese_alloc', {
-                game: currentGame,
-                settings: parseSettings($('#admin_settings').val()),
-            });
-        } else {
-            // TODO
-        }
+        socket.emit('admin_mese_alloc', {
+            game: $('#admin_alloc_game').val(),
+            settings: parseSettings($('#admin_settings').val()),
+        });
     });
 
     socket.on('admin_mese_report_data', function (data) {

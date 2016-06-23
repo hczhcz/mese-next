@@ -268,8 +268,8 @@
                         <td><select id='admin_games' size='16'></select></td>
                     </tr>
                     <tr>
-                        <td><input id='admin_login_user' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td>
-                        <td><input id='admin_game_game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td>
+                        <td><input id='admin_login_user' var='user' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td>
+                        <td><input id='admin_game_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td>
                     </tr>
                     <tr>
                         <td><input id='admin_login_submit' type='submit' value='Login' /></td>
@@ -289,13 +289,13 @@
                 <h3>Summary Report</h3>
                 <table>
                     <tr><th>Game</th></tr>
-                    <tr><td var='game'></td></tr>
+                    <tr><td><input id='admin_report_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
                     <tr><td><input id='admin_report_submit' type='submit' value='Generate' /></td></tr>
                 </table>
                 <h3>Change User</h3>
                 <table>
                     <tr><th>Game</th></tr>
-                    <tr><td var='game'></td></tr>
+                    <tr><td><input id='admin_transfer_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
                     <tr><th>From</th></tr>
                     <tr><td var='user'></td></tr>
                     <tr><th>To</th></tr>
@@ -323,7 +323,7 @@
                 <h3>New Period</h3>
                 <table>
                     <tr><th>Game</th></tr>
-                    <tr><td var='game'></td></tr>
+                    <tr><td><input id='admin_alloc_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
                     <tr><td><input id='admin_alloc_submit' type='submit' value='Allocate' /></td></tr>
                 </table>
             </td>

@@ -119,7 +119,7 @@ define('mese.game', function (require, module) {
     $(window).on('hashchange', loadHash);
 
     var reloadReport = function () {
-        if (!$('#report').hasClass('hide')) {
+        if (currentGame) {
             socket.emit('mese_report', {
                 game: currentGame,
                 uid: currentUid,
@@ -329,11 +329,6 @@ define('mese.game', function (require, module) {
         message('Wrong game type');
     });
 
-    user.gameLoaders.default = function () {
-        if (currentGame) {
-            loadReport(currentGame);
-        }
-    };
-
+    user.gameLoaders.default = reloadReport;
     user.gameLoaders.mese = loadReport;
 });

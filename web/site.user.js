@@ -145,14 +145,9 @@ define('site.user', function (require, module) {
     var currentList = undefined;
 
     // auto refresh
-    setInterval(
-        function () {
-            if (connected && !$('#list').hasClass('hide')) {
-                socket.emit('list');
-            }
-        },
-        60000
-    );
+    socket.poll(function () {
+        socket.emit('list');
+    }, 60000);
 
     $('#subscribe_game').change(function () {
         if (/^[A-Za-z0-9_ ]+$/.test($('#subscribe_game').val())) {

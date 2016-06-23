@@ -21,5 +21,16 @@ define('socket', function (require, module) {
         message(data);
     });
 
+    socket.poll = function (action, interval) {
+        setInterval(
+            function () {
+                if (connected) {
+                    action();
+                }
+            },
+            interval
+        );
+    };
+
     module.exports = socket;
 });

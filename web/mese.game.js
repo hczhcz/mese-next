@@ -127,14 +127,7 @@ define('mese.game', function (require, module) {
     };
 
     // auto refresh
-    setInterval(
-        function () {
-            if (connected) {
-                reloadReport();
-            }
-        },
-        30000
-    );
+    socket.poll(reloadReport, 30000);
 
     $('#report_refresh').click(reloadReport);
 

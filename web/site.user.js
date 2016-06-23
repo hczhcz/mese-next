@@ -1,6 +1,7 @@
 'use strict';
 
 define('site.user', function (require, module) {
+    var bind = require('ui.bind');
     var message = require('ui.message');
     var socket = require('socket');
     var login = require('login');
@@ -10,7 +11,7 @@ define('site.user', function (require, module) {
     // login
 
     var loginDone = function (user) {
-        $('[var=user]').text(user);
+        bind.variable('user', user);
 
         $('#user').removeClass('hide');
         $('#login').addClass('hide');

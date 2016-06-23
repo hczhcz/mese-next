@@ -1,6 +1,7 @@
 'use strict';
 
 define('mese.game', function (require, module) {
+    var bind = require('ui.bind');
     var message = require('ui.message');
     var socket = require('socket');
     var user = require('site.user')
@@ -53,9 +54,9 @@ define('mese.game', function (require, module) {
 
         $('#subscribe_game').val(currentGame);
 
-        $('[var=game]').text(currentGame);
-        $('[var=period]').text(currentPeriod - 1);
-        $('[var=next_period]').text(currentPeriod);
+        bind.variable('game', currentGame);
+        bind.variable('period', currentPeriod - 1);
+        bind.variable('next_period', currentPeriod);
 
         $('.last').addClass('hide');
         $('.now').addClass('hide');

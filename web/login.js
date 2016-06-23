@@ -21,7 +21,8 @@ define('login', function (require, module) {
             var loginInfo = localStorage.getItem('MESE_login');
 
             if (loginInfo) {
-                callback(JSON.parse(loginInfo));
+                currentLogin = JSON.parse(loginInfo);
+                callback(currentLogin);
             }
         }
     };
@@ -33,14 +34,16 @@ define('login', function (require, module) {
             localStorage.setItem('MESE_login', JSON.stringify(login));
         }
 
-        callback(login);
+        callback(currentLogin);
     };
 
     module.exports.reset = function () {
+        currentLogin = undefined;
+
         localStorage.removeItem('MESE_login');
     };
 
-    socket.on('connect', function () {
+    socket.on('connect', function () { // notice: an extra hook
         // auto login
 
         module.exports.get(function (login) {

@@ -21,12 +21,6 @@ var loginDone = function (user) {
     }
 };
 
-var autoLogin = function () {
-    getLogin(function (login) {
-        socket.emit('login', login);
-    });
-};
-
 $('#login_show_submit').click(function () {
     resetLogin();
 

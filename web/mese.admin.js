@@ -1,9 +1,5 @@
 'use strict';
 
-$('#admin_games').change(function () {
-    $('#admin_game_game').val($('#admin_games').val());
-});
-
 var parseSettings = function (text) {
     var data = text.split(/-{3,}/);
     var result = [];
@@ -14,6 +10,10 @@ var parseSettings = function (text) {
 
     return result;
 };
+
+$('#admin_games').change(function () {
+    $('#admin_game_game').val($('#admin_games').val());
+});
 
 $('#admin_game_submit').click(function () {
     // load player / public report

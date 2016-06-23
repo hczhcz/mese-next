@@ -36,3 +36,9 @@ var setLogin = function (login, save, callback) {
 var resetLogin = function () {
     localStorage.removeItem('MESE_login');
 };
+
+var autoLogin = function () {
+    getLogin(function (login) {
+        socket.emit('login', login);
+    });
+};

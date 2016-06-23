@@ -110,6 +110,8 @@ var loadHash = function () {
         loadReport(urlHash);
     }
 };
+loadHash();
+$(window).on('hashchange', loadHash);
 
 var reloadReport = function () {
     if (!$('#report').hasClass('hide')) {
@@ -129,10 +131,6 @@ setInterval(
     },
     30000
 );
-
-// load the game
-loadHash();
-$(window).on('hashchange', loadHash);
 
 $('#report_refresh').click(reloadReport);
 

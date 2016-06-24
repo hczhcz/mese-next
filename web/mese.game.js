@@ -21,25 +21,6 @@ define('mese.game', function (require, module) {
 
     var verboseEnabled = false;
 
-    var initPlayerList = function (count) {
-        // remove items
-
-        $('#report_players [bind]').remove();
-        $('#report_list [xbind] [bind]').remove();
-
-        // add items
-
-        var spanLast = '<span class="last"><span></span>&nbsp;</span>';
-        var spanNow = '<span class="now"><span></span></span>';
-
-        for (var i = 0; i < count; ++i) {
-            $('#report_players')
-                .append('<th bind="' + i + '">' + spanNow + '</th>');
-            $('#report_list [xbind]')
-                .append('<td bind="' + i + '">' + spanLast + spanNow + '</td>');
-        }
-    };
-
     var initReport = function (game, period, uid) {
         if (game !== currentGame) {
             message('Game: ' + game);
@@ -59,6 +40,25 @@ define('mese.game', function (require, module) {
         $('.last').addClass('hide');
         $('.now').addClass('hide');
         $('.next').addClass('hide');
+    };
+
+    var initPlayerList = function (count) {
+        // remove items
+
+        $('#report_players [bind]').remove();
+        $('#report_list [xbind] [bind]').remove();
+
+        // add items
+
+        var spanLast = '<span class="last"><span></span>&nbsp;</span>';
+        var spanNow = '<span class="now"><span></span></span>';
+
+        for (var i = 0; i < count; ++i) {
+            $('#report_players')
+                .append('<th bind="' + i + '">' + spanNow + '</th>');
+            $('#report_list [xbind]')
+                .append('<td bind="' + i + '">' + spanLast + spanNow + '</td>');
+        }
     };
 
     var showStatus = function (status) {
@@ -153,8 +153,8 @@ define('mese.game', function (require, module) {
     });
 
     socket.on('mese_report_player', function (data) {
-        initPlayerList(data.players.length); // prepare DOM
         initReport(data.game, data.now_period, data.uid);
+        initPlayerList(data.players.length); // prepare DOM
 
         showStatus(data.status);
         showReport($('#report_players'), data.players, 'now');
@@ -226,8 +226,8 @@ define('mese.game', function (require, module) {
     });
 
     socket.on('mese_report_public', function (data) {
-        initPlayerList(data.players.length); // prepare DOM
         initReport(data.game, data.now_period, data.uid);
+        initPlayerList(data.players.length); // prepare DOM
 
         showStatus(data.status);
         showReport($('#report_players'), data.players, 'now');

@@ -87,9 +87,9 @@
                 </table>
                 <table>
                     <tr><th>Goods</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Goods</td><td bind='production.goods'></td><td bind='production.average_goods'></td></tr>
-                    <tr><td>Cost of goods</td><td bind='production.goods_cost'></td></tr>
-                    <tr><td>Ideal sales income</td><td bind='production.goods_max_sales'></td></tr>
+                    <tr><td>Goods</td><td bind='goods.goods'></td><td bind='goods.average_goods'></td></tr>
+                    <tr><td>Cost of goods</td><td bind='goods.goods_cost'></td></tr>
+                    <tr><td>Ideal sales income</td><td bind='goods.goods_max_sales'></td></tr>
                 </table>
                 <table>
                     <tr><th>Balance</th><th>You</th><th>Average</th></tr>
@@ -146,15 +146,15 @@
                 <div id='report_list_div'>
                     <table id='report_list'>
                         <tr id='report_players'><th>Player</th></tr>
-                        <tr bind='price'><td>Price</td></tr>
-                        <tr bind='orders.sold'><td>Units sold</td></tr>
-                        <tr bind='balance.sales'><td>Sales income</td></tr>
-                        <tr bind='balance.cost_before_tax'><td>Cost before tax</td></tr>
-                        <tr class='report_verbose hide' bind='balance.profit_before_tax'><td>Profit before tax</td></tr>
-                        <tr class='report_verbose hide' bind='balance.tax_charge'><td>Tax charge</td></tr>
-                        <tr bind='balance.profit'><td>Profit</td></tr>
-                        <tr bind='balance.retern'><td>Retained earning</td></tr>
-                        <tr bind='mpi.mpi'><td>MPI</td></tr>
+                        <tr list='price'><td>Price</td></tr>
+                        <tr list='orders.sold'><td>Units sold</td></tr>
+                        <tr list='balance.sales'><td>Sales income</td></tr>
+                        <tr list='balance.cost_before_tax'><td>Cost before tax</td></tr>
+                        <tr class='report_verbose hide' list='balance.profit_before_tax'><td>Profit before tax</td></tr>
+                        <tr class='report_verbose hide' list='balance.tax_charge'><td>Tax charge</td></tr>
+                        <tr list='balance.profit'><td>Profit</td></tr>
+                        <tr list='balance.retern'><td>Retained earning</td></tr>
+                        <tr list='mpi.mpi'><td>MPI</td></tr>
                     </table>
                 </div>
             </td>

@@ -35,12 +35,12 @@ h3 {
 .wrong {
     color: red;
 }
-.last {
+.last, .hint_last {
     color: gray;
 }
-.now {
+.now, .hint_now {
 }
-.next {
+.next, .hint_next {
     color: blue;
 }
 

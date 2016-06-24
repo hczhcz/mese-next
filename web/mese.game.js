@@ -224,7 +224,6 @@ define('mese.game', function (require, module) {
         }
 
         $('#submit').removeClass('hide');
-
         $('#report').removeClass('hide');
     });
 
@@ -252,7 +251,6 @@ define('mese.game', function (require, module) {
 
         currentSettings = undefined;
         $('#submit').addClass('hide');
-
         $('#report').removeClass('hide');
     });
 

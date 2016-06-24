@@ -62,7 +62,7 @@ Server Side Requirements
 MESE-Next Server may require:
 
 * Node.js 0.12+
-* MongoDB 2.x
+* MongoDB 2.4+
 * Node.js packages: MongoDB, Express 4 & Compression, Socket.IO
 * MESE-Next Engine (released in MESE China Group)
 

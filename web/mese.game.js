@@ -329,6 +329,6 @@ define('mese.game', function (require, module) {
         message('Wrong game type');
     });
 
-    user.gameLoaders.default = reloadReport;
+    user.gameLoaders.defaultGame = reloadReport;
     user.gameLoaders.mese = loadReport;
 });

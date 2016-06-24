@@ -22,7 +22,7 @@ define('site.user', function (require, module) {
 
         socket.emit('list');
 
-        module.exports.gameLoaders.default();
+        module.exports.gameLoaders.defaultGame();
     };
 
     $('#login_show_submit').click(function () {

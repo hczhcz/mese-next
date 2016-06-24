@@ -42,14 +42,26 @@ MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an on
 Client Side Requirements
 ---
 
-A browser supports HTML5, CSS3, and ES5 features is required.
+A browser supports HTML5, CSS3, and ES5 features is required to run MESE-Next. The web frontend is tested under recent versions of Firefox, Chromium, and Mobile Safari.
 
-MESE-Next Web Frontend works best under:
+MESE-Next Frontend supports:
 
-* Firefox 38+
-* Chromium 42+
-* IE 10+ (works under IE 8+)
-* Safari 8+ & Safari iOS 8+
+* Firefox 16+
+* Chrome & Chromium 22+
+* IE 11
+* Safari 7+
+* Mobile Safari 7+
+
+MESE-Next Frontend probably works under:
+
+* Firefox 3.6+
+* Chrome & Chromium 4+
+* MS Edge
+* IE 8+
+* Safari 5+
+* Opera 11+
+* Mobile Safari 5+
+* Android Browser 4+
 
 MESE-Next does not support:
 
@@ -59,7 +71,7 @@ MESE-Next does not support:
 Server Side Requirements
 ---
 
-MESE-Next Server may require:
+MESE-Next Server requires all of:
 
 * Node.js 0.12+
 * MongoDB 2.4+

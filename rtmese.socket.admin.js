@@ -3,6 +3,7 @@
 var verify = require('./util.verify');
 var access = require('./server.access');
 var admin = require('./rtmese.admin');
+var manager = require('./rtmese.manager');
 
 module.exports = function (socket, session) {
     // socket.on('admin_report', function (args) {

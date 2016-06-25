@@ -33,34 +33,3 @@ module.exports.exec = function (game) {
 
     return engine.exec(game);
 };
-
-module.exports.schedule = function (
-    game, delay,
-    waitCallback, execCallback, finishCallback
-) {
-    var doExec = function () {
-        if (module.exports.exec(game)) {
-            execCallback();
-
-            setTimeout(doExec, config.rtmeseInterval);
-        } else {
-            finishCallback();
-        }
-    };
-
-    var doWait = function () {
-        if (game.delay > 0) {
-            waitCallback();
-
-            game.delay -= config.rtmeseInterval;
-            setTimeout(doWait, config.rtmeseInterval);
-        } else {
-            delete game.delay;
-
-            doExec();
-        }
-    };
-
-    game.delay = delay;
-    doWait();
-};

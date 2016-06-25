@@ -6,12 +6,12 @@ define('login', function (require, module) {
     var currentLogin = undefined;
 
     var get = function (callback) {
-        if (currentLogin) {
+        if (currentLogin !== undefined) {
             callback(currentLogin);
         } else {
             var loginInfo = localStorage.getItem('MESE_login');
 
-            if (loginInfo) {
+            if (loginInfo !== null) {
                 currentLogin = JSON.parse(loginInfo);
                 callback(currentLogin);
             }

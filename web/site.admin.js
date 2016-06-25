@@ -17,7 +17,7 @@ define('site.admin', function (require, module) {
     $('#admin_users').change(function () {
         var list = $('#admin_users').val();
 
-        if (list.length == 1) {
+        if (list.length === 1) {
             $('#admin_login_user').val(list[0]);
             $('#admin_transfer_user').val(list[0]);
         } else if (list.length > 1) {

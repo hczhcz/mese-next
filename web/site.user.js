@@ -41,19 +41,19 @@ define('site.user', function (require, module) {
     });
 
     $('#login_user').keypress(function (event) {
-        if (event.which == 13) {
+        if (event.which === 13) {
             $('#login_password').focus();
         }
     });
 
     $('#login_password').keypress(function (event) {
-        if (event.which == 13) {
+        if (event.which === 13) {
             $('#login_submit').click();
         }
     });
 
     $('#login_remember').keypress(function (event) {
-        if (event.which == 13) {
+        if (event.which === 13) {
             $('#login_submit').click();
         }
     });
@@ -106,13 +106,13 @@ define('site.user', function (require, module) {
     });
 
     $('#password_old').keypress(function (event) {
-        if (event.which == 13) {
+        if (event.which === 13) {
             $('#password_new').focus();
         }
     });
 
     $('#password_new').keypress(function (event) {
-        if (event.which == 13) {
+        if (event.which === 13) {
             $('#password_submit').click();
         }
     });
@@ -157,7 +157,7 @@ define('site.user', function (require, module) {
     });
 
     $('#subscribe_game').keypress(function (event) {
-        if (event.which == 13) {
+        if (event.which === 13) {
             $('#subscribe_submit').click();
         }
     });

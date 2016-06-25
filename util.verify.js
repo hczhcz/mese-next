@@ -2,37 +2,37 @@
 
 module.exports.bool = function () {
     return function (bool) {
-        return typeof bool == 'boolean';
+        return typeof bool === 'boolean';
     };
 };
 
 module.exports.int = function () {
     return function (num) {
-        return typeof num == 'number' && isFinite(num) && (0 | num) === num;
+        return typeof num === 'number' && isFinite(num) && (0 | num) === num;
     };
 };
 
 module.exports.num = function () {
     return function (num) {
-        return typeof num == 'number' && isFinite(num);
+        return typeof num === 'number' && isFinite(num);
     };
 };
 
 module.exports.str = function (re) {
     return function (str) {
-        return typeof str == 'string' && str.length <= 32 && re.test(str);
+        return typeof str === 'string' && str.length <= 32 && re.test(str);
     };
 };
 
 module.exports.text = function () {
     return function (str) {
-        return typeof str == 'string' && str.length <= 256;
+        return typeof str === 'string' && str.length <= 256;
     };
 };
 
 module.exports.hash = function (len) {
     return function (str) {
-        return typeof str == 'string' && str.length == len;
+        return typeof str === 'string' && str.length === len;
     };
 };
 

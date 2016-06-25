@@ -6,7 +6,7 @@ define('ui.message', function (require, module) {
     var windowActive = false;
 
     var showMessage = function () {
-        if ($('#message p').length == 0) {
+        if ($('#message p').length === 0) {
             return;
         }
 

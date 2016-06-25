@@ -182,7 +182,7 @@ module.exports.exec = function (game) {
     };
 
     var div = function (a, b, e) {
-        return b == 0 ? e : a / b;
+        return b === 0 ? e : a / b;
     };
 
     // notice: also in report.printDataPublic

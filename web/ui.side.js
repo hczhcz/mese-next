@@ -13,7 +13,7 @@ define('ui.side', function (require, module) {
                 .stop()
                 .animate({left: '0rem'}, function () {
                     // IE8 workaround
-                    if ($('#side').position().left != 0) {
+                    if ($('#side').position().left !== 0) {
                         $('#side').css('left', '0');
                         $('body').css('padding-left', '16em');
                     }

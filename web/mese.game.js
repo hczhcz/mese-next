@@ -83,17 +83,17 @@ define('mese.game', function (require, module) {
     };
 
     var showReport = function (data, tail, path) {
-        if (typeof data == 'string' || typeof data == 'number') {
+        if (typeof data === 'string' || typeof data === 'number') {
             var target = $('[bind="' + path + '"] ' + tail);
 
-            if (target.length == 1) {
+            if (target.length === 1) {
                 target.find('span').text(data);
                 target.removeClass('hide');
             } else {
                 // never reach
                 throw Error('data binding error ' + path);
             }
-        } else if (typeof data == 'object') {
+        } else if (typeof data === 'object') {
             for (var i in data) {
                 showReport(
                     data[i], tail,
@@ -113,7 +113,7 @@ define('mese.game', function (require, module) {
     // load from url hash
     var loadHash = function () {
         var urlHash = window.location.hash.slice(1);
-        if (urlHash) {
+        if (urlHash !== '') {
             loadReport(urlHash);
         }
     };
@@ -121,7 +121,7 @@ define('mese.game', function (require, module) {
     $(window).on('hashchange', loadHash);
 
     var reloadReport = function () {
-        if (currentGame) {
+        if (currentGame !== undefined) {
             socket.emit('mese_report', {
                 game: currentGame,
                 uid: currentUid,
@@ -179,7 +179,7 @@ define('mese.game', function (require, module) {
         showReport(data.data_public.data_early, '.now');
         showReport(data.data_public.data, '.now');
 
-        if (data.next_settings) {
+        if (data.next_settings !== undefined) {
             showReport(data.next_settings, '.next');
 
             var settingsStr = JSON.stringify(data.next_settings);
@@ -245,7 +245,7 @@ define('mese.game', function (require, module) {
         showReport(data.data_public.data_early, '.now');
         showReport(data.data_public.data, '.now');
 
-        if (data.next_settings) {
+        if (data.next_settings !== undefined) {
             showReport(data.next_settings, '.next');
         }
 

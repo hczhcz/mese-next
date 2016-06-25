@@ -6,7 +6,7 @@ var game = require('./mese.game');
 
 module.exports = function (socket, session) {
     socket.on('mese_report', function (args) {
-        // args: game, period, uid
+        // args: game, uid
 
         if (
             !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)

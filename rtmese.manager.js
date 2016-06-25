@@ -6,7 +6,7 @@ module.exports.schedule = function (
     name, game, delay,
     waitCallback, execCallback, finishCallback
 ) {
-    var doExec = function () {
+    var exec = function () {
         if (game.pause) {
             // nothing
         } else if (game.delay > 0) {
@@ -29,7 +29,7 @@ module.exports.schedule = function (
             return;
         }
 
-        setTimeout(doWait, config.rtmeseInterval);
+        setTimeout(exec, config.rtmeseInterval);
     };
 
     if (games[name]) {
@@ -40,7 +40,7 @@ module.exports.schedule = function (
     game.pause = false;
     game.delay = delay;
 
-    doExec();
+    exec();
 };
 
 module.exports.get = function (

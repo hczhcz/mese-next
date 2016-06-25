@@ -130,7 +130,7 @@ module.exports = function (socket, session) {
             session.log('unsubscribe game ' + args.game);
         }
 
-        var doSubscribe = function () {
+        var changeSubscribe = function () {
             access.userSubscribe(
                 session.user, args.game, args.enabled,
                 function (subscribes) {
@@ -147,7 +147,7 @@ module.exports = function (socket, session) {
         access.gameExist(
             args.game,
             function () {
-                doSubscribe();
+                changeSubscribe();
             },
             function () {
                 if (args.enabled) {
@@ -155,7 +155,7 @@ module.exports = function (socket, session) {
 
                     socket.emit('subscribe_fail_game');
                 } else {
-                    doSubscribe();
+                    changeSubscribe();
                 }
             }
         );

@@ -138,7 +138,7 @@ module.exports = function (socket, session) {
                     args.players.length, args.preset, args.settings,
                     function (gameData) {
                         setter(args.players, gameData, function () {
-                            var subscribe = function (player) {
+                            var invite = function (player) {
                                 access.userSubscribe(
                                     player, args.game, true,
                                     function (subscribes) {
@@ -153,7 +153,7 @@ module.exports = function (socket, session) {
                             };
 
                             for (var i in args.players) {
-                                subscribe(args.players[i]);
+                                invite(args.players[i]);
                             }
 
                             socket.emit('admin_mese_init_ok');

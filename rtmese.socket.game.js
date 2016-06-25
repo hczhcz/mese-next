@@ -6,136 +6,136 @@ var game = require('./rtmese.game');
 var manager = require('./rtmese.manager');
 
 module.exports = function (socket, session) {
-    // socket.on('report', function (args) {
-    //     // args: game, period, uid
+    socket.on('rtmese_join', function (args) {
+        // args: game
 
-    //     if (
-    //         !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
-    //         || !verify.num()(args.uid)
-    //     ) {
-    //         session.log('bad socket request');
+        if (
+            !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+        ) {
+            session.log('bad socket request');
 
-    //         return;
-    //     }
+            return;
+        }
 
-    //     session.log('get report ' + args.game);
+        session.log('join game ' + args.game);
 
-    //     access.game(
-    //         args.game,
-    //         function (uid, players, gameData) {
-    //             if (uid === args.uid) {
-    //                 return;
-    //             }
+        access.game(
+            'rtmese', args.game,
+            function (uid, players, gameData) {
+                var print = function (gameObj, player) {
+                    game.print(
+                        gameObj, player,
+                        function (report) {
+                            report.game = args.game;
+                            report.uid = uid;
+                            report.players = players;
 
-    //             var player = -1;
+                            socket.emit('rtmese_report_player', report);
+                        },
+                        function (report) {
+                            report.game = args.game;
+                            report.uid = uid;
+                            report.players = players;
 
-    //             for (var i in players) {
-    //                 if (players[i] === session.user) {
-    //                     player = parseInt(i, 10);
-    //                     break;
-    //                 }
-    //             }
+                            socket.emit('rtmese_report_public', report);
+                        }
+                    );
+                };
 
-    //             game.print(
-    //                 gameData, player,
-    //                 function (report) {
-    //                     report.game = args.game;
-    //                     report.uid = uid;
-    //                     report.players = players;
+                var player = -1;
 
-    //                     socket.emit('report_player', report);
-    //                 },
-    //                 function (report) {
-    //                     report.game = args.game;
-    //                     report.uid = uid;
-    //                     report.players = players;
+                for (var i in players) {
+                    if (players[i] === session.user) {
+                        player = parseInt(i, 10);
+                        break;
+                    }
+                }
 
-    //                     socket.emit('report_public', report);
-    //                 }
-    //             );
-    //         },
-    //         function () {
-    //             session.log('game not found ' + args.game);
+                if (player >= 0) {
+                    manager.get(
+                        args.game,
+                        function (gameObj) {
+                            gameObj['check_' + player] = function (name) {
+                                return name === players[player];
+                            };
 
-    //             socket.emit('report_fail');
-    //         }
-    //     );
-    // });
+                            gameObj['push_' + player] = function () {
+                                print(gameObj, player);
+                            };
 
-    // socket.on('submit', function (args) {
-    //     // args: game, period, price, prod, mk, ci, rd
+                            print(gameObj, player);
 
-    //     if (
-    //         session.user === undefined
-    //         || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
-    //         || !verify.int()(args.period)
-    //         || !verify.num()(args.price)
-    //         || !verify.int()(args.prod)
-    //         || !verify.num()(args.mk)
-    //         || !verify.num()(args.ci)
-    //         || !verify.num()(args.rd)
-    //     ) {
-    //         session.log('bad socket request');
+                            socket.emit('rtmese_join_active');
+                        },
+                        function () {
+                            print(JSON.parse(gameData), player);
 
-    //         return;
-    //     }
+                            socket.emit('rtmese_join_finish');
+                        }
+                    );
+                } else {
+                    print(JSON.parse(gameData), player);
 
-    //     session.log('submit ' + args.game);
+                    socket.emit('rtmese_join_finish');
+                }
+            },
+            function () {
+                session.log('game not found ' + args.game);
 
-    //     access.gameAction(
-    //         args.game,
-    //         function (players, oldData, setter, next) {
-    //             var player = -1;
+                socket.emit('rtmese_join_fail');
+            }
+        );
+    });
 
-    //             for (var i in players) {
-    //                 if (players[i] === session.user) {
-    //                     player = parseInt(i, 10);
-    //                     break;
-    //                 }
-    //             }
+    socket.on('rtmese_submit', function (args) {
+        // args: game, price, prod, mk, ci, rd
 
-    //             if (player >= 0) {
-    //                 game.submit(
-    //                     oldData, player, args.period,
-    //                     args.price, args.prod, args.mk, args.ci, args.rd,
-    //                     function (accepted, closed, gameData) {
-    //                         if (accepted) {
-    //                             if (closed) {
-    //                                 session.log('submission accepted and peroid closed');
-    //                             } else {
-    //                                 session.log('submission accepted');
-    //                             }
+        if (
+            session.user === undefined
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.num()(args.price)
+            || !verify.int()(args.prod)
+            || !verify.num()(args.mk)
+            || !verify.num()(args.ci)
+            || !verify.num()(args.rd)
+        ) {
+            session.log('bad socket request');
 
-    //                             setter(undefined, gameData, function () {
-    //                                 // TODO: push updates?
-    //                             });
+            return;
+        }
 
-    //                             socket.emit('submit_ok');
-    //                         } else {
-    //                             session.log('submission declined ' + args.game);
+        session.log('submit ' + args.game);
 
-    //                             next(); // manually finish
+        manager.get(
+            args.game,
+            function (gameObj) {
+                var player = -1;
 
-    //                             socket.emit('submit_decline');
-    //                         }
-    //                     },
-    //                     function (report) {
-    //                         socket.emit('report_early', report);
-    //                     }
-    //                 );
+                for (var i = 0; i < gameObj.player_count; ++i) {
+                    if (gameObj['check_' + i](session.user)) {
+                        player = i;
+                        break;
+                    }
+                }
 
-    //                 return true; // need setter() or next()
-    //             } else {
-    //                 session.log('submission not allowed ' + args.game);
+                if (player >= 0) {
+                    game.submit(
+                        gameObj, player,
+                        price, prod_rate, mk, ci, rd
+                    );
 
-    //                 socket.emit('submit_fail_player');
-    //             }
-    //         },
-    //         function (setter) {
-    //             session.log('game not found ' + args.game);
+                    socket.emit('rtmese_submit_ok');
+                } else {
+                    session.log('submission not allowed ' + args.game);
 
-    //             socket.emit('submit_fail_game');
-    //         }
-    //     );
-    // });
+                    socket.emit('rtmese_submit_fail_player');
+                }
+            },
+            function () {
+                session.log('wrong game name or type ' + args.game);
+
+                socket.emit('rtmese_submit_fail_game');
+            }
+        );
+    });
 };

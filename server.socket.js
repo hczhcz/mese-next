@@ -11,8 +11,6 @@ module.exports = function (server, handlers) {
 
             var session = {};
 
-            session.user = undefined;
-            session.sudo = false;
             session.log = function (info) {
                 util.log('[' + (session.user || socket.conn.remoteAddress) + '] ' + info);
             };

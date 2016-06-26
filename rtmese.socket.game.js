@@ -59,8 +59,16 @@ module.exports = function (socket, session) {
                                 return name === players[player];
                             };
 
-                            gameObj['push_' + player] = function () {
+                            gameObj['notify_' + player] = function () {
                                 print(gameObj, player);
+                            };
+
+                            if (session.rtmese_free !== undefined) {
+                                session.rtmese_free();
+                            }
+                            session.rtmese_free = function () {
+                                delete gameObj['check_' + player];
+                                delete gameObj['notify_' + player];
                             };
 
                             print(gameObj, player);
@@ -137,5 +145,11 @@ module.exports = function (socket, session) {
                 socket.emit('rtmese_submit_fail_game');
             }
         );
+    });
+
+    socket.on('disconnect', function () { // notice: an extra hook
+        if (session.rtmese_free !== undefined) {
+            session.rtmese_free();
+        }
     });
 };

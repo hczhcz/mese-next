@@ -15,7 +15,11 @@ module.exports.init = function (count, final, events) {
 module.exports.exec = function (game) {
     var applyEvents = function (events) {
         for (var i in events) {
-            game.settings[i] = events[i];
+            if (game.settings.hasOwnProperty(i)) {
+                game.settings[i] = events[i];
+            } else {
+                throw Error('wrong setting name');
+            }
         }
     };
     applyEvents(game.events[game.now_tick] || {});

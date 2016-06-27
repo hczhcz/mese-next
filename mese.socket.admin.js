@@ -104,10 +104,10 @@ module.exports = function (socket, session) {
             !session.sudo
             || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
             || !verify.arr(verify.str(/^[A-Za-z0-9_ ]+$/))(args.players)
-            || !verify.str(/^[A-Za-z0-9_]+$/)(args.preset)
+            || !verify.str(/^[a-z_]+$/)(args.preset)
             || !verify.arr(
                     verify.obj(
-                        verify.str(/^[A-Za-z0-9_]+$/),
+                        verify.str(/^[a-z_]+$/),
                         verify.num()
                     )
                 )(args.settings)
@@ -179,7 +179,7 @@ module.exports = function (socket, session) {
             || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
             || !verify.arr(
                     verify.obj(
-                        verify.str(/^[A-Za-z0-9_]+$/),
+                        verify.str(/^[a-z_]+$/),
                         verify.num()
                     )
                 )(args.settings)

@@ -4,43 +4,48 @@ var games = {};
 
 module.exports.schedule = function (
     name, game, delay, execAction
-    waitCallback, execCallback, finishCallback
+    waitCallback, execCallback, stopCallback, fail
 ) {
+    var stop = function () {
+        stopCallback();
+
+        if (games[name] !== game) {
+            throw Error('broken runtime');
+        }
+        delete games[name];
+
+        delete game.stop;
+        delete game.delay;
+    };
+
     var exec = function () {
-        if (game.pause) {
-            // nothing
+        if (game.stop) {
+            stop();
         } else if (game.delay > 0) {
             waitCallback();
 
             game.delay -= config.rtmeseInterval;
+
+            setTimeout(exec, config.rtmeseInterval);
         } else if (execAction(game)) {
             execCallback();
+
+            setTimeout(exec, config.rtmeseInterval);
         } else {
-            finishCallback();
-
-            if (games[name] !== game) {
-                throw Error('broken runtime');
-            }
-            delete games[name];
-
-            delete game.pause;
-            delete game.delay;
-
-            return;
+            stop();
         }
-
-        setTimeout(exec, config.rtmeseInterval);
     };
 
-    if (games[name]) {
+    if (games[name] !== undefined) {
         throw Error('duplicate game name');
+    } else {
+        games[name] = game;
+
+        game.stop = false;
+        game.delay = delay;
+
+        exec();
     }
-    games[name] = game;
-
-    game.pause = false;
-    game.delay = delay;
-
-    exec();
 };
 
 module.exports.get = function (

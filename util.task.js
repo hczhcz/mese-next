@@ -24,14 +24,26 @@ module.exports = function (lv1, lv2, callback) {
 
         var next = function () {
             if (task.functions.length > 0) {
+                var firstDone = true;
+                var done = function () {
+                    if (firstDone) {
+                        firstDone = false;
+                        next();
+                    }
+                };
+
                 util.domainRun([],
                     function () {
-                        task.functions.shift()(next);
+                        task.functions.shift()(done);
                     },
                     function (err) {
                         util.err(err);
 
-                        next();
+                        if (task.functions.length > 0) {
+                            util.log('tasks: ' + task.functions.length);
+                        }
+
+                        done();
                     }
                 );
             } else {

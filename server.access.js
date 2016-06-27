@@ -26,8 +26,8 @@ module.exports.userAuth = function (user, callback) {
             setter(
                 {password: new Buffer(password)},
                 function () {
-                    callback();
                     next();
+                    callback();
                 }
             );
         };
@@ -52,11 +52,12 @@ module.exports.userSubscribe = function (user, game, enabled, callback, fail) {
             setter(
                 {subscribes: subscribes},
                 function () {
-                    callback(subscribes);
                     next();
+                    callback(subscribes);
                 }
             );
         } else {
+            next();
             fail();
         }
     });
@@ -109,8 +110,8 @@ module.exports.gameAction = function (
             setter(
                 diff,
                 function () {
-                    callback();
                     next();
+                    callback();
                 }
             );
         };
@@ -122,9 +123,8 @@ module.exports.gameAction = function (
                     next();
                 }
             } else {
-                if (!fail()) {
-                    next();
-                }
+                next();
+                fail();
             }
         } else {
             if (!newCallback(gameDataSetter)) {

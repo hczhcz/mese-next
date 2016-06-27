@@ -47,7 +47,7 @@ module.exports.get = function (
     name,
     callback, fail
 ) {
-    if (games[name]) {
+    if (games[name] !== undefined) {
         callback(games[name]);
     } else {
         fail();

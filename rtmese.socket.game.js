@@ -102,7 +102,7 @@ module.exports = function (socket, session) {
             session.user === undefined
             || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
             || !verify.num()(args.price)
-            || !verify.int()(args.prod)
+            || !verify.num()(args.prod_rate)
             || !verify.num()(args.mk)
             || !verify.num()(args.ci)
             || !verify.num()(args.rd)
@@ -129,7 +129,7 @@ module.exports = function (socket, session) {
                 if (player >= 0) {
                     game.submit(
                         gameObj, player,
-                        price, prod_rate, mk, ci, rd
+                        args.price, args.prod_rate, args.mk, args.ci, args.rd
                     );
 
                     socket.emit('rtmese_submit_ok');

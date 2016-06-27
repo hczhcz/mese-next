@@ -10,7 +10,7 @@ module.exports = function (socket, session) {
 
         if (
             !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
-            || !verify.num()(args.uid)
+            || !verify.int()(args.uid)
         ) {
             session.log('bad socket request');
 

@@ -1,9 +1,9 @@
 'use strict';
 
-module.exports.init = function (count, final, delta) {
+module.exports.init = function (count, ticks, delta) {
     var game = {
         player_count: count,
-        final_tick: final,
+        final_tick: ticks,
         now_tick: 0,
         now_period: 1,
         delta: delta,

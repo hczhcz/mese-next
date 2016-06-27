@@ -6,7 +6,7 @@ module.exports.submit = function (
     game, player,
     price, prod_rate, mk, ci, rd
 ) {
-    if (!game.submissions[game.now_tick]) {
+    if (game.submissions[game.now_tick] === undefined) {
         game.submissions[game.now_tick] = {};
     }
 

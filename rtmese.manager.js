@@ -3,7 +3,7 @@
 var games = {};
 
 module.exports.schedule = function (
-    name, game, delay,
+    name, game, delay, execAction
     waitCallback, execCallback, finishCallback
 ) {
     var exec = function () {
@@ -13,7 +13,7 @@ module.exports.schedule = function (
             waitCallback();
 
             game.delay -= config.rtmeseInterval;
-        } else if (module.exports.exec(game)) {
+        } else if (execAction(game)) {
             execCallback();
         } else {
             finishCallback();

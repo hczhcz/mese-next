@@ -17,4 +17,5 @@ module.exports = {
 
     rtmeseDelta: 0.01,
     rtmeseInterval: 1000,
+    rtmeseMaxPlayer: 32,
 };

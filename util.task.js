@@ -5,10 +5,10 @@ var util = require('./util');
 var tasks = {};
 
 module.exports = function (lv1, lv2, callback) {
-    if (!tasks[lv1]) {
+    if (tasks[lv1] === undefined) {
         tasks[lv1] = {};
     }
-    if (!tasks[lv1][lv2]) {
+    if (tasks[lv1][lv2] === undefined) {
         tasks[lv1][lv2] = {
             active: false,
             functions: [],

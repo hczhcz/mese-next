@@ -199,7 +199,7 @@ define('site.user', function (require, module) {
         $('#list').removeClass('hide');
     });
 
-    socket.on('subscribe_fail_list', function (data) {
+    socket.on('list_fail', function (data) {
         message('List not found');
     });
 

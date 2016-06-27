@@ -106,7 +106,7 @@ module.exports = function (socket, session) {
             function () {
                 session.log('list not found');
 
-                socket.emit('subscribe_fail_list');
+                socket.emit('list_fail');
             }
         );
     });

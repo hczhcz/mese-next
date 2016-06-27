@@ -120,9 +120,11 @@ module.exports = function (socket, session) {
                 var player = -1;
 
                 for (var i = 0; i < gameObj.player_count; ++i) {
-                    if (gameObj['check_' + i](session.user)) {
-                        player = i;
-                        break;
+                    if (gameObj['check_' + i] !== undefined) {
+                        if (gameObj['check_' + i](session.user)) {
+                            player = i;
+                            break;
+                        }
                     }
                 }
 

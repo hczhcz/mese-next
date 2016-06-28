@@ -96,7 +96,7 @@ module.exports = function (socket, session) {
                     args.players.length, args.ticks, args.settings
                 );
 
-                setter(args.players, JSON.stringify(gameObj), function () {
+                setter(args.players, Buffer(JSON.stringify(gameObj)), function () {
                     var invite = function (player) {
                         access.userSubscribe(
                             player, args.game, true,
@@ -124,6 +124,81 @@ module.exports = function (socket, session) {
                 session.log('wrong game type ' + args.game);
 
                 socket.emit('admin_rtmese_init_fail_type');
+            }
+        );
+    });
+
+    socket.on('admin_rtmese_schedule', function (args) {
+        // args: game, delay
+
+        if (
+            !session.sudo
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.int()(args.delay)
+        ) {
+            session.log('bad socket request');
+
+            return;
+        }
+
+        session.log('admin schedule game ' + args.game);
+
+        var gameStop = function (gameObj) {
+            access.gameAction(
+                'rtmese', args.game,
+                function (players, oldData, setter, next) {
+                    setter(undefined, Buffer(JSON.stringify(gameObj)), function () {
+                        // nothing
+                    });
+
+                    return true;
+                },
+                function (setter) {
+                    throw Error('internal error'); // never reach
+                },
+                function () {
+                    throw Error('internal error'); // never reach
+                }
+            );
+        };
+
+        access.gameAction(
+            'rtmese', args.game,
+            function (players, oldData, setter, next) {
+                manager.schedule(
+                    args.game, JSON.parse(oldData), args.delay,
+                    admin.exec,
+                    function (gameObj) {
+                        for (var i = 0; i < gameObj.player_count; ++i) {
+                            if (gameObj['notify_' + i] !== undefined) {
+                                gameObj['notify_' + i]();
+                            }
+                        }
+                    },
+                    function (gameObj) {
+                        for (var i = 0; i < gameObj.player_count; ++i) {
+                            if (gameObj['notify_' + i] !== undefined) {
+                                gameObj['notify_' + i]();
+                            }
+                        }
+                    },
+                    gameStop,
+                    function () {
+                        session.log('game is already running ' + args.game);
+
+                        socket.emit('admin_rtmese_schedule_fail_running');
+                    }
+                );
+            },
+            function (setter) {
+                session.log('game not found ' + args.game);
+
+                socket.emit('admin_rtmese_schedule_fail_game');
+            },
+            function () {
+                session.log('wrong game type ' + args.game);
+
+                socket.emit('admin_rtmese_schedule_fail_type');
             }
         );
     });

@@ -1,12 +1,12 @@
 body {
     background: #F0F0D0;
-    color: #202020;
+    color: #102040;
 }
 
 .box {
     background: #203050;
     background: rgba(32, 48, 80, 0.5);
-    color: #E8E8C0;
+    color: #E0E0C0;
     -ms-text-shadow: 0.05em 0.05em 0.05em #203050;
     -moz-text-shadow: 0.05em 0.05em 0.05em #203050;
     -webkit-text-shadow: 0.05em 0.05em 0.05em #203050;
@@ -18,11 +18,11 @@ body {
 
 #side {
     background: #203050;
-    color: #E8E8C0;
+    color: #E0E0C0;
 }
 
 #util input[type="text"], #util input[type="password"] {
-    background: #E8E8C0;
+    background: #E0E0C0;
 }
 #util input[type="submit"] {
     background: #C08050;

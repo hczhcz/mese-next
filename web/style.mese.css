@@ -3,15 +3,6 @@ body {
     color: #202020;
 }
 
-.last, .hint_last {
-    color: gray;
-}
-.now, .hint_now {
-}
-.next, .hint_next {
-    color: blue;
-}
-
 .box {
     background: #303030;
     background: rgba(48, 48, 48, 0.5);
@@ -38,4 +29,15 @@ body {
 }
 #util input[type="button"] {
     background: #C0C0C0;
+}
+
+/* report */
+
+.last, .hint_last {
+    color: gray;
+}
+.now, .hint_now {
+}
+.next, .hint_next {
+    color: blue;
 }

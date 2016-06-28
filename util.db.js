@@ -56,7 +56,7 @@ module.exports.list = function (lv1, callback) {
 };
 
 module.exports.update = function (lv1, lv2, callback) {
-    var setter = function (diff, callback) {
+    var setter = function (diff, setterCallback) {
         collections[lv1].updateOne(
             {_id: lv2},
             {$set: diff},
@@ -65,7 +65,7 @@ module.exports.update = function (lv1, lv2, callback) {
                 if (err) {
                     throw err;
                 } else {
-                    callback();
+                    setterCallback();
                 }
             }
         );

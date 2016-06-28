@@ -59,7 +59,7 @@ module.exports = function (socket, session) {
 
         access.gameAction(
             'mese', args.game,
-            function (players, oldData, setter) {
+            function (players, oldData, setter, next) {
                 var player = -1;
 
                 for (var i in players) {
@@ -128,7 +128,7 @@ module.exports = function (socket, session) {
 
         access.gameAction(
             'mese', args.game,
-            function (players, oldData, setter) {
+            function (players, oldData, setter, next) {
                 session.log('game exists ' + args.game);
 
                 socket.emit('admin_mese_init_fail_game');
@@ -194,7 +194,7 @@ module.exports = function (socket, session) {
 
         access.gameAction(
             'mese', args.game,
-            function (players, oldData, setter) {
+            function (players, oldData, setter, next) {
                 admin.alloc(
                     oldData, args.settings,
                     function (gameData) {

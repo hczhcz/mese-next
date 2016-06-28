@@ -81,13 +81,15 @@ module.exports = function (socket, session) {
 
         access.gameAction(
             'rtmese', args.game,
-            function (players, oldData, setter) {
+            function (players, oldData, setter, next) {
                 session.log('game exists ' + args.game);
 
                 socket.emit('admin_rtmese_init_fail_game');
             },
             function (setter) {
-                var gameObj = admin.init(args.players.length, ticks, args.settings);
+                var gameObj = admin.init(
+                    args.players.length, args.ticks, args.settings
+                );
 
                 setter(args.players, JSON.stringify(gameObj), function () {
                     var invite = function (player) {

@@ -22,12 +22,12 @@ module.exports.user = function (user, callback, fail) {
 
 module.exports.userAuth = function (user, callback) {
     db.update('users', user, function (doc, setter, next) {
-        var passwordSetter = function (password, callback) {
+        var passwordSetter = function (password, setterCallback) {
             setter(
                 {password: new Buffer(password)},
                 function () {
                     next();
-                    callback();
+                    setterCallback();
                 }
             );
         };
@@ -93,7 +93,7 @@ module.exports.gameAction = function (
     existCallback, newCallback, fail
 ) {
     db.update('games', game, function (doc, setter, next) {
-        var gameDataSetter = function (players, gameData, callback) {
+        var gameDataSetter = function (players, gameData, setterCallback) {
             // generate an unique id (assumed unique)
             var diff = {
                 uid: Number(new Date()),
@@ -111,7 +111,7 @@ module.exports.gameAction = function (
                 diff,
                 function () {
                     next();
-                    callback();
+                    setterCallback();
                 }
             );
         };
@@ -119,7 +119,11 @@ module.exports.gameAction = function (
         if (doc) {
             if (doc.type === type) {
                 // notice: .buffer is required for binary data
-                if (!existCallback(doc.players, doc.data.buffer, gameDataSetter, next)) {
+                if (
+                    !existCallback(
+                        doc.players, doc.data.buffer, gameDataSetter, next
+                    )
+                ) {
                     next();
                 }
             } else {

@@ -36,9 +36,6 @@ body {
 #util input[type="submit"] {
     background: #A0A0A0;
 }
-#util :first-child>input[type="submit"] {
-    background: #808080;
-}
 #util input[type="button"] {
     background: #C0C0C0;
 }

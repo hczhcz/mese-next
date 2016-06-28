@@ -182,7 +182,7 @@ define('site.user', function (require, module) {
             return function (event) {
                 event.preventDefault();
 
-                module.exports.gameLoaders.mese(game); // TODO
+                module.exports.gameLoaders.loadGame(game);
             };
         };
 

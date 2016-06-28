@@ -334,5 +334,5 @@ define('mese.game', function (require, module) {
     });
 
     user.gameLoaders.defaultGame = reloadReport;
-    user.gameLoaders.mese = loadReport;
+    user.gameLoaders.loadGame = loadReport;
 });

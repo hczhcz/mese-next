@@ -29,6 +29,8 @@ module.exports = function (lv1, lv2, callback) {
                     if (firstDone) {
                         firstDone = false;
                         next();
+                    } else {
+                        util.log('tasks: internal error');
                     }
                 };
 
@@ -40,7 +42,7 @@ module.exports = function (lv1, lv2, callback) {
                         util.err(err);
 
                         if (task.functions.length > 0) {
-                            util.log('tasks: ' + task.functions.length);
+                            util.log('tasks: ' + task.functions.length + ' remain');
                         }
 
                         done();

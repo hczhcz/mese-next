@@ -33,7 +33,10 @@ module.exports.err = function (err) {
 module.exports.domainRun = function (emitters, callback, fail) {
     var d = domain.create();
 
-    d.on('error', fail);
+    d.on('error', function (err) {
+        fail(err);
+        d.dispose();
+    });
 
     for (var i in emitters) {
         d.add(emitters[i]);

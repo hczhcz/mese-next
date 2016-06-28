@@ -1,13 +1,15 @@
 'use strict';
 
+var config = require('./config');
+
 var games = {};
 
 module.exports.schedule = function (
-    name, game, delay, execAction
+    name, game, delay, execAction,
     waitCallback, execCallback, stopCallback, fail
 ) {
     var stop = function () {
-        stopCallback();
+        stopCallback(game);
 
         if (games[name] !== game) {
             throw Error('broken runtime');
@@ -22,13 +24,13 @@ module.exports.schedule = function (
         if (game.stop) {
             stop();
         } else if (game.delay > 0) {
-            waitCallback();
+            waitCallback(game);
 
             game.delay -= config.rtmeseInterval;
 
             setTimeout(exec, config.rtmeseInterval);
         } else if (execAction(game)) {
-            execCallback();
+            execCallback(game);
 
             setTimeout(exec, config.rtmeseInterval);
         } else {
@@ -37,7 +39,7 @@ module.exports.schedule = function (
     };
 
     if (games[name] !== undefined) {
-        throw Error('duplicate game name');
+        fail();
     } else {
         games[name] = game;
 

@@ -17,7 +17,7 @@ module.exports.init = function (count, ticks, events) {
 module.exports.exec = function (game) {
     var applyEvents = function (events) {
         for (var i in events) {
-            if (game.settings.hasOwnProperty(i)) {
+            if (typeof game.settings[i] === 'number') {
                 game.settings[i] = events[i];
             } else {
                 throw Error('wrong setting name');

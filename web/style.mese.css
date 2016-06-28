@@ -1,0 +1,44 @@
+body {
+    background: #F0F0F0;
+    color: #202020;
+}
+
+.last, .hint_last {
+    color: gray;
+}
+.now, .hint_now {
+}
+.next, .hint_next {
+    color: blue;
+}
+
+.box {
+    background: #303030;
+    background: rgba(48, 48, 48, 0.5);
+    color: #E0E0E0;
+    -ms-text-shadow: 0.05em 0.05em 0.05em #303030;
+    -moz-text-shadow: 0.05em 0.05em 0.05em #303030;
+    -webkit-text-shadow: 0.05em 0.05em 0.05em #303030;
+    -o-text-shadow: 0.05em 0.05em 0.05em #303030;
+    text-shadow: 0.05em 0.05em 0.05em #303030;
+}
+
+/* side */
+
+#side {
+    background: #303030;
+    color: #E0E0E0;
+}
+
+#util input[type="text"], #util input[type="password"] {
+    background: #E0E0E0;
+}
+#util input[type="submit"] {
+    background: #A0A0A0;
+}
+#util :first-child>input[type="submit"] {
+    background: #808080;
+}
+#util input[type="button"] {
+    background: #C0C0C0;
+}

@@ -12,8 +12,6 @@ body {
     padding-left: 16em;
     padding-left: 16rem;
 
-    background: #F0F0F0;
-    color: #202020;
     -ms-text-size-adjust: none;
     -moz-text-size-adjust: none;
     -webkit-text-size-adjust: 100%;
@@ -35,14 +33,6 @@ h3 {
 .wrong {
     color: red;
 }
-.last, .hint_last {
-    color: gray;
-}
-.now, .hint_now {
-}
-.next, .hint_next {
-    color: blue;
-}
 
 .box {
     -ms-border-radius: 0.25em;
@@ -51,16 +41,8 @@ h3 {
     -o-border-radius: 0.25em;
     border-radius: 0.25em;
 
-    background: #303030;
-    background: rgba(48, 48, 48, 0.5);
-    color: #E0E0E0;
     cursor: pointer;
     text-align: center;
-    -ms-text-shadow: 0.05em 0.05em 0.05em #303030;
-    -moz-text-shadow: 0.05em 0.05em 0.05em #303030;
-    -webkit-text-shadow: 0.05em 0.05em 0.05em #303030;
-    -o-text-shadow: 0.05em 0.05em 0.05em #303030;
-    text-shadow: 0.05em 0.05em 0.05em #303030;
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -104,8 +86,6 @@ h3 {
     z-index: 2;
 
     overflow-y: auto;
-    background: #303030;
-    color: #E0E0E0;
 }
 
 #side_hide {
@@ -136,8 +116,6 @@ h3 {
     width: 100%;
     padding: 0.25em;
     border: none;
-
-    background: #E0E0E0;
 }
 #util input[type="checkbox"] {
     margin-right: 0.25em;
@@ -147,21 +125,15 @@ h3 {
     width: 100%;
     padding: 0.25em;
     border: none;
-
-    background: #A0A0A0;
 }
 #util :first-child>input[type="submit"] {
     padding: 1em;
-
-    background: #808080;
 }
 #util input[type="button"] {
     margin-right: 0.5em;
     margin-bottom: 0.5em;
     padding: 0.25em 1em;
     border: none;
-
-    background: #C0C0C0;
 }
 
 /* content */

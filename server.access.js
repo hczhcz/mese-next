@@ -67,13 +67,17 @@ module.exports.games = function (callback) {
     db.list('games', callback);
 };
 
-module.exports.game = function (type, game, callback, fail) {
+module.exports.game = function (type, game, callback, failGame, failType) {
     db.get('games', game, function (doc) {
-        if (doc && doc.type === type) {
-            // notice: .buffer is required for binary data
-            callback(doc.uid, doc.players, doc.data.buffer);
+        if (doc) {
+            if (doc.type === type) {
+                // notice: .buffer is required for binary data
+                callback(doc.uid, doc.players, doc.data.buffer);
+            } else {
+                failType();
+            }
         } else {
-            fail();
+            failGame();
         }
     });
 };

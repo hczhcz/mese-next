@@ -254,8 +254,12 @@ define('mese.game', function (require, module) {
         $('#report').removeClass('hide');
     });
 
-    socket.on('mese_report_fail', function (data) {
+    socket.on('mese_report_fail_game', function (data) {
         message('Game not found');
+    });
+
+    socket.on('mese_report_fail_type', function (data) {
+        message('Wrong game type');
     });
 
     // submit

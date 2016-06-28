@@ -56,7 +56,12 @@ module.exports = function (socket, session) {
             function () {
                 session.log('game not found ' + args.game);
 
-                socket.emit('mese_report_fail');
+                socket.emit('mese_report_fail_game');
+            },
+            function () {
+                session.log('wrong game type ' + args.game);
+
+                socket.emit('mese_report_fail_type');
             }
         );
     });

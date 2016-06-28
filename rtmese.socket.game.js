@@ -90,7 +90,12 @@ module.exports = function (socket, session) {
             function () {
                 session.log('game not found ' + args.game);
 
-                socket.emit('rtmese_join_fail');
+                socket.emit('rtmese_join_fail_game');
+            },
+            function () {
+                session.log('wrong game type ' + args.game);
+
+                socket.emit('rtmese_join_fail_type');
             }
         );
     });

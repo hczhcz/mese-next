@@ -58,8 +58,12 @@ define('mese.admin', function (require, module) {
         $('#admin_report').val(JSON.stringify(data)); // TODO: format?
     });
 
-    socket.on('admin_mese_report_fail', function (data) {
+    socket.on('admin_mese_report_fail_game', function (data) {
         message('Game not found');
+    });
+
+    socket.on('admin_mese_report_fail_type', function (data) {
+        message('Wrong game type');
     });
 
     socket.on('admin_mese_transfer_ok', function (data) {

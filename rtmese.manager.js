@@ -6,7 +6,8 @@ var games = {};
 
 module.exports.schedule = function (
     name, game, delay, execAction,
-    waitCallback, execCallback, stopCallback, fail
+    waitCallback, execCallback, stopCallback,
+    callback, fail
 ) {
     var stop = function () {
         stopCallback(game);
@@ -46,6 +47,7 @@ module.exports.schedule = function (
         game.stop = false;
         game.delay = delay;
 
+        callback();
         exec();
     }
 };

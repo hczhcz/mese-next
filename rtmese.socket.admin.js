@@ -184,6 +184,9 @@ module.exports = function (socket, session) {
                     },
                     gameStop,
                     function () {
+                        socket.emit('admin_rtmese_schedule_ok');
+                    },
+                    function () {
                         session.log('game is already running ' + args.game);
 
                         socket.emit('admin_rtmese_schedule_fail_running');

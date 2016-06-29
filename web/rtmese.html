@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MESE-Realtime</title>
+    <meta charset='utf-8' />
+    <meta name='renderer' content='webkit' /><!-- for 360 Browser -->
+    <meta name='viewport' content='initial-scale=0.75' />
+    <link rel='stylesheet' type='text/css' href='style.css' />
+    <link rel='stylesheet' type='text/css' href='style.rtmese.css' />
+</head>
+<body>
+    <div id='message' class='box hide'></div>
+
+    <div id='side'>
+        <table id='util'>
+            <tr id='user' class='hide'>
+                <td>
+                    <h3><span id='side_hide'>←</span> MESE-Realtime</h3>
+                    <p>Current User<br>- <span var='user'></span></p>
+                    <p>Latest Message<br>- <span var='message'></span></p>
+                </td>
+            </tr>
+            <tr id='login_show' class='hide'>
+                <td>
+                    <p><input id='login_show_submit' type='submit' value='Switch User' /></p>
+                </td>
+            </tr>
+            <tr id='login'>
+                <td>
+                    <p>Name</p>
+                    <p><input id='login_user' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></p>
+                    <p>Password</p>
+                    <p><input id='login_password' type='password' maxlength='32' /></p>
+                    <p><input id='login_remember' type='checkbox' />Remember</p>
+                    <p><input id='login_submit' type='submit' value='Sign up / Login' /></p>
+                </td>
+            </tr>
+            <tr id='password_show' class='hide'>
+                <td>
+                    <p><input id='password_show_submit' type='submit' value='Change Password' /></p>
+                </td>
+            </tr>
+            <tr id='password' class='hide'>
+                <td>
+                    <p>Old Password</p>
+                    <p><input id='password_old' type='password' maxlength='32' /></p>
+                    <p>New Password</p>
+                    <p><input id='password_new' type='password' maxlength='32' /></p>
+                    <p><input id='password_submit' type='submit' value='Change Password' /></p>
+                </td>
+            </tr>
+            <tr id='subscribe' class='hide'>
+                <td>
+                    <p>Game</p>
+                    <p><input id='subscribe_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></p>
+                    <p><input id='subscribe_submit' type='submit' value='Subscribe / Unsubscribe' /></p>
+                </td>
+            </tr>
+            <tr id='list' class='hide'>
+                <td>
+                    <p id='list_content'></p>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- <table id='report' class='content hide'> -->
+    <table id='report' class='content'>
+        <tr>
+            <th colspan='2'>
+                <h2>
+                    Game "<span var='game'></span>"
+                    <span id='report_expand' class='report_button box'>+</span>
+                </h2>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <h3>Early Report</h3>
+                <table>
+                    <tr><th>Production</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Prod rate</td><td bind='production.prod_rate'></td></tr>
+                    <tr class='report_verbose hide'><td>Prod rate exceed</td><td bind='production.prod_over'></td></tr>
+                    <tr><td>Unit prod cost</td><td bind='production.prod_cost_unit'></td><td bind='production.average_prod_cost_unit'></td></tr>
+                    <tr><td>Marginal cost</td><td bind='production.prod_cost_marginal'></td></tr>
+                    <tr><td>Total prod cost</td><td bind='production.prod_cost'></td><td bind='production.average_prod_cost'></td></tr>
+                </table>
+                <table>
+                    <tr><th>Goods</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Goods</td><td bind='goods.goods'></td><td bind='goods.average_goods'></td></tr>
+                    <tr><td>Cost of goods</td><td bind='goods.goods_cost'></td></tr>
+                    <tr><td>Ideal sales income</td><td bind='goods.goods_max_sales'></td></tr>
+                </table>
+                <table>
+                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Deprecation</td><td bind='balance.deprecation'></td></tr>
+                    <tr><td>Capital</td><td bind='balance.capital'></td><td bind='balance.average_capital'></td></tr>
+                    <tr><td>Size</td><td bind='balance.size'></td><td bind='balance.average_size'></td></tr>
+                    <tr><td>Spending</td><td bind='balance.spending'></td></tr>
+                    <tr class='report_verbose hide'><td>Early balance</td><td bind='balance.balance_early'></td></tr>
+                    <tr><td>Early loan</td><td bind='balance.loan_early'></td></tr>
+                    <tr><td>Interest</td><td bind='balance.interest'></td></tr>
+                </table>
+                <table>
+                    <tr><th>History</th><th>You</th><th>Average</th></tr>
+                    <tr class='report_verbose hide'><td>Total marketing</td><td bind='history.history_mk'></td></tr>
+                    <tr><td>Total R &amp; D</td><td bind='history.history_rd'></td></tr>
+                </table>
+            </td>
+            <td>
+                <h3>Result Report</h3>
+                <table>
+                    <tr><th>Units</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Orders</td><td bind='orders.orders'></td><td bind='orders.average_orders'></td></tr>
+                    <tr><td>Units sold</td><td bind='orders.sold'></td><td bind='orders.average_sold'></td></tr>
+                    <tr><td>Inventory</td><td bind='orders.inventory'></td><td bind='orders.average_inventory'></td></tr>
+                    <tr><td>Unfilled</td><td bind='orders.unfilled'></td><td bind='orders.average_unfilled'></td></tr>
+                </table>
+                <table>
+                    <tr><th>Goods</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Cost of goods sold</td><td bind='goods.goods_cost_sold'></td><td bind='goods.average_goods_cost_sold'></td></tr>
+                    <tr><td>Cost of inventory</td><td bind='goods.goods_cost_inventory'></td></tr>
+                </table>
+                <table>
+                    <tr><th>Balance</th><th>You</th><th>Average</th></tr>
+                    <tr><td>Sales income</td><td bind='balance.sales'></td><td bind='balance.average_sales'></td></tr>
+                    <tr class='report_verbose hide'><td>Inventory charge</td><td bind='balance.inventory_charge'></td></tr>
+                    <tr><td>Cost before tax</td><td bind='balance.cost_before_tax'></td><td bind='balance.average_cost_before_tax'></td></tr>
+                    <tr><td>Profit before tax</td><td bind='balance.profit_before_tax'></td><td bind='balance.average_profit_before_tax'></td></tr>
+                    <tr class='report_verbose hide'><td>Tax charge</td><td bind='balance.tax_charge'></td><td bind='balance.average_tax_charge'></td></tr>
+                    <tr><td>Profit</td><td bind='balance.profit'></td><td bind='balance.average_profit'></td></tr>
+                    <tr class='report_verbose hide'><td>Balance</td><td bind='balance.balance'></td></tr>
+                    <tr><td>Loan</td><td bind='balance.loan'></td></tr>
+                    <tr><td>Cash</td><td bind='balance.cash'></td></tr>
+                    <tr><td>Retained earning</td><td bind='balance.retern'></td><td bind='balance.average_retern'></td></tr>
+                </table>
+                <table>
+                    <tr><th>MPI</th><th>You</th><th>Average</th></tr>
+                    <tr><td>MPI</td><td bind='mpi.mpi'></td><td bind='mpi.average_mpi'></td></tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                <h3>Players' Details</h3>
+                <div id='report_list_div'>
+                    <table id='report_list'>
+                        <tr id='report_players'><th>Player</th></tr>
+                        <tr list='price'><td>Price</td></tr>
+                        <tr list='orders.sold'><td>Units sold</td></tr>
+                        <tr list='balance.sales'><td>Sales income</td></tr>
+                        <tr list='balance.cost_before_tax'><td>Cost before tax</td></tr>
+                        <tr class='report_verbose hide' list='balance.profit_before_tax'><td>Profit before tax</td></tr>
+                        <tr class='report_verbose hide' list='balance.tax_charge'><td>Tax charge</td></tr>
+                        <tr list='balance.profit'><td>Profit</td></tr>
+                        <tr list='balance.retern'><td>Retained earning</td></tr>
+                        <tr list='mpi.mpi'><td>MPI</td></tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Settings</h3>
+                <table>
+                    <tr><th>Limits</th></tr>
+                    <tr><td>Min price</td><td bind='limits.price_min'></td></tr>
+                    <tr><td>Max price</td><td bind='limits.price_max'></td></tr>
+                    <tr><td>Max marketing</td><td bind='limits.mk_limit'></td></tr>
+                    <tr><td>Max investment</td><td bind='limits.ci_limit'></td></tr>
+                    <tr><td>Max R &amp; D</td><td bind='limits.rd_limit'></td></tr>
+                    <tr><td>Max loan</td><td bind='limits.loan_limit'></td></tr>
+                </table>
+                <table>
+                    <tr><th>Production</th></tr>
+                    <tr><td>Balanced prod rate</td><td bind='production.prod_rate_balanced'></td></tr>
+                    <tr><td>Unit fee</td><td bind='production.unit_fee'></td></tr>
+                    <tr><td>Deprecation rate</td><td bind='production.deprecation_rate'></td></tr>
+                </table>
+                <table>
+                    <tr><th>Balance</th></tr>
+                    <tr><td>Interest rate (cash)</td><td bind='balance.interest_rate_cash'></td></tr>
+                    <tr><td>Interest rate (loan)</td><td bind='balance.interest_rate_loan'></td></tr>
+                    <tr><td>Inventory fee</td><td bind='balance.inventory_fee'></td></tr>
+                    <tr><td>Tax rate</td><td bind='balance.tax_rate'></td></tr>
+                </table>
+            </td>
+            <td>
+                <h3>Decisions</h3>
+                <table>
+                    <tr><th>Average Prices</th></tr>
+                    <tr><td>Given price</td><td bind='average_price_given'></td></tr>
+                    <tr><td>Selling price</td><td bind='average_price'></td></tr>
+                </table>
+                <table id='submit'>
+                    <tr><th>Next Submission</th></tr>
+                    <tr><td>Game</td><td></td><td var='game'></td></tr>
+                    <tr><td>Period</td><td></td><td var='next_period'></td></tr>
+                    <tr><td>Player name</td><td></td><td var='user'></td></tr>
+                    <tr>
+                        <td>Price</td>
+                        <td bind='price'></td>
+                        <td><input id='submit_price' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Production</td>
+                        <td bind='prod'></td>
+                        <td><span id='submit_prod_rate'></span> % <input id='submit_prod' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Marketing</td>
+                        <td bind='mk'></td>
+                        <td><input id='submit_mk' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>Investment</td>
+                        <td bind='ci'></td>
+                        <td><input id='submit_ci' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td>R &amp; D</td>
+                        <td bind='rd'></td>
+                        <td><input id='submit_rd' type='number' step='any' /></td>
+                    </tr>
+                    <tr>
+                        <td colspan='2'>
+                            <i>??????
+                            </i>
+                        </td>
+                        <td><input id='submit_submit' type='submit' value='Submit' /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <table id='admin' class='content hide'>
+        <tr>
+            <th colspan='3'>
+                <h2>
+                    Admin Control Panel
+                </h2>
+            </th>
+        </tr>
+        <tr>
+            <td colspan='2'>
+                <h3>Message Broadcast</h3>
+                <table>
+                    <tr>
+                        <td colspan='5'><input id='admin_message_content' type='text' maxlength='256' /></td>
+                        <td><input id='admin_message_submit' type='submit' value='Send' /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan='2'>
+                <h3>Users &amp; Games</h3>
+                <table>
+                    <tr>
+                        <td colspan='2'><input id='admin_list_refresh' type='submit' value='Refresh' /></td>
+                    </tr>
+                    <tr>
+                        <td><select id='admin_users' size='16' multiple='multiple'></select></td>
+                        <td><select id='admin_games' size='16'></select></td>
+                    </tr>
+                    <tr>
+                        <td><input id='admin_login_user' var='user' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td>
+                        <td><input id='admin_game_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td>
+                    </tr>
+                    <tr>
+                        <td><input id='admin_login_submit' type='submit' value='Login' /></td>
+                        <td><input id='admin_game_submit' type='submit' value='Load Game' /></td>
+                    </tr>
+                </table>
+                <h3>Change Password</h3>
+                <table>
+                    <tr><th>User</th></tr>
+                    <tr><td var='user'></td></tr>
+                    <tr><th>New Password</th></tr>
+                    <tr><td><input id='admin_password_new' type='password' maxlength='32' /></td></tr>
+                    <tr><td><input id='admin_password_submit' type='submit' value='Change' /></td></tr>
+                </table>
+            </td>
+            <td>
+                <h3>Summary Report</h3>
+                <table>
+                    <tr><th>Game</th></tr>
+                    <tr><td><input id='admin_report_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
+                    <tr><td><input id='admin_report_submit' type='submit' value='Generate' /></td></tr>
+                </table>
+                <h3>New Game</h3>
+                <table>
+                    <tr><th>Game</th></tr>
+                    <tr><td><input id='admin_init_game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
+                    <tr><th>Players</th></tr>
+                    <tr><td><input id='admin_init_players' type='text' maxlength='2048' pattern='^[A-Za-z0-9_ ]+(,[A-Za-z0-9_ ]+){0,31}$' /></td></tr>
+                    <tr><th>Total Ticks</th></tr>
+                    <tr><td><input id='admin_init_ticks' type='text' maxlength='32' pattern='^[0-9]+$' value='700' /></td></tr>
+                    <tr><td><input id='admin_init_submit' type='submit' value='Initialize' /></td></tr>
+                </table>
+            </td>
+            <td>
+                <h3>Report</h3>
+                <textarea id='admin_report'></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h3>Run Game</h3>
+                <table>
+                    <tr><th>Game</th></tr>
+                    <tr><td><input id='admin_schedule_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
+                    <tr><th>Delay Ticks</th></tr>
+                    <tr><td><input id='admin_schedule_delay' type='text' maxlength='32' pattern='^[0-9]+$' value='60' /></td></tr>
+                    <tr><td><input id='admin_schedule_submit' type='submit' value='Schedule' /></td></tr>
+                </table>
+                <h3>Stop Game</h3>
+                <table>
+                    <tr><th>Game</th></tr>
+                    <tr><td><input id='admin_stop_game' var='game' type='text' maxlength='32' pattern='^[A-Za-z0-9_ ]+$' /></td></tr>
+                    <tr><td><input id='admin_stop_submit' type='submit' value='Stop' /></td></tr>
+                </table>
+            </td>
+            <td>
+                <h3>Events</h3>
+                <textarea id='admin_events'></textarea>
+            </td>
+        </tr>
+    </table>
+
+    <script src='lib/jquery.min.js'></script>
+    <script src='lib/socket.io.min.js'></script>
+    <script src='lib/sha256.js'></script>
+    <script src='lib/syncreq.js'></script>
+
+    <script src='ui.bind.js'></script>
+    <script src='ui.side.js'></script>
+    <script src='ui.message.js'></script>
+
+    <script src='socket.js'></script>
+    <script src='login.js'></script>
+
+    <script src='site.user.js'></script>
+    <script src='site.admin.js'></script>
+    <script src='rtmese.game.js'></script>
+    <script src='rtmese.admin.js'></script>
+</body>
+</html>

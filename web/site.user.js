@@ -72,8 +72,8 @@ define('site.user', function (require, module) {
                 password: password,
             },
             $('#login_remember').prop('checked'),
-            function (login) {
-                socket.emit('login', login);
+            function (loginObj) {
+                socket.emit('login', loginObj);
             }
         );
     });

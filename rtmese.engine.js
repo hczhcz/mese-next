@@ -3,7 +3,7 @@
 module.exports.init = function (count, ticks, delta) {
     var game = {
         player_count: count,
-        final_tick: ticks,
+        total_tick: ticks,
         now_tick: 0,
         now_period: 1,
         delta: delta,
@@ -403,5 +403,5 @@ module.exports.exec = function (game) {
             + game.data.mpi_d[i] + game.data.mpi_e[i] + game.data.mpi_f[i];
     });
 
-    return game.now_tick < game.final_tick;
+    return game.now_tick < game.total_tick;
 };

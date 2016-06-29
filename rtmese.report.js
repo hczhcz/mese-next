@@ -166,7 +166,7 @@ module.exports.printPlayer = function (game, player) {
     return {
         player_count: game.player_count,
         now_period: round100(game.now_period),
-        progress: round100(game.now_tick / game.final_tick),
+        progress: round100(game.now_tick / game.total_tick),
 
         settings: printSettings(game),
         data: printData(game, player),
@@ -178,7 +178,7 @@ module.exports.printPublic = function (game) {
     return {
         player_count: game.player_count,
         now_period: round100(game.now_period),
-        progress: round100(game.now_tick / game.final_tick),
+        progress: round100(game.now_tick / game.total_tick),
 
         settings: printSettings(game),
         data_public: printDataPublic(game),

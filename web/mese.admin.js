@@ -15,15 +15,6 @@ define('mese.admin', function (require, module) {
         return result;
     };
 
-    $('#admin_games').change(function () {
-        $('#admin_game_game').val($('#admin_games').val());
-    });
-
-    $('#admin_game_submit').click(function () {
-        // load player / public report
-        loadReport($('#admin_game_game').val());
-    });
-
     $('#admin_report_submit').click(function () {
         // load summary report
         socket.emit('admin_mese_report', {

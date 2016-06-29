@@ -4,7 +4,8 @@ define('mese.game', function (require, module) {
     var bind = require('ui.bind');
     var message = require('ui.message');
     var socket = require('socket');
-    var user = require('site.user')
+    var user = require('site.user');
+    var admin = require('site.admin');
 
     // report
 
@@ -335,4 +336,6 @@ define('mese.game', function (require, module) {
 
     user.gameLoaders.defaultGame = reloadReport;
     user.gameLoaders.loadGame = loadReport;
+    admin.gameLoaders.defaultGame = reloadReport;
+    admin.gameLoaders.loadGame = loadReport;
 });

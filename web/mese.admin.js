@@ -4,17 +4,6 @@ define('mese.admin', function (require, module) {
     var message = require('ui.message');
     var socket = require('socket');
 
-    var parseSettings = function (text) {
-        var data = text.split(/-{3,}/);
-        var result = [];
-
-        for (var i in data) {
-            result.push(eval('({' + data[i] + '})'));
-        }
-
-        return result;
-    };
-
     $('#admin_report_submit').click(function () {
         // load summary report
         socket.emit('admin_mese_report', {
@@ -34,14 +23,14 @@ define('mese.admin', function (require, module) {
             game: $('#admin_init_game').val(),
             players: $('#admin_init_players').val().split(','),
             preset: $('#admin_init_preset').val(),
-            settings: parseSettings($('#admin_settings').val()),
+            settings: eval($('#admin_settings').val()),
         });
     });
 
     $('#admin_alloc_submit').click(function () {
         socket.emit('admin_mese_alloc', {
             game: $('#admin_alloc_game').val(),
-            settings: parseSettings($('#admin_settings').val()),
+            settings: eval($('#admin_settings').val()),
         });
     });
 

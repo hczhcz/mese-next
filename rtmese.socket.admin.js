@@ -203,6 +203,33 @@ module.exports = function (socket, session) {
         );
     });
 
+    socket.on('admin_rtmese_stop', function (args) {
+        // args: game
+
+        if (
+            !session.sudo
+            || !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+        ) {
+            session.log('bad socket request');
+
+            return;
+        }
+
+        session.log('admin stop game ' + args.game);
+
+        manager.stop(
+            args.game,
+            function () {
+                socket.emit('admin_rtmese_stop_ok');
+            },
+            function () {
+                session.log('game is not running ' + args.game);
+
+                socket.emit('admin_rtmese_stop_fail');
+            }
+        );
+    });
+
     // socket.on('admin_rtmese_revent', function (args) { // not implemented
     // });
 };

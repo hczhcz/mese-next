@@ -147,7 +147,7 @@ module.exports = function (socket, session) {
                 }
             },
             function () {
-                session.log('wrong game name or type ' + args.game);
+                session.log('game is not running ' + args.game);
 
                 socket.emit('rtmese_submit_fail_game');
             }

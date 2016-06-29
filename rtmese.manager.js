@@ -50,6 +50,18 @@ module.exports.schedule = function (
     }
 };
 
+module.exports.stop = function (
+    name,
+    callback, fail
+) {
+    if (games[name] !== undefined) {
+        games[name].stop = true;
+        callback();
+    } else {
+        fail();
+    }
+};
+
 module.exports.get = function (
     name,
     callback, fail

@@ -93,7 +93,7 @@ module.exports = function (socket, session) {
             },
             function (setter) {
                 var gameObj = admin.init(
-                    args.players.length, args.ticks, args.settings
+                    args.players.length, args.ticks, args.events
                 );
 
                 setter(args.players, Buffer(JSON.stringify(gameObj)), function () {

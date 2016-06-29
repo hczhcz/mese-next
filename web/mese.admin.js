@@ -23,14 +23,14 @@ define('mese.admin', function (require, module) {
             game: $('#admin_init_game').val(),
             players: $('#admin_init_players').val().split(','),
             preset: $('#admin_init_preset').val(),
-            settings: eval($('#admin_settings').val()),
+            settings: eval('(' + $('#admin_settings').val() + ')'),
         });
     });
 
     $('#admin_alloc_submit').click(function () {
         socket.emit('admin_mese_alloc', {
             game: $('#admin_alloc_game').val(),
-            settings: eval($('#admin_settings').val()),
+            settings: eval('(' + $('#admin_settings').val() + ')'),
         });
     });
 

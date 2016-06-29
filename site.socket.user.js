@@ -101,7 +101,7 @@ module.exports = function (socket, session) {
         access.user(
             session.user,
             function (subscribes) {
-                socket.emit('subscribe_data', subscribes);
+                socket.emit('list_data', subscribes);
             },
             function () {
                 session.log('list not found');
@@ -134,7 +134,7 @@ module.exports = function (socket, session) {
             access.userSubscribe(
                 session.user, args.game, args.enabled,
                 function (subscribes) {
-                    socket.emit('subscribe_data', subscribes);
+                    socket.emit('list_data', subscribes);
                 },
                 function () {
                     session.log('subscription not allowed');

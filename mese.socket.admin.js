@@ -128,7 +128,7 @@ module.exports = function (socket, session) {
         if (args.players.length === 0 || args.players.length > config.meseMaxPlayer) {
             session.log('player count not supported');
 
-            socket.emit('admin_mese_init_fail_number');
+            socket.emit('admin_mese_init_fail_player');
         }
 
         access.gameAction(

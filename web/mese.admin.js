@@ -5,7 +5,6 @@ define('mese.admin', function (require, module) {
     var socket = require('socket');
 
     $('#admin_report_submit').click(function () {
-        // load summary report
         socket.emit('admin_mese_report', {
             game: $('#admin_report_game').val(),
         });
@@ -62,7 +61,7 @@ define('mese.admin', function (require, module) {
         message('Wrong game type');
     });
 
-    socket.on('admin_mese_init_fail_number', function (data) {
+    socket.on('admin_mese_init_fail_player', function (data) {
         message('Player count not supported');
     });
 

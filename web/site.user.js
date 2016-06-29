@@ -173,7 +173,7 @@ define('site.user', function (require, module) {
         });
     });
 
-    socket.on('subscribe_data', function (data) {
+    socket.on('list_data', function (data) {
         currentList = data;
 
         $('#list_content').empty();

@@ -111,6 +111,12 @@ define('mese.game', function (require, module) {
         });
     };
 
+    var refreshReport = function () {
+        if (currentGame !== undefined) {
+            loadReport(currentGame);
+        }
+    };
+
     // load from url hash
     var loadHash = function () {
         var urlHash = window.location.hash.slice(1);
@@ -121,19 +127,17 @@ define('mese.game', function (require, module) {
     loadHash();
     $(window).on('hashchange', loadHash);
 
-    var reloadReport = function () {
+    // auto refresh
+    socket.poll(function () {
         if (currentGame !== undefined) {
             socket.emit('mese_report', {
                 game: currentGame,
                 uid: currentUid,
             });
         }
-    };
+    }, 30000);
 
-    // auto refresh
-    socket.poll(reloadReport, 30000);
-
-    $('#report_refresh').click(reloadReport);
+    $('#report_refresh').click(refreshReport);
 
     $('#report_expand').click(function () {
         if (verboseEnabled) {
@@ -334,8 +338,8 @@ define('mese.game', function (require, module) {
         message('Wrong game type');
     });
 
-    user.gameLoaders.defaultGame = reloadReport;
+    user.gameLoaders.defaultGame = refreshReport;
     user.gameLoaders.loadGame = loadReport;
-    admin.gameLoaders.defaultGame = reloadReport;
+    admin.gameLoaders.defaultGame = refreshReport;
     admin.gameLoaders.loadGame = loadReport;
 });

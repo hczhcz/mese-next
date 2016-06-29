@@ -101,7 +101,7 @@ module.exports = function (socket, session) {
     });
 
     socket.on('rtmese_submit', function (args) {
-        // args: game, price, prod, mk, ci, rd
+        // args: game, price, prod_rate, mk, ci, rd
 
         if (
             session.user === undefined
@@ -149,7 +149,7 @@ module.exports = function (socket, session) {
             function () {
                 session.log('game is not running ' + args.game);
 
-                socket.emit('rtmese_submit_fail_game');
+                socket.emit('rtmese_submit_fail_running');
             }
         );
     });

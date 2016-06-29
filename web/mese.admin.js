@@ -34,7 +34,7 @@ define('mese.admin', function (require, module) {
     });
 
     socket.on('admin_mese_report_data', function (data) {
-        $('#admin_report').val(JSON.stringify(data)); // TODO: format?
+        $('#admin_report').val(JSON.stringify(data));
     });
 
     socket.on('admin_mese_report_fail_game', function (data) {

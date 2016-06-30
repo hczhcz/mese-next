@@ -8,7 +8,7 @@ module.exports.bool = function () {
 
 module.exports.int = function () {
     return function (num) {
-        return typeof num === 'number' && isFinite(num) && (0 | num) === num;
+        return typeof num === 'number' && isFinite(num) && Math.round(num) === num;
     };
 };
 

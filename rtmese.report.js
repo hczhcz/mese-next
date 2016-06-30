@@ -123,51 +123,51 @@ var printDataPublic = function (game) {
     return {
         decisions: {
             price: roundAll(game.decisions.price),
-            average_price_given: roundAll(game.data.average_price_given), // special
-            average_price: roundAll(game.data.average_price), // special
+            average_price_given: Math.round(game.data.average_price_given), // special
+            average_price: Math.round(game.data.average_price), // special
         },
 
         production: {
-            average_prod_cost_unit: sum(game.data.prod_cost_unit) / game.player_count,
-            average_prod_cost: sum(game.data.prod_cost) / game.player_count,
+            average_prod_cost_unit: Math.round(sum(game.data.prod_cost_unit) / game.player_count),
+            average_prod_cost: Math.round(sum(game.data.prod_cost) / game.player_count),
         },
 
         goods: {
-            average_goods: sum(game.data.goods) / game.player_count,
+            average_goods: Math.round(sum(game.data.goods) / game.player_count),
 
-            average_goods_cost_sold: sum(game.data.goods_cost_sold) / game.player_count,
+            average_goods_cost_sold: Math.round(sum(game.data.goods_cost_sold) / game.player_count),
         },
 
         orders: {
-            average_orders: sum(game.data.orders) / game.player_count,
+            average_orders: Math.round(sum(game.data.orders) / game.player_count),
             sold: roundAll(game.data.sold),
-            average_sold: sum(game.data.sold) / game.player_count,
-            average_inventory: sum(game.data.inventory) / game.player_count,
-            average_unfilled: sum(game.data.unfilled) / game.player_count,
+            average_sold: Math.round(sum(game.data.sold) / game.player_count),
+            average_inventory: Math.round(sum(game.data.inventory) / game.player_count),
+            average_unfilled: Math.round(sum(game.data.unfilled) / game.player_count),
         },
 
         balance: {
-            average_capital: sum(game.data.capital) / game.player_count,
-            average_size: sum(game.data.size) / game.player_count,
+            average_capital: Math.round(sum(game.data.capital) / game.player_count),
+            average_size: Math.round(sum(game.data.size) / game.player_count),
 
             sales: roundAll(game.data.sales),
-            average_sales: sum(game.data.sales) / game.player_count,
+            average_sales: Math.round(sum(game.data.sales) / game.player_count),
             cost_before_tax: roundAll(game.data.cost_before_tax),
-            average_cost_before_tax: sum(game.data.cost_before_tax) / game.player_count,
+            average_cost_before_tax: Math.round(sum(game.data.cost_before_tax) / game.player_count),
             profit_before_tax: roundAll(game.data.profit_before_tax),
-            average_profit_before_tax: sum(game.data.profit_before_tax) / game.player_count,
+            average_profit_before_tax: Math.round(sum(game.data.profit_before_tax) / game.player_count),
             tax_charge: roundAll(game.data.tax_charge),
-            average_tax_charge: sum(game.data.tax_charge) / game.player_count,
+            average_tax_charge: Math.round(sum(game.data.tax_charge) / game.player_count),
             profit: roundAll(game.data.profit),
-            average_profit: sum(game.data.profit) / game.player_count,
+            average_profit: Math.round(sum(game.data.profit) / game.player_count),
 
             retern: roundAll(game.data.retern),
-            average_retern: sum(game.data.retern) / game.player_count,
+            average_retern: Math.round(sum(game.data.retern) / game.player_count),
         },
 
         mpi: {
             mpi: roundAll(game.data.mpi),
-            average_mpi: sum(game.data.mpi) / game.player_count,
+            average_mpi: Math.round(sum(game.data.mpi) / game.player_count),
         },
     };
 };

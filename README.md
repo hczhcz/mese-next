@@ -46,9 +46,9 @@ A browser supports HTML5, CSS3, and ES5 features is required to run MESE-Next. T
 
 MESE-Next Frontend supports:
 
-* Firefox 16+
-* Chrome & Chromium 22+
-* IE 11
+* Firefox 29+
+* Chrome & Chromium 20+
+* IE 10+
 * Safari 7+
 * Mobile Safari 7+
 
@@ -61,7 +61,7 @@ MESE-Next Frontend probably works under:
 * Safari 5+
 * Opera 11+
 * Mobile Safari 5+
-* Android Browser 4+
+* Android Browser 4.1+
 
 MESE-Next does not support:
 

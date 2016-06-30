@@ -7,253 +7,158 @@ define('rtmese.game', function (require, module) {
     var user = require('site.user');
     var admin = require('site.admin');
 
-    // // report
+    // report
 
-    // var currentGame = undefined;
-    // var currentSettings = undefined;
+    // DOM change
+    $('#report [bind]').append('<span></span>');
 
-    // var verboseEnabled = false;
+    var currentGame = undefined;
 
-    // var initReport = function (game, period, uid) {
-    //     if (game !== currentGame) {
-    //         message('Game: ' + game);
-    //     }
-    //     if (game === currentGame && period !== currentPeriod) {
-    //         message('Period: ' + period);
-    //     }
+    var verboseEnabled = false;
 
-    //     currentGame = game;
-    //     currentPeriod = period;
-    //     currentUid = uid;
+    var initReport = function (game, period, progress, delay) {
+        if (game !== currentGame) {
+            message('Game: ' + game);
+        }
 
-    //     bind.variable('game', currentGame);
-    //     bind.variable('period', currentPeriod - 1);
-    //     bind.variable('next_period', currentPeriod);
+        currentGame = game;
 
-    //     $('.last').addClass('hide');
-    //     $('.now').addClass('hide');
-    //     $('.next').addClass('hide');
-    // };
+        bind.variable('game', currentGame);
 
-    // var initPlayerList = function (count) {
-    //     // remove items
+        // TODO: progress & delay
+    };
 
-    //     $('#report_list [bind]').remove();
+    var initPlayerList = function (count) {
+        // remove items
 
-    //     // add items
+        $('#report_list [bind]').remove();
 
-    //     var spanLast = '<span class="last"><span></span>&nbsp;</span>';
-    //     var spanNow = '<span class="now"><span></span></span>';
+        // add items
 
-    //     for (var i = 0; i < count; ++i) {
-    //         $('#report_players')
-    //             .append(
-    //                 '<th bind="players.' + i + '">'
-    //                 + spanNow
-    //                 + '</th>');
-    //         $('#report_list [list]').each(function () {
-    //             $(this).append(
-    //                 '<td bind="' + $(this).attr('list') + '.' + i + '">'
-    //                 + spanLast + spanNow
-    //                 + '</td>'
-    //             );
-    //         });
-    //     }
-    // };
+        for (var i = 0; i < count; ++i) {
+            $('#report_players')
+                .append(
+                    '<th bind="players.' + i + '">'
+                    + '<span></span>'
+                    + '</th>'
+                );
+            $('#report_list [list]').each(function () {
+                $(this).append(
+                    '<td bind="' + $(this).attr('list') + '.' + i + '">'
+                    + '<span></span>'
+                    + '</td>'
+                );
+            });
+        }
+    };
 
-    // var showStatus = function (status) {
-    //     $('#report_players [bind]').removeClass('next');
+    var showReport = function (data, tail, path) {
+        if (typeof data === 'string' || typeof data === 'number') {
+            var target = $('[bind="' + path + '"]' + tail);
 
-    //     var unhandled = status;
-    //     for (var i = 0; unhandled; ++i) {
-    //         if (unhandled & 1 << i) {
-    //             // done
-    //             $('#report_players [bind="players.' + i + '"]').addClass('next');
-    //         }
+            if (target.length === 1) {
+                target.find('span').text(data);
+                target.removeClass('hide');
+            } else {
+                // never reach
+                throw Error('data binding error ' + path);
+            }
+        } else if (typeof data === 'object') {
+            for (var i in data) {
+                showReport(
+                    data[i], tail,
+                    path !== undefined ? path + '.' + i : i
+                );
+            }
+        }
+    };
 
-    //         unhandled &= ~(1 << i);
-    //     }
-    // };
+    var joinGame = function (game) {
+        socket.emit('rtmese_join', {
+            game: game,
+        });
+    };
 
-    // var showReport = function (data, tail, path) {
-    //     if (typeof data === 'string' || typeof data === 'number') {
-    //         var target = $('[bind="' + path + '"] ' + tail);
+    // load from url hash
+    var loadHash = function () {
+        var urlHash = window.location.hash.slice(1);
+        if (urlHash !== '') {
+            joinGame(urlHash);
+        }
+    };
+    loadHash();
+    $(window).on('hashchange', loadHash);
 
-    //         if (target.length === 1) {
-    //             target.find('span').text(data);
-    //             target.removeClass('hide');
-    //         } else {
-    //             // never reach
-    //             throw Error('data binding error ' + path);
-    //         }
-    //     } else if (typeof data === 'object') {
-    //         for (var i in data) {
-    //             showReport(
-    //                 data[i], tail,
-    //                 path !== undefined ? path + '.' + i : i
-    //             );
-    //         }
-    //     }
-    // };
+    $('#report_expand').click(function () {
+        if (verboseEnabled) {
+            verboseEnabled = false;
 
-    // var loadReport = function (game) {
-    //     socket.emit('rtmese_report', {
-    //         game: game,
-    //         uid: -1, // force reload
-    //     });
-    // };
+            $('.report_verbose').addClass('hide');
+            $('#report_expand').text('+');
+        } else {
+            verboseEnabled = true;
 
-    // // load from url hash
-    // var loadHash = function () {
-    //     var urlHash = window.location.hash.slice(1);
-    //     if (urlHash !== '') {
-    //         loadReport(urlHash);
-    //     }
-    // };
-    // loadHash();
-    // $(window).on('hashchange', loadHash);
+            $('.report_verbose').removeClass('hide');
+            $('#report_expand').text('-');
+        }
+    });
 
-    // var reloadReport = function () {
-    //     if (currentGame !== undefined) {
-    //         socket.emit('rtmese_report', {
-    //             game: currentGame,
-    //             uid: currentUid,
-    //         });
-    //     }
-    // };
+    socket.on('rtmese_report_player', function (data) {
+        initReport(data.game, data.now_period, data.progress, data.delay);
+        initPlayerList(data.player_count); // prepare DOM
 
-    // // auto refresh
-    // socket.poll(reloadReport, 30000);
+        showReport(data.players, '', 'players');
 
-    // $('#report_refresh').click(reloadReport);
+        showReport(data.settings, '');
+        showReport(data.data, '');
+        showReport(data.data_public, '');
 
-    // $('#report_expand').click(function () {
-    //     if (verboseEnabled) {
-    //         verboseEnabled = false;
+        if (data.progress < 1) {
+            $('#submit_price')
+                .attr('min', data.settings.limits.price_min)
+                .attr('max', data.settings.limits.price_max);
+            $('#submit_prod_rate')
+                .attr('min', 0)
+                .attr('max', 1);
+            $('#submit_mk')
+                .attr('min', 0)
+                .attr('max', data.settings.limits.mk_limit);
+            $('#submit_ci')
+                .attr('min', 0)
+                .attr('max', data.settings.limits.ci_limit);
+            $('#submit_rd')
+                .attr('min', 0)
+                .attr('max', data.settings.limits.rd_limit);
 
-    //         $('.report_verbose').addClass('hide');
-    //         $('#report_expand').text('+');
-    //     } else {
-    //         verboseEnabled = true;
+            $('#submit input').attr('disabled', false);
+        } else {
+            $('#submit input').attr('disabled', true);
+        }
 
-    //         $('.report_verbose').removeClass('hide');
-    //         $('#report_expand').text('-');
-    //     }
-    // });
+        $('#submit').removeClass('hide');
+        $('#report').removeClass('hide');
+    });
 
-    // socket.on('rtmese_report_early', function (data) {
-    //     showStatus(data.status);
+    socket.on('rtmese_report_public', function (data) {
+        initReport(data.game, data.now_period, data.progress, data.delay);
+        initPlayerList(data.player_count); // prepare DOM
 
-    //     showReport(data.decisions, '.next');
-    //     showReport(data.data_early, '.next');
-    // });
+        showReport(data.players, '', 'players');
 
-    // socket.on('rtmese_report_player', function (data) {
-    //     initReport(data.game, data.now_period, data.uid);
-    //     initPlayerList(data.players.length); // prepare DOM
+        showReport(data.settings, '');
+        showReport(data.data_public, '');
 
-    //     showStatus(data.status);
-    //     showReport(data.players, '.now', 'players');
+        $('#submit').addClass('hide');
+        $('#report').removeClass('hide');
+    });
 
-    //     if (data.now_period >= 3) {
-    //         // showReport(data.last_decisions, '.last');
-    //         // showReport(data.last_data_early, '.last');
-    //         showReport(data.last_data, '.last');
-    //         showReport(data.last_data_public.decisions, '.last');
-    //         showReport(data.last_data_public.data_early, '.last');
-    //         showReport(data.last_data_public.data, '.last');
-    //     }
+    socket.on('rtmese_join_fail_game', function (data) {
+        message('Game not found');
+    });
 
-    //     showReport(data.settings, '.now');
-    //     showReport(data.decisions, '.now');
-    //     showReport(data.data_early, '.now');
-    //     showReport(data.data, '.now');
-    //     showReport(data.data_public.decisions, '.now');
-    //     showReport(data.data_public.data_early, '.now');
-    //     showReport(data.data_public.data, '.now');
-
-    //     if (data.next_settings !== undefined) {
-    //         showReport(data.next_settings, '.next');
-
-    //         var settingsStr = JSON.stringify(data.next_settings);
-    //         if (settingsStr !== currentSettings) {
-    //             $('#submit_price')
-    //                 .attr('min', data.next_settings.limits.price_min)
-    //                 .attr('max', data.next_settings.limits.price_max)
-    //                 .val(data.decisions.price);
-    //             $('#submit_prod_rate')
-    //                 .attr('min', 0)
-    //                 .attr('max', data.data_early.balance.size)
-    //                 .val(
-    //                     Math.round(
-    //                         data.data_early.balance.size
-    //                         * data.data_early.production.prod_rate
-    //                     )
-    //                 );
-    //             $('#submit_prod_rate').text(
-    //                 Math.round(
-    //                     100 * data.data_early.production.prod_rate
-    //                 )
-    //             );
-    //             $('#submit_mk')
-    //                 .attr('min', 0)
-    //                 .attr('max', data.next_settings.limits.mk_limit)
-    //                 .val(data.decisions.mk);
-    //             $('#submit_ci')
-    //                 .attr('min', 0)
-    //                 .attr('max', data.next_settings.limits.ci_limit)
-    //                 .val(data.decisions.ci);
-    //             $('#submit_rd')
-    //                 .attr('min', 0)
-    //                 .attr('max', data.next_settings.limits.rd_limit)
-    //                 .val(data.decisions.rd);
-    //         }
-
-    //         currentSettings = settingsStr;
-    //         $('#submit input').attr('disabled', false);
-    //     } else {
-    //         currentSettings = undefined;
-    //         $('#submit input').attr('disabled', true);
-    //     }
-
-    //     $('#submit').removeClass('hide');
-    //     $('#report').removeClass('hide');
-    // });
-
-    // socket.on('rtmese_report_public', function (data) {
-    //     initReport(data.game, data.now_period, data.uid);
-    //     initPlayerList(data.players.length); // prepare DOM
-
-    //     showStatus(data.status);
-    //     showReport(data.players, '.now', 'players');
-
-    //     if (data.now_period >= 3) {
-    //         showReport(data.last_data_public.decisions, '.last');
-    //         showReport(data.last_data_public.data_early, '.last');
-    //         showReport(data.last_data_public.data, '.last');
-    //     }
-
-    //     showReport(data.settings, '.now');
-    //     showReport(data.data_public.decisions, '.now');
-    //     showReport(data.data_public.data_early, '.now');
-    //     showReport(data.data_public.data, '.now');
-
-    //     if (data.next_settings !== undefined) {
-    //         showReport(data.next_settings, '.next');
-    //     }
-
-    //     currentSettings = undefined;
-    //     $('#submit').addClass('hide');
-    //     $('#report').removeClass('hide');
-    // });
-
-    // socket.on('rtmese_report_fail_game', function (data) {
-    //     message('Game not found');
-    // });
-
-    // socket.on('rtmese_report_fail_type', function (data) {
-    //     message('Wrong game type');
-    // });
+    socket.on('rtmese_join_fail_type', function (data) {
+        message('Wrong game type');
+    });
 
     // submit
 
@@ -312,8 +217,8 @@ define('rtmese.game', function (require, module) {
         message('Game is not running');
     });
 
-    user.gameLoaders.defaultGame = reloadReport;
-    user.gameLoaders.loadGame = loadReport;
-    admin.gameLoaders.defaultGame = reloadReport;
-    admin.gameLoaders.loadGame = loadReport;
+    user.gameLoaders.defaultGame = joinGame;
+    user.gameLoaders.loadGame = joinGame;
+    admin.gameLoaders.defaultGame = joinGame;
+    admin.gameLoaders.loadGame = joinGame;
 });

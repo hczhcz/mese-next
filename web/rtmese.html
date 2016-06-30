@@ -68,8 +68,7 @@
         </table>
     </div>
 
-    <!-- <table id='report' class='content hide'> -->
-    <table id='report' class='content'>
+    <table id='report' class='content hide'>
         <tr>
             <th colspan='2'>
                 <h2>
@@ -83,7 +82,7 @@
                 <h3>Early Report</h3>
                 <table>
                     <tr><th>Production</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Prod rate</td><td bind='production.prod_rate'></td></tr>
+                    <tr><td>Prod</td><td bind='production.prod'></td></tr>
                     <tr class='report_verbose hide'><td>Prod rate exceed</td><td bind='production.prod_over'></td></tr>
                     <tr><td>Unit prod cost</td><td bind='production.prod_cost_unit'></td><td bind='production.average_prod_cost_unit'></td></tr>
                     <tr><td>Marginal cost</td><td bind='production.prod_cost_marginal'></td></tr>
@@ -150,7 +149,7 @@
                 <div id='report_list_div'>
                     <table id='report_list'>
                         <tr id='report_players'><th>Player</th></tr>
-                        <tr list='price'><td>Price</td></tr>
+                        <tr list='decisions.price'><td>Price</td></tr>
                         <tr list='orders.sold'><td>Units sold</td></tr>
                         <tr list='balance.sales'><td>Sales income</td></tr>
                         <tr list='balance.cost_before_tax'><td>Cost before tax</td></tr>
@@ -203,27 +202,27 @@
                     <tr><td>Player name</td><td></td><td var='user'></td></tr>
                     <tr>
                         <td>Price</td>
-                        <td bind='price'></td>
+                        <td bind='decisions.price'></td>
                         <td><input id='submit_price' type='number' step='any' /></td>
                     </tr>
                     <tr>
                         <td>Production</td>
-                        <td bind='prod_rate'></td>
+                        <td bind='decisions.prod_rate'></td>
                         <td><input id='submit_prod_rate' type='number' step='any' /></td>
                     </tr>
                     <tr>
                         <td>Marketing</td>
-                        <td bind='mk'></td>
+                        <td bind='decisions.mk'></td>
                         <td><input id='submit_mk' type='number' step='any' /></td>
                     </tr>
                     <tr>
                         <td>Investment</td>
-                        <td bind='ci'></td>
+                        <td bind='decisions.ci'></td>
                         <td><input id='submit_ci' type='number' step='any' /></td>
                     </tr>
                     <tr>
                         <td>R &amp; D</td>
-                        <td bind='rd'></td>
+                        <td bind='decisions.rd'></td>
                         <td><input id='submit_rd' type='number' step='any' /></td>
                     </tr>
                     <tr>

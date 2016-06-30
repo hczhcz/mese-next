@@ -58,7 +58,8 @@ define('mese.game', function (require, module) {
                 .append(
                     '<th bind="players.' + i + '">'
                     + spanNow
-                    + '</th>');
+                    + '</th>'
+                );
             $('#report_list [list]').each(function () {
                 $(this).append(
                     '<td bind="' + $(this).attr('list') + '.' + i + '">'
@@ -85,7 +86,7 @@ define('mese.game', function (require, module) {
 
     var showReport = function (data, tail, path) {
         if (typeof data === 'string' || typeof data === 'number') {
-            var target = $('[bind="' + path + '"] ' + tail);
+            var target = $('[bind="' + path + '"]' + tail);
 
             if (target.length === 1) {
                 target.find('span').text(data);
@@ -156,36 +157,34 @@ define('mese.game', function (require, module) {
     socket.on('mese_report_early', function (data) {
         showStatus(data.status);
 
-        showReport(data.decisions, '.next');
-        showReport(data.data_early, '.next');
+        showReport(data.decisions, ' .next');
+        showReport(data.data_early, ' .next');
     });
 
     socket.on('mese_report_player', function (data) {
         initReport(data.game, data.now_period, data.uid);
-        initPlayerList(data.players.length); // prepare DOM
+        initPlayerList(data.player_count); // prepare DOM
 
         showStatus(data.status);
-        showReport(data.players, '.now', 'players');
+        showReport(data.players, ' .now', 'players');
 
         if (data.now_period >= 3) {
-            // showReport(data.last_decisions, '.last');
-            // showReport(data.last_data_early, '.last');
-            showReport(data.last_data, '.last');
-            showReport(data.last_data_public.decisions, '.last');
-            showReport(data.last_data_public.data_early, '.last');
-            showReport(data.last_data_public.data, '.last');
+            showReport(data.last_data, ' .last');
+            showReport(data.last_data_public.decisions, ' .last');
+            showReport(data.last_data_public.data_early, ' .last');
+            showReport(data.last_data_public.data, ' .last');
         }
 
-        showReport(data.settings, '.now');
-        showReport(data.decisions, '.now');
-        showReport(data.data_early, '.now');
-        showReport(data.data, '.now');
-        showReport(data.data_public.decisions, '.now');
-        showReport(data.data_public.data_early, '.now');
-        showReport(data.data_public.data, '.now');
+        showReport(data.settings, ' .now');
+        showReport(data.decisions, ' .now');
+        showReport(data.data_early, ' .now');
+        showReport(data.data, ' .now');
+        showReport(data.data_public.decisions, ' .now');
+        showReport(data.data_public.data_early, ' .now');
+        showReport(data.data_public.data, ' .now');
 
         if (data.next_settings !== undefined) {
-            showReport(data.next_settings, '.next');
+            showReport(data.next_settings, ' .next');
 
             var settingsStr = JSON.stringify(data.next_settings);
             if (settingsStr !== currentSettings) {
@@ -234,24 +233,24 @@ define('mese.game', function (require, module) {
 
     socket.on('mese_report_public', function (data) {
         initReport(data.game, data.now_period, data.uid);
-        initPlayerList(data.players.length); // prepare DOM
+        initPlayerList(data.player_count); // prepare DOM
 
         showStatus(data.status);
-        showReport(data.players, '.now', 'players');
+        showReport(data.players, ' .now', 'players');
 
         if (data.now_period >= 3) {
-            showReport(data.last_data_public.decisions, '.last');
-            showReport(data.last_data_public.data_early, '.last');
-            showReport(data.last_data_public.data, '.last');
+            showReport(data.last_data_public.decisions, ' .last');
+            showReport(data.last_data_public.data_early, ' .last');
+            showReport(data.last_data_public.data, ' .last');
         }
 
-        showReport(data.settings, '.now');
-        showReport(data.data_public.decisions, '.now');
-        showReport(data.data_public.data_early, '.now');
-        showReport(data.data_public.data, '.now');
+        showReport(data.settings, ' .now');
+        showReport(data.data_public.decisions, ' .now');
+        showReport(data.data_public.data_early, ' .now');
+        showReport(data.data_public.data, ' .now');
 
         if (data.next_settings !== undefined) {
-            showReport(data.next_settings, '.next');
+            showReport(data.next_settings, ' .next');
         }
 
         currentSettings = undefined;

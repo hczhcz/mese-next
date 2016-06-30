@@ -157,7 +157,7 @@ define('mese.game', function (require, module) {
     socket.on('mese_report_early', function (data) {
         showStatus(data.status);
 
-        showReport(data.decisions, ' .next');
+        showReport(data.decisions, ' .next', 'decisions');
         showReport(data.data_early, ' .next');
     });
 
@@ -170,16 +170,16 @@ define('mese.game', function (require, module) {
 
         if (data.now_period >= 3) {
             showReport(data.last_data, ' .last');
-            showReport(data.last_data_public.decisions, ' .last');
+            showReport(data.last_data_public.decisions, ' .last', 'decisions');
             showReport(data.last_data_public.data_early, ' .last');
             showReport(data.last_data_public.data, ' .last');
         }
 
         showReport(data.settings, ' .now');
-        showReport(data.decisions, ' .now');
+        showReport(data.decisions, ' .now', 'decisions');
         showReport(data.data_early, ' .now');
         showReport(data.data, ' .now');
-        showReport(data.data_public.decisions, ' .now');
+        showReport(data.data_public.decisions, ' .now', 'decisions');
         showReport(data.data_public.data_early, ' .now');
         showReport(data.data_public.data, ' .now');
 
@@ -239,13 +239,13 @@ define('mese.game', function (require, module) {
         showReport(data.players, ' .now', 'players');
 
         if (data.now_period >= 3) {
-            showReport(data.last_data_public.decisions, ' .last');
+            showReport(data.last_data_public.decisions, ' .last', 'decisions');
             showReport(data.last_data_public.data_early, ' .last');
             showReport(data.last_data_public.data, ' .last');
         }
 
         showReport(data.settings, ' .now');
-        showReport(data.data_public.decisions, ' .now');
+        showReport(data.data_public.decisions, ' .now', 'decisions');
         showReport(data.data_public.data_early, ' .now');
         showReport(data.data_public.data, ' .now');
 

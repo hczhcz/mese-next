@@ -26,7 +26,7 @@ module.exports = function (socket, session) {
             function (uid, players, gameData) {
                 var print = function (report) {
                     report.game = args.game;
-                    report.uid = uid;
+                    // report.uid = uid;
                     report.players = players;
 
                     socket.emit('admin_rtmese_report_data', report);

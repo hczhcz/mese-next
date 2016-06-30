@@ -27,14 +27,14 @@ module.exports = function (socket, session) {
                         gameObj, player,
                         function (report) {
                             report.game = args.game;
-                            report.uid = uid;
+                            // report.uid = uid;
                             report.players = players;
 
                             socket.emit('rtmese_report_player', report);
                         },
                         function (report) {
                             report.game = args.game;
-                            report.uid = uid;
+                            // report.uid = uid;
                             report.players = players;
 
                             socket.emit('rtmese_report_public', report);
@@ -72,19 +72,13 @@ module.exports = function (socket, session) {
                             };
 
                             print(gameObj, player);
-
-                            socket.emit('rtmese_join_active');
                         },
                         function () {
                             print(JSON.parse(gameData), player);
-
-                            socket.emit('rtmese_join_finish');
                         }
                     );
                 } else {
                     print(JSON.parse(gameData), player);
-
-                    socket.emit('rtmese_join_finish');
                 }
             },
             function () {

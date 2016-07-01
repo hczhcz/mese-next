@@ -24,10 +24,17 @@ define('rtmese.game', function (require, module) {
         currentGame = game;
 
         bind.variable('game', currentGame);
-        bind.variable('period', period);
-        bind.variable('progress', progress);
+        bind.variable('period', period.toFixed(2));
+        bind.variable('progress', 100 * progress + '%');
 
-        // TODO: progress & delay
+        $('#report_period').css('right', (100 - 100 * (
+            period - Math.floor(period)
+        )) + '%');
+        $('#report_progress').css('right', (100 - 100 * (
+            progress
+        )) + '%');
+
+        // TODO: delay
     };
 
     var initPlayerList = function (count) {

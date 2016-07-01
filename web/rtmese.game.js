@@ -16,7 +16,7 @@ define('rtmese.game', function (require, module) {
 
     var verboseEnabled = false;
 
-    var initReport = function (game, period, progress, delay) {
+    var initReport = function (game, playing, delay) {
         if (game !== currentGame) {
             message('Game: ' + game);
         }
@@ -24,17 +24,22 @@ define('rtmese.game', function (require, module) {
         currentGame = game;
 
         bind.variable('game', currentGame);
-        bind.variable('period', period.toFixed(2));
-        bind.variable('progress', 100 * progress + '%');
 
-        $('#report_period').css('right', (100 - 100 * (
-            period - Math.floor(period)
-        )) + '%');
-        $('#report_progress').css('right', (100 - 100 * (
-            progress
-        )) + '%');
+        if (playing) {
+            if (delay === 0) {
+                // nothing
+            } else if (delay === 1) {
+                message('Go!');
+            } else if (delay === 4) {
+                message('Ready...');
+            } else if (delay % 30 === 0) {
+                message('Game will start in ' + delay + ' ticks');
+            }
 
-        // TODO: delay
+            $('#submit input').attr('disabled', false);
+        } else {
+            $('#submit input').attr('disabled', true);
+        }
     };
 
     var initPlayerList = function (count) {
@@ -59,6 +64,18 @@ define('rtmese.game', function (require, module) {
                 );
             });
         }
+    };
+
+    var showProgress = function (period, progress) {
+        bind.variable('period', period.toFixed(2));
+        bind.variable('progress', Math.round(100 * progress) + '%');
+
+        $('#report_period').css('right', (100 - 100 * (
+            period - Math.floor(period)
+        )) + '%');
+        $('#report_progress').css('right', (100 - 100 * (
+            progress
+        )) + '%');
     };
 
     var showReport = function (data, tail, path) {
@@ -113,8 +130,10 @@ define('rtmese.game', function (require, module) {
     });
 
     socket.on('rtmese_report_player', function (data) {
-        initReport(data.game, data.now_period, data.progress, data.delay);
+        initReport(data.game, data.playing, data.delay);
         initPlayerList(data.player_count); // prepare DOM
+
+        showProgress(data.now_period, data.progress);
 
         showReport(data.players, '', 'players');
 
@@ -122,7 +141,7 @@ define('rtmese.game', function (require, module) {
         showReport(data.data, '');
         showReport(data.data_public, '');
 
-        if (data.progress < 1) {
+        if (data.progress < 1 && data.playing) {
             $('#submit_price')
                 .attr('min', data.settings.limits.price_min)
                 .attr('max', data.settings.limits.price_max);
@@ -149,8 +168,10 @@ define('rtmese.game', function (require, module) {
     });
 
     socket.on('rtmese_report_public', function (data) {
-        initReport(data.game, data.now_period, data.progress, data.delay);
+        initReport(data.game, data.playing, data.delay);
         initPlayerList(data.player_count); // prepare DOM
+
+        showProgress(data.now_period, data.progress);
 
         showReport(data.players, '', 'players');
 

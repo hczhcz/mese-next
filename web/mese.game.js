@@ -166,6 +166,7 @@ define('mese.game', function (require, module) {
         initPlayerList(data.player_count); // prepare DOM
 
         showStatus(data.status);
+
         showReport(data.players, ' .now', 'players');
 
         if (data.now_period >= 3) {
@@ -236,6 +237,7 @@ define('mese.game', function (require, module) {
         initPlayerList(data.player_count); // prepare DOM
 
         showStatus(data.status);
+
         showReport(data.players, ' .now', 'players');
 
         if (data.now_period >= 3) {

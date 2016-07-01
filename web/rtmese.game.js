@@ -11,7 +11,7 @@ define('rtmese.game', function (require, module) {
 
     // DOM change
     $('#report [bind]').append('<span></span>');
-    $('.report_pd :first-child').append('<span class="pd">/p</span>');
+    $('.report_pd>:first-child').append('<span class="pd">/p</span>');
 
     var currentGame = undefined;
 
@@ -36,10 +36,6 @@ define('rtmese.game', function (require, module) {
             } else if (delay % 30 === 0) {
                 message('Game will start in ' + delay + ' ticks');
             }
-
-            $('#submit input').attr('disabled', false);
-        } else {
-            $('#submit input').attr('disabled', true);
         }
     };
 
@@ -201,36 +197,6 @@ define('rtmese.game', function (require, module) {
     });
 
     // submit
-
-    $('#submit_price').change(function () {
-        $('#submit_price').val(
-            0.01 * Math.round(100 * $('#submit_price').val())
-        );
-    });
-
-    // $('#submit_prod_rate').change(function () {
-    //     $('#submit_prod_rate').val(
-    //         0.01 * Math.round(100 * $('#submit_prod_rate').val())
-    //     );
-    // });
-
-    $('#submit_mk').change(function () {
-        $('#submit_mk').val(
-            0.01 * Math.round(100 * $('#submit_mk').val())
-        );
-    });
-
-    $('#submit_ci').change(function () {
-        $('#submit_ci').val(
-            0.01 * Math.round(100 * $('#submit_ci').val())
-        );
-    });
-
-    $('#submit_rd').change(function () {
-        $('#submit_rd').val(
-            0.01 * Math.round(100 * $('#submit_rd').val())
-        );
-    });
 
     $('#submit_submit').click(function (event) {
         event.preventDefault();

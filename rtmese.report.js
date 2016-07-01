@@ -1,7 +1,7 @@
 'use strict';
 
 var round100 = function (value) {
-    return 0.01 * Math.round(100 * value);
+    return Math.round(100 * value) / 100; // (0.01 * value) may emit wrong result
 };
 
 var printSettings = function (game) {

@@ -272,7 +272,7 @@ define('mese.game', function (require, module) {
 
     $('#submit_price').change(function () {
         $('#submit_price').val(
-            0.01 * Math.round(100 * $('#submit_price').val())
+            Math.round(100 * $('#submit_price').val()) / 100
         );
     });
 
@@ -289,19 +289,19 @@ define('mese.game', function (require, module) {
 
     $('#submit_mk').change(function () {
         $('#submit_mk').val(
-            0.01 * Math.round(100 * $('#submit_mk').val())
+            Math.round(100 * $('#submit_mk').val()) / 100
         );
     });
 
     $('#submit_ci').change(function () {
         $('#submit_ci').val(
-            0.01 * Math.round(100 * $('#submit_ci').val())
+            Math.round(100 * $('#submit_ci').val()) / 100
         );
     });
 
     $('#submit_rd').change(function () {
         $('#submit_rd').val(
-            0.01 * Math.round(100 * $('#submit_rd').val())
+            Math.round(100 * $('#submit_rd').val()) / 100
         );
     });
 

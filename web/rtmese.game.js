@@ -106,6 +106,12 @@ define('rtmese.game', function (require, module) {
         });
     };
 
+    var refreshReport = function () {
+        if (currentGame !== undefined) {
+            joinGame(currentGame);
+        }
+    };
+
     // load from url hash
     var loadHash = function () {
         var urlHash = window.location.hash.slice(1);
@@ -117,13 +123,7 @@ define('rtmese.game', function (require, module) {
     $(window).on('hashchange', loadHash);
 
     // auto refresh
-    socket.poll(function () {
-        if (currentGame !== undefined) {
-            socket.emit('rtmese_join', {
-                game: currentGame,
-            });
-        }
-    }, 30000);
+    socket.poll(refreshReport, 30000); // TODO: uid?
 
     $('#report_expand').click(function () {
         if (verboseEnabled) {
@@ -257,8 +257,8 @@ define('rtmese.game', function (require, module) {
         message('Game is not running');
     });
 
-    user.gameLoaders.defaultGame = joinGame;
+    user.gameLoaders.defaultGame = refreshReport;
     user.gameLoaders.loadGame = joinGame;
-    admin.gameLoaders.defaultGame = joinGame;
+    admin.gameLoaders.defaultGame = refreshReport;
     admin.gameLoaders.loadGame = joinGame;
 });

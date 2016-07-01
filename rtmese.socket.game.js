@@ -65,20 +65,20 @@ module.exports = function (socket, session) {
                     manager.get(
                         args.game,
                         function (gameObj) {
-                            gameObj['check_' + player] = function (name) {
-                                return name === players[player];
-                            };
-
-                            gameObj['notify_' + player] = function () {
-                                print(gameObj, player, true);
-                            };
-
                             if (session.rtmese_free !== undefined) {
                                 session.rtmese_free();
                             }
                             session.rtmese_free = function () {
                                 delete gameObj['check_' + player];
                                 delete gameObj['notify_' + player];
+                            };
+
+                            gameObj['check_' + player] = function (name) {
+                                return name === players[player];
+                            };
+
+                            gameObj['notify_' + player] = function () {
+                                print(gameObj, player, true);
                             };
 
                             print(gameObj, player, true);

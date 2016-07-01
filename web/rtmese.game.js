@@ -115,6 +115,15 @@ define('rtmese.game', function (require, module) {
     loadHash();
     $(window).on('hashchange', loadHash);
 
+    // auto refresh
+    socket.poll(function () {
+        if (currentGame !== undefined) {
+            socket.emit('rtmese_join', {
+                game: currentGame,
+            });
+        }
+    }, 30000);
+
     $('#report_expand').click(function () {
         if (verboseEnabled) {
             verboseEnabled = false;

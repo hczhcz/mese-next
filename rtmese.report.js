@@ -118,7 +118,7 @@ var printDataPublic = function (game) {
         }
 
         return l;
-    }
+    };
 
     return {
         decisions: {

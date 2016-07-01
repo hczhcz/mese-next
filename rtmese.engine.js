@@ -230,6 +230,15 @@ module.exports.exec = function (game) {
             0, game.settings.rd_limit / game.player_count
         );
 
+        // check the loan limit
+
+        if (game.data.loan[i] > game.settings.loan_limit / game.player_count) {
+            game.decisions.prod_rate[i] = 0;
+            game.decisions.mk[i] = 0;
+            game.decisions.ci[i] = 0;
+            game.decisions.rd[i] = 0;
+        }
+
         // go
 
         game.data.prod[i] = game.decisions.prod_rate[i] * game.data.size[i];
@@ -268,14 +277,6 @@ module.exports.exec = function (game) {
             game.data.balance_early[i] >= 0 ?
             game.settings.interest_rate_cash : game.settings.interest_rate_loan
         ) * game.data.balance_early[i];
-
-        // TODO
-        // if (game.data.loan_early[i] > game.settings.loan_limit / game.player_count) {
-        //     game.decisions.prod_rate[i] = 0;
-        //     game.decisions.mk[i] = 0;
-        //     game.decisions.ci[i] = 0;
-        //     game.decisions.rd[i] = 0;
-        // }
 
         game.data.history_mk[i] += game.decisions.mk[i] * game.delta;
         game.data.history_rd[i] += game.decisions.rd[i] * game.delta;

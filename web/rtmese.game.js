@@ -24,6 +24,8 @@ define('rtmese.game', function (require, module) {
         currentGame = game;
 
         bind.variable('game', currentGame);
+        bind.variable('period', period);
+        bind.variable('progress', progress);
 
         // TODO: progress & delay
     };

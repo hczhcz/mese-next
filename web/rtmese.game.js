@@ -70,12 +70,12 @@ define('rtmese.game', function (require, module) {
         bind.variable('period', period.toFixed(2));
         bind.variable('progress', Math.round(100 * progress) + '%');
 
-        $('#report_period').css('right', (100 - 100 * (
-            period - Math.floor(period)
-        )) + '%');
-        $('#report_progress').css('right', (100 - 100 * (
-            progress
-        )) + '%');
+        $('#report_period').css('right',
+            100 - 100 * (period - Math.floor(period))
+        + '%');
+        $('#report_progress').css('right',
+            100 - 100 * progress
+        + '%');
     };
 
     var showReport = function (data, tail, path) {
@@ -235,9 +235,9 @@ define('rtmese.game', function (require, module) {
         });
     });
 
-    socket.on('rtmese_submit_ok', function (data) {
-        message('Submission ok');
-    });
+    // socket.on('rtmese_submit_ok', function (data) {
+    //     message('Submission ok');
+    // });
 
     socket.on('rtmese_submit_fail_player', function (data) {
         message('Submission not allowed');

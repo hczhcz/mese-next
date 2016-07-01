@@ -143,7 +143,7 @@ module.exports = function (socket, session) {
                         args.price, args.prod_rate, args.mk, args.ci, args.rd
                     );
 
-                    socket.emit('rtmese_submit_ok');
+                    // socket.emit('rtmese_submit_ok');
                 } else {
                     session.log('submission not allowed ' + args.game);
 

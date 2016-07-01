@@ -151,7 +151,7 @@ define('rtmese.game', function (require, module) {
         showReport(data.data, '');
         showReport(data.data_public, '');
 
-        if (data.progress < 1 && data.playing) {
+        if (data.playing) {
             $('#submit_price')
                 .attr('min', data.settings.limits.price_min)
                 .attr('max', data.settings.limits.price_max);

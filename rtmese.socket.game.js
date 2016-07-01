@@ -77,8 +77,8 @@ module.exports = function (socket, session) {
                                 return name === players[player];
                             };
 
-                            gameObj['notify_' + player] = function () {
-                                print(gameObj, player, true);
+                            gameObj['notify_' + player] = function (playing) {
+                                print(gameObj, player, playing);
                             };
 
                             print(gameObj, player, true);

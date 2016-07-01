@@ -60,3 +60,8 @@ body {
 
     background: none;
 }
+
+.pd {
+    color: gray;
+    font-size: 75%;
+}

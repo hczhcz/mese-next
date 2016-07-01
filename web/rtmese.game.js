@@ -11,6 +11,7 @@ define('rtmese.game', function (require, module) {
 
     // DOM change
     $('#report [bind]').append('<span></span>');
+    $('.report_pd :first-child').append('<span class="pd">/p</span>');
 
     var currentGame = undefined;
 

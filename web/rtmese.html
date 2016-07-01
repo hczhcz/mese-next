@@ -72,7 +72,7 @@
         <tr>
             <th colspan='2'>
                 <h2>
-                    Game "<span var='game'></span>"
+                    Realtime Game "<span var='game'></span>"
                     <span id='report_expand' class='report_button box'>+</span>
                 </h2>
             </th>
@@ -106,27 +106,27 @@
                 <h3>Early Report</h3>
                 <table>
                     <tr><th>Production</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Prod</td><td bind='production.prod'></td></tr>
+                    <tr class='report_pd'><td>Production</td><td bind='production.prod'></td></tr>
                     <tr class='report_verbose hide'><td>Prod rate exceed</td><td bind='production.prod_over'></td></tr>
                     <tr><td>Unit prod cost</td><td bind='production.prod_cost_unit'></td><td bind='production.average_prod_cost_unit'></td></tr>
                     <tr><td>Marginal cost</td><td bind='production.prod_cost_marginal'></td></tr>
-                    <tr><td>Total prod cost</td><td bind='production.prod_cost'></td><td bind='production.average_prod_cost'></td></tr>
+                    <tr class='report_pd'><td>Total prod cost</td><td bind='production.prod_cost'></td><td bind='production.average_prod_cost'></td></tr>
                 </table>
                 <table>
                     <tr><th>Goods</th><th>You</th><th>Average</th></tr>
                     <tr><td>Goods</td><td bind='goods.goods'></td><td bind='goods.average_goods'></td></tr>
                     <tr><td>Cost of goods</td><td bind='goods.goods_cost'></td></tr>
-                    <tr><td>Ideal sales income</td><td bind='goods.goods_max_sales'></td></tr>
+                    <tr class='report_pd'><td>Ideal sales income</td><td bind='goods.goods_max_sales'></td></tr>
                 </table>
                 <table>
                     <tr><th>Balance</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Deprecation</td><td bind='balance.deprecation'></td></tr>
+                    <tr class='report_pd'><td>Deprecation</td><td bind='balance.deprecation'></td></tr>
                     <tr><td>Capital</td><td bind='balance.capital'></td><td bind='balance.average_capital'></td></tr>
                     <tr><td>Size</td><td bind='balance.size'></td><td bind='balance.average_size'></td></tr>
-                    <tr><td>Spending</td><td bind='balance.spending'></td></tr>
+                    <tr class='report_pd'><td>Spending</td><td bind='balance.spending'></td></tr>
                     <tr class='report_verbose hide'><td>Early balance</td><td bind='balance.balance_early'></td></tr>
                     <tr><td>Early loan</td><td bind='balance.loan_early'></td></tr>
-                    <tr><td>Interest</td><td bind='balance.interest'></td></tr>
+                    <tr class='report_pd'><td>Interest</td><td bind='balance.interest'></td></tr>
                 </table>
                 <table>
                     <tr><th>History</th><th>You</th><th>Average</th></tr>
@@ -138,24 +138,24 @@
                 <h3>Result Report</h3>
                 <table>
                     <tr><th>Units</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Orders</td><td bind='orders.orders'></td><td bind='orders.average_orders'></td></tr>
-                    <tr><td>Units sold</td><td bind='orders.sold'></td><td bind='orders.average_sold'></td></tr>
+                    <tr class='report_pd'><td>Orders</td><td bind='orders.orders'></td><td bind='orders.average_orders'></td></tr>
+                    <tr class='report_pd'><td>Units sold</td><td bind='orders.sold'></td><td bind='orders.average_sold'></td></tr>
                     <tr><td>Inventory</td><td bind='orders.inventory'></td><td bind='orders.average_inventory'></td></tr>
-                    <tr><td>Unfilled</td><td bind='orders.unfilled'></td><td bind='orders.average_unfilled'></td></tr>
+                    <tr class='report_pd'><td>Unfilled</td><td bind='orders.unfilled'></td><td bind='orders.average_unfilled'></td></tr>
                 </table>
                 <table>
                     <tr><th>Goods</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Cost of goods sold</td><td bind='goods.goods_cost_sold'></td><td bind='goods.average_goods_cost_sold'></td></tr>
+                    <tr class='report_pd'><td>Cost of goods sold</td><td bind='goods.goods_cost_sold'></td><td bind='goods.average_goods_cost_sold'></td></tr>
                     <tr><td>Cost of inventory</td><td bind='goods.goods_cost_inventory'></td></tr>
                 </table>
                 <table>
                     <tr><th>Balance</th><th>You</th><th>Average</th></tr>
-                    <tr><td>Sales income</td><td bind='balance.sales'></td><td bind='balance.average_sales'></td></tr>
-                    <tr class='report_verbose hide'><td>Inventory charge</td><td bind='balance.inventory_charge'></td></tr>
-                    <tr><td>Cost before tax</td><td bind='balance.cost_before_tax'></td><td bind='balance.average_cost_before_tax'></td></tr>
-                    <tr><td>Profit before tax</td><td bind='balance.profit_before_tax'></td><td bind='balance.average_profit_before_tax'></td></tr>
-                    <tr class='report_verbose hide'><td>Tax charge</td><td bind='balance.tax_charge'></td><td bind='balance.average_tax_charge'></td></tr>
-                    <tr><td>Profit</td><td bind='balance.profit'></td><td bind='balance.average_profit'></td></tr>
+                    <tr class='report_pd'><td>Sales income</td><td bind='balance.sales'></td><td bind='balance.average_sales'></td></tr>
+                    <tr class='report_pd report_verbose hide'><td>Inventory charge</td><td bind='balance.inventory_charge'></td></tr>
+                    <tr class='report_pd'><td>Cost before tax</td><td bind='balance.cost_before_tax'></td><td bind='balance.average_cost_before_tax'></td></tr>
+                    <tr class='report_pd'><td>Profit before tax</td><td bind='balance.profit_before_tax'></td><td bind='balance.average_profit_before_tax'></td></tr>
+                    <tr class='report_pd report_verbose hide'><td>Tax charge</td><td bind='balance.tax_charge'></td><td bind='balance.average_tax_charge'></td></tr>
+                    <tr class='report_pd'><td>Profit</td><td bind='balance.profit'></td><td bind='balance.average_profit'></td></tr>
                     <tr class='report_verbose hide'><td>Balance</td><td bind='balance.balance'></td></tr>
                     <tr><td>Loan</td><td bind='balance.loan'></td></tr>
                     <tr><td>Cash</td><td bind='balance.cash'></td></tr>
@@ -174,12 +174,12 @@
                     <table id='report_list'>
                         <tr id='report_players'><th>Player</th></tr>
                         <tr list='decisions.price'><td>Price</td></tr>
-                        <tr list='orders.sold'><td>Units sold</td></tr>
-                        <tr list='balance.sales'><td>Sales income</td></tr>
-                        <tr list='balance.cost_before_tax'><td>Cost before tax</td></tr>
-                        <tr class='report_verbose hide' list='balance.profit_before_tax'><td>Profit before tax</td></tr>
-                        <tr class='report_verbose hide' list='balance.tax_charge'><td>Tax charge</td></tr>
-                        <tr list='balance.profit'><td>Profit</td></tr>
+                        <tr class='report_pd' list='orders.sold'><td>Units sold</td></tr>
+                        <tr class='report_pd' list='balance.sales'><td>Sales income</td></tr>
+                        <tr class='report_pd' list='balance.cost_before_tax'><td>Cost before tax</td></tr>
+                        <tr class='report_pd report_verbose hide' list='balance.profit_before_tax'><td>Profit before tax</td></tr>
+                        <tr class='report_pd report_verbose hide' list='balance.tax_charge'><td>Tax charge</td></tr>
+                        <tr class='report_pd' list='balance.profit'><td>Profit</td></tr>
                         <tr list='balance.retern'><td>Retained earning</td></tr>
                         <tr list='mpi.mpi'><td>MPI</td></tr>
                     </table>
@@ -193,22 +193,22 @@
                     <tr><th>Limits</th></tr>
                     <tr><td>Min price</td><td bind='limits.price_min'></td></tr>
                     <tr><td>Max price</td><td bind='limits.price_max'></td></tr>
-                    <tr><td>Max marketing</td><td bind='limits.mk_limit'></td></tr>
-                    <tr><td>Max investment</td><td bind='limits.ci_limit'></td></tr>
-                    <tr><td>Max R &amp; D</td><td bind='limits.rd_limit'></td></tr>
+                    <tr class='report_pd'><td>Max marketing</td><td bind='limits.mk_limit'></td></tr>
+                    <tr class='report_pd'><td>Max investment</td><td bind='limits.ci_limit'></td></tr>
+                    <tr class='report_pd'><td>Max R &amp; D</td><td bind='limits.rd_limit'></td></tr>
                     <tr><td>Max loan</td><td bind='limits.loan_limit'></td></tr>
                 </table>
                 <table>
                     <tr><th>Production</th></tr>
                     <tr><td>Balanced prod rate</td><td bind='production.prod_rate_balanced'></td></tr>
                     <tr><td>Unit fee</td><td bind='production.unit_fee'></td></tr>
-                    <tr><td>Deprecation rate</td><td bind='production.deprecation_rate'></td></tr>
+                    <tr class='report_pd'><td>Deprecation rate</td><td bind='production.deprecation_rate'></td></tr>
                 </table>
                 <table>
                     <tr><th>Balance</th></tr>
-                    <tr><td>Interest rate (cash)</td><td bind='balance.interest_rate_cash'></td></tr>
-                    <tr><td>Interest rate (loan)</td><td bind='balance.interest_rate_loan'></td></tr>
-                    <tr><td>Inventory fee</td><td bind='balance.inventory_fee'></td></tr>
+                    <tr class='report_pd'><td>Interest rate (cash)</td><td bind='balance.interest_rate_cash'></td></tr>
+                    <tr class='report_pd'><td>Interest rate (loan)</td><td bind='balance.interest_rate_loan'></td></tr>
+                    <tr class='report_pd'><td>Inventory fee</td><td bind='balance.inventory_fee'></td></tr>
                     <tr><td>Tax rate</td><td bind='balance.tax_rate'></td></tr>
                 </table>
             </td>
@@ -222,6 +222,7 @@
                 <table id='submit'>
                     <tr><th>Next Submission</th></tr>
                     <tr><td>Game</td><td></td><td var='game'></td></tr>
+                    <tr><td>Period</td><td></td><td var='period'></td></tr>
                     <tr><td>Player name</td><td></td><td var='user'></td></tr>
                     <tr>
                         <td>Price</td>
@@ -229,21 +230,21 @@
                         <td><input id='submit_price' type='number' step='any' /></td>
                     </tr>
                     <tr>
-                        <td>Production</td>
+                        <td>Production rate</td>
                         <td bind='decisions.prod_rate'></td>
                         <td><input id='submit_prod_rate' type='number' step='any' /></td>
                     </tr>
-                    <tr>
+                    <tr class='report_pd'>
                         <td>Marketing</td>
                         <td bind='decisions.mk'></td>
                         <td><input id='submit_mk' type='number' step='any' /></td>
                     </tr>
-                    <tr>
+                    <tr class='report_pd'>
                         <td>Investment</td>
                         <td bind='decisions.ci'></td>
                         <td><input id='submit_ci' type='number' step='any' /></td>
                     </tr>
-                    <tr>
+                    <tr class='report_pd'>
                         <td>R &amp; D</td>
                         <td bind='decisions.rd'></td>
                         <td><input id='submit_rd' type='number' step='any' /></td>

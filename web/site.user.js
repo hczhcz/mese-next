@@ -10,7 +10,11 @@ define('site.user', function (require, module) {
 
     // login
 
+    var loginExist = false;
+
     var loginDone = function (user) {
+        loginExist = true;
+
         bind.variable('user', user);
 
         $('#user').removeClass('hide');
@@ -145,7 +149,9 @@ define('site.user', function (require, module) {
 
     // auto refresh
     socket.poll(function () {
-        socket.emit('list');
+        if (loginExist) {
+            socket.emit('list');
+        }
     }, 60000);
 
     $('#subscribe_game').change(function () {

@@ -22,7 +22,7 @@ module.exports = function (socket, session) {
         access.game(
             'rtmese', args.game,
             function (uid, players, gameData) {
-                var print = function (gameObj, player) {
+                var print = function (gameObj, player, playing) {
                     game.print(
                         gameObj, player,
                         function (report) {
@@ -30,12 +30,22 @@ module.exports = function (socket, session) {
                             // report.uid = uid;
                             report.players = players;
 
+                            report.playing = playing;
+                            if (playing) {
+                                report.delay = gameObj.delay;
+                            }
+
                             socket.emit('rtmese_report_player', report);
                         },
                         function (report) {
                             report.game = args.game;
                             // report.uid = uid;
                             report.players = players;
+
+                            report.playing = playing;
+                            if (playing) {
+                                report.delay = gameObj.delay;
+                            }
 
                             socket.emit('rtmese_report_public', report);
                         }
@@ -60,7 +70,7 @@ module.exports = function (socket, session) {
                             };
 
                             gameObj['notify_' + player] = function () {
-                                print(gameObj, player);
+                                print(gameObj, player, true);
                             };
 
                             if (session.rtmese_free !== undefined) {
@@ -71,14 +81,14 @@ module.exports = function (socket, session) {
                                 delete gameObj['notify_' + player];
                             };
 
-                            print(gameObj, player);
+                            print(gameObj, player, true);
                         },
                         function () {
-                            print(JSON.parse(gameData), player);
+                            print(JSON.parse(gameData), player, false);
                         }
                     );
                 } else {
-                    print(JSON.parse(gameData), player);
+                    print(JSON.parse(gameData), player, false);
                 }
             },
             function () {

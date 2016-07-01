@@ -27,7 +27,7 @@ module.exports.schedule = function (
         } else if (game.delay > 0) {
             waitCallback(game);
 
-            game.delay -= config.rtmeseInterval;
+            game.delay -= 1;
 
             setTimeout(exec, config.rtmeseInterval);
         } else if (execAction(game)) {

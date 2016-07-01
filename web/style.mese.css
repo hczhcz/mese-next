@@ -41,3 +41,9 @@ body {
 .next, .hint_next {
     color: blue;
 }
+
+/* submit */
+
+#submit_prod {
+    max-width: 60%;
+}

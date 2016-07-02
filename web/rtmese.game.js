@@ -48,12 +48,11 @@ define('rtmese.game', function (require, module) {
         // add items
 
         for (var i = 0; i < count; ++i) {
-            $('#report_players')
-                .append(
-                    '<th bind="players.' + i + '">'
-                    + '<span></span>'
-                    + '</th>'
-                );
+            $('#report_players').append(
+                '<th bind="players.' + i + '">'
+                + '<span></span>'
+                + '</th>'
+            );
             $('#report_list [list]').each(function (index, element) {
                 $(element).append(
                     '<td bind="' + $(element).attr('list') + '.' + i + '">'

@@ -53,12 +53,11 @@ define('mese.game', function (require, module) {
         var spanNow = '<span class="now"><span></span></span>';
 
         for (var i = 0; i < count; ++i) {
-            $('#report_players')
-                .append(
-                    '<th bind="players.' + i + '">'
-                    + spanNow
-                    + '</th>'
-                );
+            $('#report_players').append(
+                '<th bind="players.' + i + '">'
+                + spanNow
+                + '</th>'
+            );
             $('#report_list [list]').each(function (index, element) {
                 $(element).append(
                     '<td bind="' + $(element).attr('list') + '.' + i + '">'

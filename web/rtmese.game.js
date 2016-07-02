@@ -14,7 +14,7 @@ define('rtmese.game', function (require, module) {
     $('.report_pd>:first-child').append('<span class="pd">/p</span>');
 
     var currentGame = undefined;
-    var currentBPR = undefined;
+    var currentSettings = undefined;
 
     var verboseEnabled = false;
 
@@ -148,7 +148,7 @@ define('rtmese.game', function (require, module) {
         showReport(data.data_public, '');
 
         if (data.playing) {
-            currentBPR = data.settings.balanced_prod_rate;
+            currentSettings = data.settings;
 
             $('#submit_price')
                 .attr('min', data.settings.limits.price_min)
@@ -204,7 +204,12 @@ define('rtmese.game', function (require, module) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_price').val());
             $('#submit_price').val(
-                [value - 5, value - 1, value + 1, value + 5][index]
+                [
+                    Math.max(value - 5, currentSettings.limits.price_min),
+                    Math.max(value - 1, currentSettings.limits.price_min),
+                    Math.min(value + 1, currentSettings.limits.price_max),
+                    Math.min(value + 5, currentSettings.limits.price_max),
+                ][index]
             );
         });
     });
@@ -213,7 +218,13 @@ define('rtmese.game', function (require, module) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_prod_rate').val());
             $('#submit_prod_rate').val(
-                [0, value - 0.05, currentBPR, value + 0.05, 1][index]
+                [
+                    0,
+                    Math.max(value - 0.05, 0),
+                    currentSettings.production.prod_rate_balanced,
+                    Math.min(value + 0.05, 1),
+                    1,
+                ][index]
             );
         });
     });
@@ -222,7 +233,12 @@ define('rtmese.game', function (require, module) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_mk').val());
             $('#submit_mk').val(
-                [0, value - 2500, value + 2500, $('#submit_mk').attr('max')][index]
+                [
+                    0,
+                    Math.max(value - 2500, 0),
+                    Math.min(value + 2500, currentSettings.limits.mk_limit),
+                    currentSettings.limits.mk_limit,
+                ][index]
             );
         });
     });
@@ -231,7 +247,12 @@ define('rtmese.game', function (require, module) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_ci').val());
             $('#submit_ci').val(
-                [0, value - 2500, value + 2500, $('#submit_ci').attr('max')][index]
+                [
+                    0,
+                    Math.max(value - 2500, 0),
+                    Math.min(value + 2500, currentSettings.limits.ci_limit),
+                    currentSettings.limits.ci_limit,
+                ][index]
             );
         });
     });
@@ -240,7 +261,12 @@ define('rtmese.game', function (require, module) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_rd').val());
             $('#submit_rd').val(
-                [0, value - 2500, value + 2500, $('#submit_rd').attr('max')][index]
+                [
+                    0,
+                    Math.max(value - 2500, 0),
+                    Math.min(value + 2500, currentSettings.limits.rd_limit),
+                    currentSettings.limits.rd_limit,
+                ][index]
             );
         });
     });

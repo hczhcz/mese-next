@@ -118,9 +118,6 @@ define('rtmese.game', function (require, module) {
     loadHash();
     $(window).on('hashchange', loadHash);
 
-    // auto refresh
-    socket.poll(refreshReport, 30000); // TODO: uid?
-
     $('#report_expand').click(function () {
         if (verboseEnabled) {
             verboseEnabled = false;
@@ -134,6 +131,9 @@ define('rtmese.game', function (require, module) {
             $('#report_expand').text('-');
         }
     });
+
+    // auto refresh
+    socket.poll(refreshReport, 30000); // TODO: uid?
 
     socket.on('rtmese_report_player', function (data) {
         initReport(data.game, data.playing, data.delay);

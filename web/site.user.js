@@ -147,13 +147,6 @@ define('site.user', function (require, module) {
 
     var currentList = undefined;
 
-    // auto refresh
-    socket.poll(function () {
-        if (loginExist) {
-            socket.emit('list');
-        }
-    }, 60000);
-
     $('#subscribe_game').change(function () {
         if (/^[A-Za-z0-9_ ]+$/.test($('#subscribe_game').val())) {
             $('#subscribe_game').removeClass('wrong');
@@ -178,6 +171,13 @@ define('site.user', function (require, module) {
             enabled: !currentList[game],
         });
     });
+
+    // auto refresh
+    socket.poll(function () {
+        if (loginExist) {
+            socket.emit('list');
+        }
+    }, 60000);
 
     socket.on('list_data', function (data) {
         currentList = data;

@@ -127,16 +127,6 @@ define('mese.game', function (require, module) {
     loadHash();
     $(window).on('hashchange', loadHash);
 
-    // auto refresh
-    socket.poll(function () {
-        if (currentGame !== undefined) {
-            socket.emit('mese_report', {
-                game: currentGame,
-                uid: currentUid,
-            });
-        }
-    }, 30000);
-
     $('#report_refresh').click(refreshReport);
 
     $('#report_expand').click(function () {
@@ -152,6 +142,16 @@ define('mese.game', function (require, module) {
             $('#report_expand').text('-');
         }
     });
+
+    // auto refresh
+    socket.poll(function () {
+        if (currentGame !== undefined) {
+            socket.emit('mese_report', {
+                game: currentGame,
+                uid: currentUid,
+            });
+        }
+    }, 30000);
 
     socket.on('mese_report_early', function (data) {
         showStatus(data.status);

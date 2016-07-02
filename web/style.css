@@ -209,6 +209,13 @@ h3 {
 
     font-family: monospace;
 }
+#submit input[type="button"] {
+    margin: 1px;
+    padding: 1px;
+    border: solid 1px;
+
+    font-family: monospace;
+}
 #submit input[type="submit"] {
     width: 100%;
 

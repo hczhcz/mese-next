@@ -54,7 +54,7 @@ define('ui.side', function (require, module) {
         hide();
         event.stopPropagation();
     });
-    $('#util td').dblclick(function (event) {
+    $('#util p').dblclick(function (event) {
         event.stopPropagation();
     });
 });

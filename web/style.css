@@ -74,7 +74,7 @@ h3 {
     font-size: 300%;
 }
 
-#message p {
+#message>p {
     margin: 0;
     padding: 0;
 
@@ -112,31 +112,31 @@ h3 {
     margin: 0;
     padding: 0;
 }
-#util td {
+#util>tbody>tr>td {
     padding: 0.25em 0;
 }
 #util p {
     padding: 0.25em 0;
 }
 
-#util input[type="text"], #util input[type="password"] {
+#util p>input[type="text"], #util p>input[type="password"] {
     width: 100%;
     padding: 0.25em;
     border: none;
 }
-#util input[type="checkbox"] {
+#util p>input[type="checkbox"] {
     margin-right: 0.25em;
     border: none;
 }
-#util input[type="submit"] {
+#util p>input[type="submit"] {
     width: 100%;
     padding: 0.25em;
     border: none;
 }
-#util :first-child>input[type="submit"] {
+#util p:first-child>input[type="submit"] {
     padding: 1em;
 }
-#util input[type="button"] {
+#util p>input[type="button"] {
     margin-right: 0.5em;
     margin-bottom: 0.5em;
     padding: 0.25em 1em;

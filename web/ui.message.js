@@ -6,7 +6,7 @@ define('ui.message', function (require, module) {
     var windowActive = false;
 
     var showMessage = function () {
-        if ($('#message p').length === 0) {
+        if ($('#message>p').length === 0) {
             return;
         }
 
@@ -65,8 +65,8 @@ define('ui.message', function (require, module) {
         $('#message').append(
             $('<p />').text(str)
         );
-        if ($('#message p').length > 5) {
-            $('#message p:first').remove();
+        if ($('#message>p').length > 5) {
+            $('#message>p:first').remove();
         }
 
         bind.variable('message', str);

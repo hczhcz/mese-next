@@ -21,13 +21,13 @@ body {
     color: #E0E0E0;
 }
 
-#util input[type="text"], #util input[type="password"] {
+#util p>input[type="text"], #util p>input[type="password"] {
     background: #E0E0E0;
 }
-#util input[type="submit"] {
+#util p>input[type="submit"] {
     background: #A0A0A0;
 }
-#util input[type="button"] {
+#util p>input[type="button"] {
     background: #C0C0C0;
 }
 

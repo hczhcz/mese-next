@@ -14,16 +14,18 @@ define('rtmese.game', function (require, module) {
     $('.report_pd>:first-child').append('<span class="pd">/p</span>');
 
     var currentGame = undefined;
+    var currentUid = undefined;
     var currentSettings = undefined;
 
     var verboseEnabled = false;
 
-    var initReport = function (game, playing, delay) {
+    var initReport = function (game, playing, delay, uid) {
         if (game !== currentGame) {
             message('Game: ' + game);
         }
 
         currentGame = game;
+        currentUid = uid;
 
         bind.variable('game', currentGame);
 
@@ -99,6 +101,7 @@ define('rtmese.game', function (require, module) {
     var joinGame = function (game) {
         socket.emit('rtmese_join', {
             game: game,
+            uid: -1, // force reload
         });
     };
 
@@ -133,10 +136,17 @@ define('rtmese.game', function (require, module) {
     });
 
     // auto refresh
-    socket.poll(refreshReport, 30000); // TODO: uid?
+    socket.poll(function () {
+        if (currentGame !== undefined) {
+            socket.emit('rtmese_join', {
+                game: game,
+                uid: currentUid,
+            });
+        }
+    }, 30000);
 
     socket.on('rtmese_report_player', function (data) {
-        initReport(data.game, data.playing, data.delay);
+        initReport(data.game, data.playing, data.delay, data.uid);
         initPlayerList(data.player_count); // prepare DOM
 
         showProgress(data.now_period, data.progress);
@@ -176,7 +186,7 @@ define('rtmese.game', function (require, module) {
     });
 
     socket.on('rtmese_report_public', function (data) {
-        initReport(data.game, data.playing, data.delay);
+        initReport(data.game, data.playing, data.delay, data.uid);
         initPlayerList(data.player_count); // prepare DOM
 
         showProgress(data.now_period, data.progress);

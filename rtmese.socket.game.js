@@ -7,10 +7,11 @@ var manager = require('./rtmese.manager');
 
 module.exports = function (socket, session) {
     socket.on('rtmese_join', function (args) {
-        // args: game
+        // args: game, uid
 
         if (
             !verify.str(/^[A-Za-z0-9_ ]+$/)(args.game)
+            || !verify.int()(args.uid)
         ) {
             session.log('bad socket request');
 
@@ -23,11 +24,15 @@ module.exports = function (socket, session) {
             'rtmese', args.game,
             function (uid, players, gameData) {
                 var print = function (gameObj, player, playing) {
+                    if (!playing && uid === args.uid) {
+                        return;
+                    }
+
                     game.print(
                         gameObj, player,
                         function (report) {
                             report.game = args.game;
-                            // report.uid = uid;
+                            report.uid = uid;
                             report.players = players;
 
                             report.playing = playing;
@@ -39,7 +44,7 @@ module.exports = function (socket, session) {
                         },
                         function (report) {
                             report.game = args.game;
-                            // report.uid = uid;
+                            report.uid = uid;
                             report.players = players;
 
                             report.playing = playing;
@@ -88,7 +93,15 @@ module.exports = function (socket, session) {
                         }
                     );
                 } else {
-                    print(JSON.parse(gameData), player, false);
+                    manager.get(
+                        args.game,
+                        function (gameObj) {
+                            print(gameObj, player, true);
+                        },
+                        function () {
+                            print(JSON.parse(gameData), player, false);
+                        }
+                    );
                 }
             },
             function () {

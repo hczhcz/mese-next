@@ -8,7 +8,7 @@ var manager = require('./rtmese.manager');
 
 module.exports = function (socket, session) {
     socket.on('admin_rtmese_report', function (args) {
-        // args: game
+        // args: game, uid
 
         if (
             !session.sudo
@@ -26,7 +26,7 @@ module.exports = function (socket, session) {
             function (uid, players, gameData) {
                 var print = function (report) {
                     report.game = args.game;
-                    // report.uid = uid;
+                    report.uid = uid;
                     report.players = players;
 
                     socket.emit('admin_rtmese_report_data', report);

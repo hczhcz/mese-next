@@ -112,9 +112,11 @@ h3 {
     margin: 0;
     padding: 0;
 }
+
 #util>tbody>tr>td {
     padding: 0.25em 0;
 }
+
 #util p {
     padding: 0.25em 0;
 }
@@ -210,6 +212,7 @@ h3 {
     font-family: monospace;
 }
 #submit input[type="button"] {
+    min-width: 1.25em;
     margin: 1px;
     padding: 1px;
     border: solid 1px;

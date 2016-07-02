@@ -65,3 +65,17 @@ body {
     color: gray;
     font-size: 75%;
 }
+
+/* submit */
+
+#submit input[type="button"] {
+    width: 1.5em;
+    height: 1.5em;
+    margin: 1px;
+    padding: 0;
+    border: none;
+
+    -webkit-appearance: none;
+    cursor: pointer;
+    font-family: monospace;
+}

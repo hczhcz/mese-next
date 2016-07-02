@@ -14,6 +14,7 @@ define('rtmese.game', function (require, module) {
     $('.report_pd>:first-child').append('<span class="pd">/p</span>');
 
     var currentGame = undefined;
+    var currentBPR = undefined;
 
     var verboseEnabled = false;
 
@@ -53,9 +54,9 @@ define('rtmese.game', function (require, module) {
                     + '<span></span>'
                     + '</th>'
                 );
-            $('#report_list [list]').each(function () {
-                $(this).append(
-                    '<td bind="' + $(this).attr('list') + '.' + i + '">'
+            $('#report_list [list]').each(function (index, element) {
+                $(element).append(
+                    '<td bind="' + $(element).attr('list') + '.' + i + '">'
                     + '<span></span>'
                     + '</td>'
                 );
@@ -148,6 +149,8 @@ define('rtmese.game', function (require, module) {
         showReport(data.data_public, '');
 
         if (data.playing) {
+            currentBPR = data.settings.balanced_prod_rate;
+
             $('#submit_price')
                 .attr('min', data.settings.limits.price_min)
                 .attr('max', data.settings.limits.price_max);
@@ -197,6 +200,51 @@ define('rtmese.game', function (require, module) {
     });
 
     // submit
+
+    $('#submit_buttons_price>input').each(function (index, element) {
+        $(element).click(function (event) {
+            var value = parseFloat($('#submit_price').val());
+            $('#submit_price').val(
+                [value - 5, value - 1, value + 1, value + 5][index]
+            );
+        });
+    });
+
+    $('#submit_buttons_prod_rate>input').each(function (index, element) {
+        $(element).click(function (event) {
+            var value = parseFloat($('#submit_prod_rate').val());
+            $('#submit_prod_rate').val(
+                [0, value - 0.05, currentBPR, value + 0.05, 1][index]
+            );
+        });
+    });
+
+    $('#submit_buttons_mk>input').each(function (index, element) {
+        $(element).click(function (event) {
+            var value = parseFloat($('#submit_mk').val());
+            $('#submit_mk').val(
+                [0, value - 2500, value + 2500, $('#submit_mk').attr('max')][index]
+            );
+        });
+    });
+
+    $('#submit_buttons_ci>input').each(function (index, element) {
+        $(element).click(function (event) {
+            var value = parseFloat($('#submit_ci').val());
+            $('#submit_ci').val(
+                [0, value - 2500, value + 2500, $('#submit_ci').attr('max')][index]
+            );
+        });
+    });
+
+    $('#submit_buttons_rd>input').each(function (index, element) {
+        $(element).click(function (event) {
+            var value = parseFloat($('#submit_rd').val());
+            $('#submit_rd').val(
+                [0, value - 2500, value + 2500, $('#submit_rd').attr('max')][index]
+            );
+        });
+    });
 
     $('#submit_submit').click(function (event) {
         event.preventDefault();

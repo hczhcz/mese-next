@@ -121,6 +121,8 @@ define('rtmese.game', function (require, module) {
     loadHash();
     $(window).on('hashchange', loadHash);
 
+    $('#report_refresh').click(refreshReport);
+
     $('#report_expand').click(function () {
         if (verboseEnabled) {
             verboseEnabled = false;

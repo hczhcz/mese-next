@@ -18,7 +18,6 @@ define('mese.game', function (require, module) {
     var currentGame = undefined;
     var currentPeriod = undefined;
     var currentUid = undefined;
-    var currentSettings = undefined;
 
     var verboseEnabled = false;
 
@@ -60,9 +59,9 @@ define('mese.game', function (require, module) {
                     + spanNow
                     + '</th>'
                 );
-            $('#report_list [list]').each(function () {
-                $(this).append(
-                    '<td bind="' + $(this).attr('list') + '.' + i + '">'
+            $('#report_list [list]').each(function (index, element) {
+                $(element).append(
+                    '<td bind="' + $(element).attr('list') + '.' + i + '">'
                     + spanLast + spanNow
                     + '</td>'
                 );
@@ -187,44 +186,39 @@ define('mese.game', function (require, module) {
         if (data.next_settings !== undefined) {
             showReport(data.next_settings, ' .next');
 
-            var settingsStr = JSON.stringify(data.next_settings);
-            if (settingsStr !== currentSettings) {
-                $('#submit_price')
-                    .attr('min', data.next_settings.limits.price_min)
-                    .attr('max', data.next_settings.limits.price_max)
-                    .val(data.decisions.price);
-                $('#submit_prod')
-                    .attr('min', 0)
-                    .attr('max', data.data_early.balance.size)
-                    .val(
-                        Math.round(
-                            data.data_early.balance.size
-                            * data.data_early.production.prod_rate
-                        )
-                    );
-                $('#submit_prod_rate').text(
+            $('#submit_price')
+                .attr('min', data.next_settings.limits.price_min)
+                .attr('max', data.next_settings.limits.price_max)
+                .val(data.decisions.price);
+            $('#submit_prod')
+                .attr('min', 0)
+                .attr('max', data.data_early.balance.size)
+                .val(
                     Math.round(
-                        100 * data.data_early.production.prod_rate
+                        data.data_early.balance.size
+                        * data.data_early.production.prod_rate
                     )
                 );
-                $('#submit_mk')
-                    .attr('min', 0)
-                    .attr('max', data.next_settings.limits.mk_limit)
-                    .val(data.decisions.mk);
-                $('#submit_ci')
-                    .attr('min', 0)
-                    .attr('max', data.next_settings.limits.ci_limit)
-                    .val(data.decisions.ci);
-                $('#submit_rd')
-                    .attr('min', 0)
-                    .attr('max', data.next_settings.limits.rd_limit)
-                    .val(data.decisions.rd);
-            }
+            $('#submit_prod_rate').text(
+                Math.round(
+                    100 * data.data_early.production.prod_rate
+                )
+            );
+            $('#submit_mk')
+                .attr('min', 0)
+                .attr('max', data.next_settings.limits.mk_limit)
+                .val(data.decisions.mk);
+            $('#submit_ci')
+                .attr('min', 0)
+                .attr('max', data.next_settings.limits.ci_limit)
+                .val(data.decisions.ci);
+            $('#submit_rd')
+                .attr('min', 0)
+                .attr('max', data.next_settings.limits.rd_limit)
+                .val(data.decisions.rd);
 
-            currentSettings = settingsStr;
             $('#submit input').attr('disabled', false);
         } else {
-            currentSettings = undefined;
             $('#submit input').attr('disabled', true);
         }
 
@@ -255,7 +249,6 @@ define('mese.game', function (require, module) {
             showReport(data.next_settings, ' .next');
         }
 
-        currentSettings = undefined;
         $('#submit').addClass('hide');
         $('#report').removeClass('hide');
     });

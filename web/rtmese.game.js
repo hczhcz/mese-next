@@ -213,71 +213,61 @@ define('rtmese.game', function (require, module) {
     $('#submit_buttons_price>input').each(function (index, element) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_price').val());
-            $('#submit_price').val(
-                [
-                    Math.max(value - 5, currentSettings.limits.price_min),
-                    Math.max(value - 1, currentSettings.limits.price_min),
-                    Math.min(value + 1, currentSettings.limits.price_max),
-                    Math.min(value + 5, currentSettings.limits.price_max),
-                ][index]
-            );
+            $('#submit_price').val([
+                Math.max(value - 5, currentSettings.limits.price_min),
+                Math.max(value - 1, currentSettings.limits.price_min),
+                Math.min(value + 1, currentSettings.limits.price_max),
+                Math.min(value + 5, currentSettings.limits.price_max),
+            ][index]);
         });
     });
 
     $('#submit_buttons_prod_rate>input').each(function (index, element) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_prod_rate').val());
-            $('#submit_prod_rate').val(
-                [
-                    0,
-                    Math.max(value - 0.05, 0),
-                    currentSettings.production.prod_rate_balanced,
-                    Math.min(value + 0.05, 1),
-                    1,
-                ][index]
-            );
+            $('#submit_prod_rate').val([
+                0,
+                Math.max(value - 0.05, 0),
+                currentSettings.production.prod_rate_balanced,
+                Math.min(value + 0.05, 1),
+                1,
+            ][index]);
         });
     });
 
     $('#submit_buttons_mk>input').each(function (index, element) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_mk').val());
-            $('#submit_mk').val(
-                [
-                    0,
-                    Math.max(value - 2500, 0),
-                    Math.min(value + 2500, currentSettings.limits.mk_limit),
-                    currentSettings.limits.mk_limit,
-                ][index]
-            );
+            $('#submit_mk').val([
+                0,
+                Math.max(value - 2500, 0),
+                Math.min(value + 2500, currentSettings.limits.mk_limit),
+                currentSettings.limits.mk_limit,
+            ][index]);
         });
     });
 
     $('#submit_buttons_ci>input').each(function (index, element) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_ci').val());
-            $('#submit_ci').val(
-                [
-                    0,
-                    Math.max(value - 2500, 0),
-                    Math.min(value + 2500, currentSettings.limits.ci_limit),
-                    currentSettings.limits.ci_limit,
-                ][index]
-            );
+            $('#submit_ci').val([
+                0,
+                Math.max(value - 2500, 0),
+                Math.min(value + 2500, currentSettings.limits.ci_limit),
+                currentSettings.limits.ci_limit,
+            ][index]);
         });
     });
 
     $('#submit_buttons_rd>input').each(function (index, element) {
         $(element).click(function (event) {
             var value = parseFloat($('#submit_rd').val());
-            $('#submit_rd').val(
-                [
-                    0,
-                    Math.max(value - 2500, 0),
-                    Math.min(value + 2500, currentSettings.limits.rd_limit),
-                    currentSettings.limits.rd_limit,
-                ][index]
-            );
+            $('#submit_rd').val([
+                0,
+                Math.max(value - 2500, 0),
+                Math.min(value + 2500, currentSettings.limits.rd_limit),
+                currentSettings.limits.rd_limit,
+            ][index]);
         });
     });
 

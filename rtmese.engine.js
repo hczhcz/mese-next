@@ -202,6 +202,10 @@ module.exports.exec = function (game) {
         }
     };
 
+    if (game.now_tick >= game.total_tick) { // TODO: duplicated
+        return false;
+    }
+
     game.now_tick += 1;
     game.now_period += game.delta;
 

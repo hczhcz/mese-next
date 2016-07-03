@@ -19,8 +19,9 @@ module.exports = function (port, index, plugin, callback) {
 
     app.use('/lib', express.static('./lib', {}));
     app.use('/', express.static('./web', {
-        index: index,
+        extensions: 'html',
         fallthrough: false,
+        index: index,
     }));
 
     app.use(function (err, req, res, next) {

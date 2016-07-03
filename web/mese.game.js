@@ -115,16 +115,6 @@ define('mese.game', function (require, module) {
         }
     };
 
-    // load from url hash
-    var loadHash = function () {
-        var urlHash = window.location.hash.slice(1);
-        if (urlHash !== '') {
-            loadReport(urlHash);
-        }
-    };
-    loadHash();
-    $(window).on('hashchange', loadHash);
-
     $('#report_refresh').click(refreshReport);
 
     $('#report_expand').click(function () {

@@ -110,16 +110,6 @@ define('rtmese.game', function (require, module) {
         }
     };
 
-    // load from url hash
-    var loadHash = function () {
-        var urlHash = window.location.hash.slice(1);
-        if (urlHash !== '') {
-            joinGame(urlHash);
-        }
-    };
-    loadHash();
-    $(window).on('hashchange', loadHash);
-
     $('#report_refresh').click(refreshReport);
 
     $('#report_expand').click(function () {
@@ -140,7 +130,7 @@ define('rtmese.game', function (require, module) {
     socket.poll(function () {
         if (currentGame !== undefined) {
             socket.emit('rtmese_join', {
-                game: game,
+                game: currentGame,
                 uid: currentUid,
             });
         }

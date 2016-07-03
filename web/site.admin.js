@@ -38,7 +38,7 @@ define('site.admin', function (require, module) {
 
     $('#admin_game_submit').click(function () {
         // load player / public report
-        loader.loadGame(
+        loader.load(
             $('#admin_game_game').val()
         );
     });

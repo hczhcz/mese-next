@@ -97,20 +97,18 @@ define('rtmese.game', function (require, module) {
         }
     };
 
-    var joinGame = function (game) {
+    loader.init(function (game) {
         socket.emit('rtmese_join', {
             game: game,
             uid: -1, // force reload
         });
-    };
-
-    var refreshReport = function () {
+    }, function () {
         if (currentGame !== undefined) {
-            joinGame(currentGame);
+            loader.load(currentGame);
         }
-    };
+    });
 
-    $('#report_refresh').click(refreshReport);
+    $('#report_refresh').click(loader.reload);
 
     $('#report_expand').click(function () {
         if (verboseEnabled) {
@@ -288,7 +286,4 @@ define('rtmese.game', function (require, module) {
     socket.on('rtmese_submit_fail_running', function (data) {
         message('Game is not running');
     });
-
-    loader.defaultGame = refreshReport;
-    loader.loadGame = joinGame;
 });

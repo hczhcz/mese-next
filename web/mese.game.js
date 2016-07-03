@@ -102,20 +102,18 @@ define('mese.game', function (require, module) {
         }
     };
 
-    var loadReport = function (game) {
+    loader.init(function (game) {
         socket.emit('mese_report', {
             game: game,
             uid: -1, // force reload
         });
-    };
-
-    var refreshReport = function () {
+    }, function () {
         if (currentGame !== undefined) {
-            loadReport(currentGame);
+            loader.load(currentGame);
         }
-    };
+    });
 
-    $('#report_refresh').click(refreshReport);
+    $('#report_refresh').click(loader.reload);
 
     $('#report_expand').click(function () {
         if (verboseEnabled) {
@@ -323,7 +321,4 @@ define('mese.game', function (require, module) {
 
         loader.jump(data);
     });
-
-    loader.defaultGame = refreshReport;
-    loader.loadGame = loadReport;
 });

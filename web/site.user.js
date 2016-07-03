@@ -25,7 +25,7 @@ define('site.user', function (require, module) {
 
         socket.emit('list');
 
-        loader.defaultGame();
+        loader.reload();
     };
 
     $('#login_show_submit').click(function () {
@@ -187,7 +187,7 @@ define('site.user', function (require, module) {
             return function (event) {
                 event.preventDefault();
 
-                loader.loadGame(game);
+                loader.load(game);
             };
         };
 

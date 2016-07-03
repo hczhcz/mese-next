@@ -4,8 +4,7 @@ define('rtmese.game', function (require, module) {
     var bind = require('ui.bind');
     var message = require('ui.message');
     var socket = require('socket');
-    var user = require('site.user');
-    var admin = require('site.admin');
+    var loader = require('loader');
 
     // report
 
@@ -298,8 +297,6 @@ define('rtmese.game', function (require, module) {
         message('Game is not running');
     });
 
-    user.gameLoaders.defaultGame = refreshReport;
-    user.gameLoaders.loadGame = joinGame;
-    admin.gameLoaders.defaultGame = refreshReport;
-    admin.gameLoaders.loadGame = joinGame;
+    loader.defaultGame = refreshReport;
+    loader.loadGame = joinGame;
 });

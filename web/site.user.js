@@ -5,8 +5,7 @@ define('site.user', function (require, module) {
     var message = require('ui.message');
     var socket = require('socket');
     var login = require('login');
-
-    module.exports.gameLoaders = {};
+    var loader = require('loader');
 
     // login
 
@@ -26,7 +25,7 @@ define('site.user', function (require, module) {
 
         socket.emit('list');
 
-        module.exports.gameLoaders.defaultGame();
+        loader.defaultGame();
     };
 
     $('#login_show_submit').click(function () {
@@ -184,11 +183,11 @@ define('site.user', function (require, module) {
 
         $('#list_content').empty();
 
-        var loader = function (game) {
+        var loadGame = function (game) {
             return function (event) {
                 event.preventDefault();
 
-                module.exports.gameLoaders.loadGame(game);
+                loader.loadGame(game);
             };
         };
 
@@ -197,7 +196,7 @@ define('site.user', function (require, module) {
                 $('#list_content').prepend(
                     $('<input type="button" />')
                         .val(i)
-                        .click(loader(i))
+                        .click(loadGame(i))
                 );
             }
         }

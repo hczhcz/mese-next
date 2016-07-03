@@ -3,8 +3,7 @@
 define('site.admin', function (require, module) {
     var socket = require('socket');
     var login = require('login');
-
-    module.exports.gameLoaders = {};
+    var loader = require('loader');
 
     $('#admin_message_submit').click(function () {
         socket.emit('admin_message', {
@@ -39,7 +38,7 @@ define('site.admin', function (require, module) {
 
     $('#admin_game_submit').click(function () {
         // load player / public report
-        module.exports.gameLoaders.loadGame(
+        loader.loadGame(
             $('#admin_game_game').val()
         );
     });

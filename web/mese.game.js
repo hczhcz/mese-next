@@ -4,8 +4,7 @@ define('mese.game', function (require, module) {
     var bind = require('ui.bind');
     var message = require('ui.message');
     var socket = require('socket');
-    var user = require('site.user');
-    var admin = require('site.admin');
+    var loader = require('loader');
 
     // report
 
@@ -331,8 +330,6 @@ define('mese.game', function (require, module) {
         message('Wrong game type');
     });
 
-    user.gameLoaders.defaultGame = refreshReport;
-    user.gameLoaders.loadGame = loadReport;
-    admin.gameLoaders.defaultGame = refreshReport;
-    admin.gameLoaders.loadGame = loadReport;
+    loader.defaultGame = refreshReport;
+    loader.loadGame = loadReport;
 });

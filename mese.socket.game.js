@@ -58,10 +58,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('mese_report_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('mese_report_fail_type');
+                socket.emit('mese_report_fail_type', type);
             }
         );
     });
@@ -140,10 +140,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('mese_submit_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('mese_submit_fail_type');
+                socket.emit('mese_submit_fail_type', type);
             }
         );
     });

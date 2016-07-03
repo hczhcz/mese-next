@@ -109,10 +109,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('rtmese_join_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('rtmese_join_fail_type');
+                socket.emit('rtmese_join_fail_type', type);
             }
         );
     });

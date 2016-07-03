@@ -39,10 +39,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('admin_mese_report_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('admin_mese_report_fail_type');
+                socket.emit('admin_mese_report_fail_type', type);
             }
         );
     });
@@ -94,10 +94,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('admin_mese_transfer_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('admin_mese_transfer_fail_type');
+                socket.emit('admin_mese_transfer_fail_type', type);
             }
         );
     });
@@ -168,10 +168,10 @@ module.exports = function (socket, session) {
 
                 return true; // need setter
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('admin_mese_init_fail_type');
+                socket.emit('admin_mese_init_fail_type', type);
             }
         );
     });
@@ -216,10 +216,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('admin_mese_alloc_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('admin_mese_alloc_fail_type');
+                socket.emit('admin_mese_alloc_fail_type', type);
             }
         );
     });

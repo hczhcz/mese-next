@@ -45,10 +45,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('admin_rtmese_report_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('admin_rtmese_report_fail_type');
+                socket.emit('admin_rtmese_report_fail_type', type);
             }
         );
     });
@@ -120,10 +120,10 @@ module.exports = function (socket, session) {
 
                 return true; // need setter
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('admin_rtmese_init_fail_type');
+                socket.emit('admin_rtmese_init_fail_type', type);
             }
         );
     });
@@ -164,7 +164,7 @@ module.exports = function (socket, session) {
                 function (setter) {
                     throw Error('internal error'); // never reach
                 },
-                function () {
+                function (type) {
                     throw Error('internal error'); // never reach
                 }
             );
@@ -201,10 +201,10 @@ module.exports = function (socket, session) {
 
                 socket.emit('admin_rtmese_schedule_fail_game');
             },
-            function () {
+            function (type) {
                 session.log('wrong game type ' + args.game);
 
-                socket.emit('admin_rtmese_schedule_fail_type');
+                socket.emit('admin_rtmese_schedule_fail_type', type);
             }
         );
     });

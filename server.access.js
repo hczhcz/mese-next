@@ -67,6 +67,16 @@ module.exports.games = function (callback) {
     db.list('games', callback);
 };
 
+module.exports.gameExist = function (game, callback, fail) {
+    db.get('games', game, function (doc) {
+        if (doc) {
+            callback();
+        } else {
+            fail();
+        }
+    });
+};
+
 module.exports.game = function (type, game, callback, failGame, failType) {
     db.get('games', game, function (doc) {
         if (doc) {
@@ -74,20 +84,10 @@ module.exports.game = function (type, game, callback, failGame, failType) {
                 // notice: .buffer is required for binary data
                 callback(doc.uid, doc.players, doc.data.buffer);
             } else {
-                failType();
+                failType(doc.type);
             }
         } else {
             failGame();
-        }
-    });
-};
-
-module.exports.gameExist = function (game, callback, fail) {
-    db.get('games', game, function (doc) {
-        if (doc) {
-            callback();
-        } else {
-            fail();
         }
     });
 };
@@ -132,7 +132,7 @@ module.exports.gameAction = function (
                 }
             } else {
                 next();
-                fail();
+                fail(doc.type);
             }
         } else {
             if (!newCallback(gameDataSetter)) {

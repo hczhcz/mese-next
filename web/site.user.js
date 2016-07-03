@@ -193,7 +193,7 @@ define('site.user', function (require, module) {
         };
 
         for (var i in currentList) {
-            if (currentList[i] !== undefined) {
+            if (currentList[i]) {
                 $('#list_content').prepend(
                     $('<input type="button" />')
                         .val(i)

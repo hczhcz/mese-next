@@ -1,6 +1,8 @@
 'use strict';
 
 define('loader', function (require, module) {
+    var message = require('ui.message');
+
     module.exports.defaultGame = undefined;
     module.exports.loadGame = undefined;
 
@@ -14,7 +16,11 @@ define('loader', function (require, module) {
     $(loadHash);
     $(window).on('hashchange', loadHash);
 
-    module.exports.jump = function () {
-        //
+    module.exports.jump = function (type) {
+        message('Redirecting...');
+
+        setTimeout(function () {
+            window.location.pathname = '/' + type;
+        }, 3000);
     };
 });

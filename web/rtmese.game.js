@@ -197,6 +197,8 @@ define('rtmese.game', function (require, module) {
 
     socket.on('rtmese_join_fail_type', function (data) {
         message('Wrong game type');
+
+        loader.jump(data);
     });
 
     // submit

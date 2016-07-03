@@ -247,6 +247,8 @@ define('mese.game', function (require, module) {
 
     socket.on('mese_report_fail_type', function (data) {
         message('Wrong game type');
+
+        loader.jump(data);
     });
 
     // submit
@@ -318,6 +320,8 @@ define('mese.game', function (require, module) {
 
     socket.on('mese_submit_fail_type', function (data) {
         message('Wrong game type');
+
+        loader.jump(data);
     });
 
     loader.defaultGame = refreshReport;

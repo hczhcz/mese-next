@@ -42,7 +42,7 @@ define('mese.admin', function (require, module) {
     });
 
     socket.on('admin_mese_report_fail_type', function (data) {
-        message('Wrong game type');
+        message('Wrong game type: ' + data);
     });
 
     socket.on('admin_mese_transfer_ok', function (data) {
@@ -58,7 +58,7 @@ define('mese.admin', function (require, module) {
     });
 
     socket.on('admin_mese_transfer_fail_type', function (data) {
-        message('Wrong game type');
+        message('Wrong game type: ' + data);
     });
 
     socket.on('admin_mese_init_fail_player', function (data) {
@@ -78,7 +78,7 @@ define('mese.admin', function (require, module) {
     });
 
     socket.on('admin_mese_init_fail_type', function (data) {
-        message('Wrong game type');
+        message('Wrong game type: ' + data);
     });
 
     socket.on('admin_mese_alloc_ok', function (data) {
@@ -90,6 +90,6 @@ define('mese.admin', function (require, module) {
     });
 
     socket.on('admin_mese_alloc_fail_type', function (data) {
-        message('Wrong game type');
+        message('Wrong game type: ' + data);
     });
 });

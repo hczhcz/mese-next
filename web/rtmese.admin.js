@@ -41,7 +41,7 @@ define('rtmese.admin', function (require, module) {
     });
 
     socket.on('admin_rtmese_report_fail_type', function (data) {
-        message('Wrong game type');
+        message('Wrong game type: ' + data);
     });
 
     socket.on('admin_rtmese_init_fail_player', function (data) {
@@ -61,7 +61,7 @@ define('rtmese.admin', function (require, module) {
     });
 
     socket.on('admin_rtmese_init_fail_type', function (data) {
-        message('Wrong game type');
+        message('Wrong game type: ' + data);
     });
 
     socket.on('admin_rtmese_schedule_ok', function (data) {
@@ -77,7 +77,7 @@ define('rtmese.admin', function (require, module) {
     });
 
     socket.on('admin_rtmese_schedule_fail_type', function (data) {
-        message('Wrong game type');
+        message('Wrong game type: ' + data);
     });
 
     socket.on('admin_rtmese_stop_ok', function (data) {

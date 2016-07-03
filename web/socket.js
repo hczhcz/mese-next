@@ -22,14 +22,11 @@ define('socket', function (require, module) {
     });
 
     socket.poll = function (action, interval) {
-        setInterval(
-            function () {
-                if (connected) {
-                    action();
-                }
-            },
-            interval
-        );
+        setInterval(function () {
+            if (connected) {
+                action();
+            }
+        }, interval);
     };
 
     module.exports = socket;

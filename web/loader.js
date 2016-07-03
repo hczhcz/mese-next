@@ -30,7 +30,7 @@ define('loader', function (require, module) {
     module.exports.load = function (game) {
         var urlHash = window.location.hash.slice(1);
         if (urlHash === game) {
-            $(window).trigger('hashchange')
+            $(window).trigger('hashchange');
         } else {
             window.location.hash = game;
         }

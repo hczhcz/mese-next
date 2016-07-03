@@ -34,11 +34,7 @@ module.exports = function (socket, session) {
                             report.game = args.game;
                             report.uid = uid;
                             report.players = players;
-
                             report.playing = playing;
-                            if (playing) {
-                                report.delay = gameObj.delay;
-                            }
 
                             socket.emit('rtmese_report_player', report);
                         },
@@ -46,11 +42,7 @@ module.exports = function (socket, session) {
                             report.game = args.game;
                             report.uid = uid;
                             report.players = players;
-
                             report.playing = playing;
-                            if (playing) {
-                                report.delay = gameObj.delay;
-                            }
 
                             socket.emit('rtmese_report_public', report);
                         }
@@ -75,14 +67,19 @@ module.exports = function (socket, session) {
                             }
                             session.rtmese_free = function () {
                                 delete gameObj['check_' + player];
-                                delete gameObj['notify_' + player];
+                                delete gameObj['delay_' + player];
+                                delete gameObj['report_' + player];
                             };
 
                             gameObj['check_' + player] = function (name) {
                                 return name === players[player];
                             };
 
-                            gameObj['notify_' + player] = function (playing) {
+                            gameObj['delay_' + player] = function () {
+                                socket.emit('rtmese_report_delay', gameObj.delay);
+                            };
+
+                            gameObj['report_' + player] = function (playing) {
                                 print(gameObj, player, playing);
                             };
 

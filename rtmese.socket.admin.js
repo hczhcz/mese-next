@@ -143,14 +143,6 @@ module.exports = function (socket, session) {
 
         session.log('admin schedule game ' + args.game);
 
-        var gameExec = function (gameObj, playing) {
-            for (var i = 0; i < gameObj.player_count; ++i) {
-                if (gameObj['notify_' + i] !== undefined) {
-                    gameObj['notify_' + i](playing);
-                }
-            }
-        };
-
         var gameStop = function (gameObj) {
             access.gameAction(
                 'rtmese', args.game,
@@ -177,13 +169,26 @@ module.exports = function (socket, session) {
                     args.game, JSON.parse(oldData), args.delay,
                     admin.exec,
                     function (gameObj) {
-                        gameExec(gameObj, true);
+                        for (var i = 0; i < gameObj.player_count; ++i) {
+                            if (gameObj['delay_' + i] !== undefined) {
+                                gameObj['delay_' + i]();
+                            }
+                        }
                     },
                     function (gameObj) {
-                        gameExec(gameObj, true);
+                        for (var i = 0; i < gameObj.player_count; ++i) {
+                            if (gameObj['report_' + i] !== undefined) {
+                                gameObj['report_' + i](true);
+                            }
+                        }
                     },
                     function (gameObj) {
-                        gameExec(gameObj, false);
+                        for (var i = 0; i < gameObj.player_count; ++i) {
+                            if (gameObj['report_' + i] !== undefined) {
+                                gameObj['report_' + i](false);
+                            }
+                        }
+
                         gameStop(gameObj);
                     },
                     function () {

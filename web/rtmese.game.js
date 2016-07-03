@@ -18,7 +18,7 @@ define('rtmese.game', function (require, module) {
 
     var verboseEnabled = false;
 
-    var initReport = function (game, playing, delay, uid) {
+    var initReport = function (game, uid) {
         if (game !== currentGame) {
             message('Game: ' + game);
         }
@@ -27,18 +27,6 @@ define('rtmese.game', function (require, module) {
         currentUid = uid;
 
         bind.variable('game', currentGame);
-
-        if (playing) {
-            if (delay === 0) {
-                // nothing
-            } else if (delay === 1) {
-                message('Go!');
-            } else if (delay === 4) {
-                message('Ready...');
-            } else if (delay % 30 === 0) {
-                message('Game will start in ' + delay + ' ticks');
-            }
-        }
     };
 
     var initPlayerList = function (count) {
@@ -135,7 +123,7 @@ define('rtmese.game', function (require, module) {
     }, 30000);
 
     socket.on('rtmese_report_player', function (data) {
-        initReport(data.game, data.playing, data.delay, data.uid);
+        initReport(data.game, data.uid);
         initPlayerList(data.player_count); // prepare DOM
 
         showProgress(data.now_period, data.progress);
@@ -175,7 +163,7 @@ define('rtmese.game', function (require, module) {
     });
 
     socket.on('rtmese_report_public', function (data) {
-        initReport(data.game, data.playing, data.delay, data.uid);
+        initReport(data.game, data.uid);
         initPlayerList(data.player_count); // prepare DOM
 
         showProgress(data.now_period, data.progress);
@@ -187,6 +175,18 @@ define('rtmese.game', function (require, module) {
 
         $('#submit').addClass('hide');
         $('#report').removeClass('hide');
+    });
+
+    socket.on('rtmese_report_delay', function (data) {
+        if (data === 0) {
+            // nothing
+        } else if (data === 1) {
+            message('Go!');
+        } else if (data === 4) {
+            message('Ready...');
+        } else if (data % 30 === 0) {
+            message('Game will start in ' + data + ' ticks');
+        }
     });
 
     socket.on('rtmese_join_fail_game', function (data) {

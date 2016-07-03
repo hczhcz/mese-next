@@ -13,8 +13,10 @@ define('loader', function (require, module) {
             loadGame(urlHash);
         }
     };
-    $(loadHash);
     $(window).on('hashchange', loadHash);
+    $(function () {
+        $(window).trigger('hashchange');
+    });
 
     module.exports.init = function (load, reload) {
         loadGame = load;
@@ -26,7 +28,12 @@ define('loader', function (require, module) {
     };
 
     module.exports.load = function (game) {
-        window.location.hash = game;
+        var urlHash = window.location.hash.slice(1);
+        if (urlHash === game) {
+            $(window).trigger('hashchange')
+        } else {
+            window.location.hash = game;
+        }
     };
 
     module.exports.jump = function (type) {

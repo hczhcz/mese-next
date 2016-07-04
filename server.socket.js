@@ -5,7 +5,7 @@ var io = require('socket.io');
 var util = require('./util');
 
 module.exports = function (server, handlers) {
-    io(server).on('connection', function (socket) {
+    io(server).on('connect', function (socket) {
         util.domainRunCatched([socket], function () {
             util.log('connect ' + socket.conn.remoteAddress);
 

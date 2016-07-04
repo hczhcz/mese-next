@@ -36,7 +36,7 @@ MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an on
 * MESE-Next does not need a MESE executable;
 * MESE-Next supports higher maximum players, and multiple games at the same time;
 * IMese supports encrypted connection;
-* IMese has a history analysing and player ranking system ([here](https://github.com/hczhcz/mese-player-ranking) is a standalone system);
+* IMese has a history analyzing and player ranking system ([here](https://github.com/hczhcz/mese-player-ranking) is a standalone system);
 * IMese only runs under x86 Windows environment;
 
 Client Side Requirements
@@ -91,7 +91,7 @@ Before running MESE-Next, you may do the following steps:
 4. Install required packages: `mongodb`, `express`, `compression` and `socket.io`;
 5. Get MESE-Next Engine from our group or by contacting us, and put it under the same directory as MESE-Next Server's;
 6. Edit `config.js` if you want to change some configurations;
-7. Now, you could run `mese.js` using Node.js.
+7. Now, you could run `main.js` using Node.js.
 
 License
 ---

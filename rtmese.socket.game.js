@@ -24,10 +24,6 @@ module.exports = function (socket, session) {
             'rtmese', args.game,
             function (uid, players, gameData) {
                 var print = function (gameObj, player, playing) {
-                    if (!playing && uid === args.uid) {
-                        return;
-                    }
-
                     game.print(
                         gameObj, player,
                         function (report) {
@@ -58,10 +54,10 @@ module.exports = function (socket, session) {
                     }
                 }
 
-                if (player >= 0) {
-                    manager.get(
-                        args.game,
-                        function (gameObj) {
+                manager.get(
+                    args.game,
+                    function (gameObj) {
+                        if (player >= 0) {
                             if (session.rtmese_free !== undefined) {
                                 session.rtmese_free();
                             }
@@ -82,24 +78,18 @@ module.exports = function (socket, session) {
                             gameObj['report_' + player] = function (playing) {
                                 print(gameObj, player, playing);
                             };
+                        }
 
-                            print(gameObj, player, true);
-                        },
-                        function () {
-                            print(JSON.parse(gameData), player, false);
+                        print(gameObj, player, true);
+                    },
+                    function () {
+                        if (uid === args.uid) {
+                            return;
                         }
-                    );
-                } else {
-                    manager.get(
-                        args.game,
-                        function (gameObj) {
-                            print(gameObj, player, true);
-                        },
-                        function () {
-                            print(JSON.parse(gameData), player, false);
-                        }
-                    );
-                }
+
+                        print(JSON.parse(gameData), player, false);
+                    }
+                );
             },
             function () {
                 session.log('game not found ' + args.game);

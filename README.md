@@ -1,4 +1,4 @@
-MESE-Next Server
+MESE-Next and MESE-Realtime
 ===
 
 About MESE
@@ -12,8 +12,6 @@ MESE-Next
 ---
 
 MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next Server and compete with other players on the Internet. MESE-Next is created by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
-
-> Workflow: MESE-Next Engine <=> MESE-Next Server <=> Web Browsers
 
 ### Difference between MESE-Next and MESE
 
@@ -39,12 +37,26 @@ MESE-Next is a fan-made MESE variant. It is not an equivalent of MESE, but an on
 * IMese has a history analyzing and player ranking system ([here](https://github.com/hczhcz/mese-player-ranking) is a standalone system);
 * IMese only runs under x86 Windows environment;
 
+MESE-Realtime
+---
+
+MESE-Realtime provides a new way to play business simulation games. Compare with MESE-Next, it runs every second without waiting for players' submissions. The typical length of a game is about 10-20 minutes, and players could change their five decisions at any time.
+
+The Workflow
+---
+
+    MESE-Next Engine ---+--> MESE-Next Server ---+
+                       /                          \
+          Database ---+              Web Server ---+--> Web Browsers
+                      |                            |
+                      +--> MESE-Realtime Server ---+
+
 Client Side Requirements
 ---
 
-A browser supports HTML5, CSS3, and ES5 features is required to run MESE-Next. The web frontend is tested under recent versions of Firefox, Chromium, and Mobile Safari.
+A browser supports HTML5, CSS3, and ES5 features is required to run MESE-Next and MESE-Realtime. The web frontend is tested under recent versions of Firefox, Chromium, and Mobile Safari.
 
-MESE-Next Frontend supports:
+The web frontend supports:
 
 * Firefox 29+
 * Chrome & Chromium 20+
@@ -52,7 +64,7 @@ MESE-Next Frontend supports:
 * Safari 7+
 * Mobile Safari 7+
 
-MESE-Next Frontend probably works under:
+The web frontend probably works under:
 
 * Firefox 3.6+
 * Chrome & Chromium 4+
@@ -63,7 +75,7 @@ MESE-Next Frontend probably works under:
 * Mobile Safari 5+
 * Android Browser 4.1+
 
-MESE-Next does not support:
+The web frontend would not support:
 
 * IE 7-
 * QQ (WeChat) Browser on Android
@@ -71,31 +83,34 @@ MESE-Next does not support:
 Server Side Requirements
 ---
 
-MESE-Next Server requires all of:
+The server requires all of:
 
 * Node.js 0.12+
 * MongoDB 2.4+
 * Node.js packages: MongoDB, Express 4 & Compression, Socket.IO
+
+MESE-Next requires:
+
 * MESE-Next Engine (released in MESE China Group)
 
 Installation
 ---
 
-MESE-Next Server itself does not need installation.
+The server itself does not need installation.
 
-Before running MESE-Next, you may do the following steps:
+Before running the server, you may do the following steps:
 
 1. Clone this repository or [download it](https://github.com/hczhcz/mese-next/archive/master.zip);
 2. Install Node.js and MongoDB;
 3. Install NPM (Node.js Package Manager);
-4. Install required packages: `mongodb`, `express`, `compression` and `socket.io`;
-5. Get MESE-Next Engine from our group or by contacting us, and put it under the same directory as MESE-Next Server's;
+4. Install required NPM packages: `mongodb`, `express`, `compression` and `socket.io`;
+5. Get MESE-Next Engine from our group or by contacting us, and put it under the same directory as MESE-Next Server's (or skip this step if you want MESE-Realtime only);
 6. Edit `config.js` if you want to change some configurations;
 7. Now, you could run `main.js` using Node.js.
 
 License
 ---
 
-MESE-Next - Copyright (C) 2015-2016 hczhcz
+MESE-Next and MESE-Realtime - Copyright (C) 2015-2016 hczhcz
 
-MESE-Next is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. As this distribution is not under any public license, commercial use, public use, and redistribution outside GitHub are not allowed. Contact us if you need a licensed version.
+This project is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. As this distribution is not under any public license, commercial use, public use, and redistribution outside GitHub are not allowed. Contact us if you need a licensed version.

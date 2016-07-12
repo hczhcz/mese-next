@@ -21,11 +21,15 @@ define('mese.game', function (require, module) {
     var verboseEnabled = false;
 
     var initReport = function (game, period, uid) {
+        var updated = false;
+
         if (game !== currentGame) {
             message('Game: ' + game);
+            updated = true;
         }
         if (game === currentGame && period !== currentPeriod) {
             message('Period: ' + period);
+            updated = true;
         }
 
         currentGame = game;
@@ -39,6 +43,8 @@ define('mese.game', function (require, module) {
         $('.last').addClass('hide');
         $('.now').addClass('hide');
         $('.next').addClass('hide');
+
+        return updated;
     };
 
     var initPlayerList = function (count) {
@@ -147,7 +153,7 @@ define('mese.game', function (require, module) {
     });
 
     socket.on('mese_report_player', function (data) {
-        initReport(data.game, data.now_period, data.uid);
+        var updated = initReport(data.game, data.now_period, data.uid);
         initPlayerList(data.player_count); // prepare DOM
 
         showStatus(data.status);
@@ -172,36 +178,38 @@ define('mese.game', function (require, module) {
         if (data.next_settings !== undefined) {
             showReport(data.next_settings, ' .next');
 
-            $('#submit_price')
-                .attr('min', data.next_settings.limits.price_min)
-                .attr('max', data.next_settings.limits.price_max)
-                .val(data.decisions.price);
-            $('#submit_prod')
-                .attr('min', 0)
-                .attr('max', data.data_early.balance.size)
-                .val(
+            if (updated) {
+                $('#submit_price')
+                    .attr('min', data.next_settings.limits.price_min)
+                    .attr('max', data.next_settings.limits.price_max)
+                    .val(data.decisions.price);
+                $('#submit_prod')
+                    .attr('min', 0)
+                    .attr('max', data.data_early.balance.size)
+                    .val(
+                        Math.round(
+                            data.data_early.balance.size
+                            * data.data_early.production.prod_rate
+                        )
+                    );
+                $('#submit_prod_rate').text(
                     Math.round(
-                        data.data_early.balance.size
-                        * data.data_early.production.prod_rate
+                        100 * data.data_early.production.prod_rate
                     )
                 );
-            $('#submit_prod_rate').text(
-                Math.round(
-                    100 * data.data_early.production.prod_rate
-                )
-            );
-            $('#submit_mk')
-                .attr('min', 0)
-                .attr('max', data.next_settings.limits.mk_limit)
-                .val(data.decisions.mk);
-            $('#submit_ci')
-                .attr('min', 0)
-                .attr('max', data.next_settings.limits.ci_limit)
-                .val(data.decisions.ci);
-            $('#submit_rd')
-                .attr('min', 0)
-                .attr('max', data.next_settings.limits.rd_limit)
-                .val(data.decisions.rd);
+                $('#submit_mk')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.mk_limit)
+                    .val(data.decisions.mk);
+                $('#submit_ci')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.ci_limit)
+                    .val(data.decisions.ci);
+                $('#submit_rd')
+                    .attr('min', 0)
+                    .attr('max', data.next_settings.limits.rd_limit)
+                    .val(data.decisions.rd);
+            }
 
             $('#submit input').attr('disabled', false);
         } else {

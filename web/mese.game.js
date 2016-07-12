@@ -28,7 +28,7 @@ define('mese.game', function (require, module) {
             message('Period: ' + period);
         }
 
-        var updated = currentUid !== uid;
+        var updated = game !== currentGame || period !== currentPeriod;
 
         currentGame = game;
         currentPeriod = period;

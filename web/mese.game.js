@@ -21,16 +21,14 @@ define('mese.game', function (require, module) {
     var verboseEnabled = false;
 
     var initReport = function (game, period, uid) {
-        var updated = false;
-
         if (game !== currentGame) {
             message('Game: ' + game);
-            updated = true;
         }
         if (game === currentGame && period !== currentPeriod) {
             message('Period: ' + period);
-            updated = true;
         }
+
+        var updated = currentUid !== uid;
 
         currentGame = game;
         currentPeriod = period;
@@ -40,9 +38,11 @@ define('mese.game', function (require, module) {
         bind.variable('period', currentPeriod - 1);
         bind.variable('next_period', currentPeriod);
 
-        $('.last').addClass('hide');
-        $('.now').addClass('hide');
-        $('.next').addClass('hide');
+        if (updated) {
+            $('.last').addClass('hide');
+            $('.now').addClass('hide');
+            $('.next').addClass('hide');
+        }
 
         return updated;
     };

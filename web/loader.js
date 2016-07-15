@@ -40,7 +40,8 @@ define('loader', function (require, module) {
         message('Redirecting...');
 
         setTimeout(function () {
-            window.location.pathname = type;
+            window.location.href =
+                window.location.origin + '/' + type + window.location.hash;
         }, 1000);
     };
 });

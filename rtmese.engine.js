@@ -268,7 +268,7 @@ module.exports.exec = function (game) {
         game.data.goods_cost_predicted[i] = game.data.goods_cost_inventory[i] + game.data.prod_cost[i];
         game.data.goods_max_sales[i] = game.decisions.price[i] * game.data.goods_predicted[i];
 
-        game.data.deprecation[i] = game.data.capital[i] * game.settings.deprecation_rate;
+        game.data.deprecation[i] = game.settings.deprecation_rate * game.data.capital[i];
         game.data.capital[i] += (game.decisions.ci[i] - game.data.deprecation[i]) * game.delta;
         game.data.size[i] = game.data.capital[i] / game.settings.unit_fee;
 
@@ -288,7 +288,7 @@ module.exports.exec = function (game) {
 
     var sum_mk = sum(game.decisions.mk);
     var sum_mk_compressed = Math.min(
-        (sum_mk - game.settings.mk_overload) * game.settings.mk_compression
+        game.settings.mk_compression * (sum_mk - game.settings.mk_overload)
         + game.settings.mk_overload,
         sum_mk
     );
@@ -357,16 +357,16 @@ module.exports.exec = function (game) {
 
         game.data.sales[i] = game.decisions.price[i] * game.data.sold[i];
 
-        game.data.inventory_charge[i] = Math.min(
+        game.data.inventory_charge[i] = game.settings.inventory_fee * Math.min(
             game.data.inventory[i], game.data.inventory[i]
-        ) * game.settings.inventory_fee;
+        );
 
         game.data.cost_before_tax[i] = game.data.goods_cost_sold[i]
             + game.data.deprecation[i]
             + game.decisions.mk[i] + game.decisions.rd[i]
             - game.data.interest[i] + game.data.inventory_charge[i];
         game.data.profit_before_tax[i] = game.data.sales[i] - game.data.cost_before_tax[i];
-        game.data.tax_charge[i] = game.data.profit_before_tax[i] * game.settings.tax_rate;
+        game.data.tax_charge[i] = game.settings.tax_rate * game.data.profit_before_tax[i];
         game.data.profit[i] = game.data.profit_before_tax[i] - game.data.tax_charge[i];
 
         game.data.balance[i] = game.data.cash[i]

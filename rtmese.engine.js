@@ -369,8 +369,8 @@ module.exports.exec = function (game) {
         game.data.tax_charge[i] = game.settings.tax_rate * game.data.profit_before_tax[i];
         game.data.profit[i] = game.data.profit_before_tax[i] - game.data.tax_charge[i];
 
-        game.data.balance[i] = game.data.cash[i]
-            + game.data.loan_early[i] - game.data.loan[i]
+        game.data.balance[i] = game.data.cash[i] - game.data.loan[i]
+            + game.data.loan_early[i]
             + (
                 game.data.profit[i]
                 - game.decisions.ci[i] + game.data.deprecation[i]

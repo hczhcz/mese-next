@@ -113,6 +113,15 @@ module.exports.close = function (gameData, callback, fail) {
     );
 };
 
+module.exports.closeForce = function (gameData, callback, fail) {
+    execCore(
+        ['close_force'],
+        gameData,
+        dataCallback(callback),
+        stdFail
+    );
+};
+
 module.exports.printFull = function (gameData, callback) {
     execCore(
         ['print_full'],

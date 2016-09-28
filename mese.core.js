@@ -113,7 +113,7 @@ module.exports.close = function (gameData, callback, fail) {
     );
 };
 
-module.exports.closeForce = function (gameData, callback, fail) {
+module.exports.closeForce = function (gameData, callback) {
     execCore(
         ['close_force'],
         gameData,

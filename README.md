@@ -104,9 +104,12 @@ Before running the server, you may do the following steps:
 2. Install Node.js and MongoDB;
 3. Install NPM (Node.js Package Manager);
 4. Install required NPM packages: `mongodb`, `express`, `compression` and `socket.io`;
-5. Get MESE-Next Engine from our group or by contacting us, and put it under the same directory as MESE-Next Server's (or skip this step if you want MESE-Realtime only);
-6. Edit `config.js` if you want to change some configurations;
-7. Now, you could run `main.js` using Node.js.
+5. Get MESE-Next Engine from our group or by contacting us;
+6. Put MESE-Next Engine under the same directory as MESE-Next Server's, and give it execution permission;
+7. Edit `config.js` if you want to change some configurations;
+8. Now, you could run `main.js` using Node.js.
+
+You could skip step 5 and 6 and run MESE-Realtime only if you like.
 
 License
 ---

@@ -32,7 +32,7 @@ module.exports = function (socket, session) {
                 });
 
                 return true; // need setter
-            } else if (password.equals(new Buffer(args.password))) {
+            } else if (password.equals(Buffer(args.password))) {
                 session.user = args.user;
 
                 socket.emit('login_ok', session.user);
@@ -71,7 +71,7 @@ module.exports = function (socket, session) {
         session.log('change password');
 
         access.userAuth(session.user, function (password, setter) {
-            if (password.equals(new Buffer(args.password))) {
+            if (password.equals(Buffer(args.password))) {
                 setter(args.newPassword, function () {
                     socket.emit('password_ok');
                 });

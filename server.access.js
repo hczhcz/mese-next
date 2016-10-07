@@ -24,7 +24,7 @@ module.exports.userAuth = function (user, callback) {
     db.update('users', user, function (doc, setter, next) {
         var passwordSetter = function (password, setterCallback) {
             setter(
-                {password: new Buffer(password)},
+                {password: Buffer(password)},
                 function () {
                     next();
                     setterCallback();

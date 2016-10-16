@@ -12,10 +12,10 @@ module.exports = {
     + '\x6d\x86\x3c\x30\x4f\xb7\xe1\xfc', // 'echopen',
 
     meseEngine: './mese',
-    meseMaxPlayer: 32,
+    meseMaxPlayers: 32,
     meseMinDataSize: 4096, // for db data protection
 
     rtmeseDelta: 0.01,
     rtmeseInterval: 1000,
-    rtmeseMaxPlayer: 32,
+    rtmeseMaxPlayers: 32,
 };

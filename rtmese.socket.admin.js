@@ -78,7 +78,10 @@ module.exports = function (socket, session) {
 
         session.log('admin init game ' + args.game);
 
-        if (args.players.length === 0 || args.players.length > config.rtmeseMaxPlayer) {
+        if (
+            args.players.length === 0
+            || args.players.length > config.rtmeseMaxPlayers
+        ) {
             session.log('player count not supported');
 
             socket.emit('admin_rtmese_init_fail_player');

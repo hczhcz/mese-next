@@ -52,6 +52,7 @@ module.exports = function (lv1, lv2, callback) {
                 task.active = false;
             }
         };
+
         next();
     }
 };

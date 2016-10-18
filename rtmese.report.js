@@ -103,7 +103,7 @@ var printDataPublic = function (game) {
     var sum = function (data) {
         var s = 0;
 
-        for (var i = 0; i < game.player_count; ++i) {
+        for (var i = 0; i < game.player_count; i += 1) {
             s += data[i];
         }
 
@@ -113,7 +113,7 @@ var printDataPublic = function (game) {
     var roundAll = function (data) {
         var l = [];
 
-        for (var i = 0; i < game.player_count; ++i) {
+        for (var i = 0; i < game.player_count; i += 1) {
             l[i] = Math.round(data[i]);
         }
 

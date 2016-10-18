@@ -172,21 +172,21 @@ module.exports = function (socket, session) {
                     args.game, JSON.parse(oldData), args.delay,
                     admin.exec,
                     function (gameObj) {
-                        for (var i = 0; i < gameObj.player_count; ++i) {
+                        for (var i = 0; i < gameObj.player_count; i += 1) {
                             if (gameObj['delay_' + i] !== undefined) {
                                 gameObj['delay_' + i]();
                             }
                         }
                     },
                     function (gameObj) {
-                        for (var i = 0; i < gameObj.player_count; ++i) {
+                        for (var i = 0; i < gameObj.player_count; i += 1) {
                             if (gameObj['report_' + i] !== undefined) {
                                 gameObj['report_' + i](true);
                             }
                         }
                     },
                     function (gameObj) {
-                        for (var i = 0; i < gameObj.player_count; ++i) {
+                        for (var i = 0; i < gameObj.player_count; i += 1) {
                             if (gameObj['report_' + i] !== undefined) {
                                 gameObj['report_' + i](false);
                             }

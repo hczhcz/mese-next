@@ -38,7 +38,7 @@ module.exports.hash = function (len) {
 
 module.exports.arr = function (verifier) {
     return function (arr) {
-        if (!arr instanceof Array) {
+        if (!(arr instanceof Array)) {
             return false;
         }
 
@@ -57,7 +57,7 @@ module.exports.obj = function (keyVerifier, valueVerifier) {
     //         {__proto__: 123, ...}
 
     return function (obj) {
-        if (!obj instanceof Object) {
+        if (!(obj instanceof Object)) {
             return false;
         }
 

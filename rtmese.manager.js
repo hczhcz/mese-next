@@ -39,9 +39,7 @@ module.exports.schedule = function (
         }
     };
 
-    if (games[name] !== undefined) {
-        fail();
-    } else {
+    if (games[name] === undefined) {
         games[name] = game;
 
         game.stop = false;
@@ -49,6 +47,8 @@ module.exports.schedule = function (
 
         callback();
         exec();
+    } else {
+        fail();
     }
 };
 
@@ -56,11 +56,11 @@ module.exports.stop = function (
     name,
     callback, fail
 ) {
-    if (games[name] !== undefined) {
+    if (games[name] === undefined) {
+        fail();
+    } else {
         games[name].stop = true;
         callback();
-    } else {
-        fail();
     }
 };
 
@@ -68,9 +68,9 @@ module.exports.get = function (
     name,
     callback, fail
 ) {
-    if (games[name] !== undefined) {
-        callback(games[name]);
-    } else {
+    if (games[name] === undefined) {
         fail();
+    } else {
+        callback(games[name]);
     }
 };

@@ -24,7 +24,9 @@ module.exports.userAuth = function (user, callback) {
     db.update('users', user, function (doc, setter, next) {
         var passwordSetter = function (password, setterCallback) {
             setter(
-                {password: Buffer(password)},
+                {
+                    password: Buffer(password),
+                },
                 function () {
                     next();
                     setterCallback();
@@ -34,9 +36,10 @@ module.exports.userAuth = function (user, callback) {
 
         // notice: .buffer is required for binary data
         if (!callback(
-            doc && doc.password ?
-            doc.password.buffer :
-            undefined, passwordSetter
+            doc && doc.password
+                ? doc.password.buffer
+                : undefined,
+            passwordSetter
         )) {
             next();
         }
@@ -47,10 +50,13 @@ module.exports.userSubscribe = function (user, game, enabled, callback, fail) {
     db.update('users', user, function (doc, setter, next) {
         if (doc) {
             var subscribes = doc.subscribes || {};
+
             subscribes[game] = enabled;
 
             setter(
-                {subscribes: subscribes},
+                {
+                    subscribes: subscribes,
+                },
                 function () {
                     next();
                     callback(subscribes);
@@ -134,10 +140,8 @@ module.exports.gameAction = function (
                 next();
                 fail(doc.type);
             }
-        } else {
-            if (!newCallback(gameDataSetter)) {
-                next();
-            }
+        } else if (!newCallback(gameDataSetter)) {
+            next();
         }
     });
 };

@@ -24,6 +24,7 @@ module.exports.exec = function (game) {
             }
         }
     };
+
     applyEvents(game.events[game.now_tickObj] || {});
 
     var applySubmissions = function (submissions) {
@@ -35,6 +36,7 @@ module.exports.exec = function (game) {
             game.decisions.rd[i] = submissions[i][4];
         }
     };
+
     applySubmissions(game.submissions[game.now_tick] || {});
 
     return engine.exec(game);

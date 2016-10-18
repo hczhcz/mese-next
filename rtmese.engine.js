@@ -146,7 +146,7 @@ module.exports.init = function (count, ticks, delta) {
         },
     };
 
-    for (var i = 0; i < game.player_count; ++i) {
+    for (var i = 0; i < game.player_count; i += 1) {
         game.decisions.price[i] = game.settings.demand_ref_price;
         game.decisions.prod_rate[i] = game.settings.prod_rate_initial;
         game.decisions.mk[i] =
@@ -182,14 +182,16 @@ module.exports.exec = function (game) {
     };
 
     var div = function (a, b, e) {
-        return b === 0 ? e : a / b;
+        return b === 0
+            ? e
+            : a / b;
     };
 
     // notice: also in report.printDataPublic
     var sum = function (data) {
         var s = 0;
 
-        for (var i = 0; i < game.player_count; ++i) {
+        for (var i = 0; i < game.player_count; i += 1) {
             s += data[i];
         }
 
@@ -197,7 +199,7 @@ module.exports.exec = function (game) {
     };
 
     var each = function (callback) {
-        for (var i = 0; i < game.player_count; ++i) {
+        for (var i = 0; i < game.player_count; i += 1) {
             callback(i);
         }
     };
@@ -248,9 +250,9 @@ module.exports.exec = function (game) {
         game.data.prod[i] = game.decisions.prod_rate[i] * game.data.size[i];
         game.data.prod_over[i] = game.decisions.prod_rate[i] - game.settings.prod_rate_balanced;
 
-        var prod_cost_factor_rate = game.data.prod_over[i] > 0 ?
-            game.settings.prod_cost_factor_rate_over :
-            game.settings.prod_cost_factor_rate_under;
+        var prod_cost_factor_rate = game.data.prod_over[i] > 0
+            ? game.settings.prod_cost_factor_rate_over
+            : game.settings.prod_cost_factor_rate_under;
 
         game.data.prod_cost_unit[i] = prod_cost_factor_rate * Math.pow(game.data.prod_over[i], game.settings.prod_rate_pow)
             + game.settings.prod_cost_factor_size * game.settings.initial_capital / game.data.capital[i] / game.player_count
@@ -276,10 +278,11 @@ module.exports.exec = function (game) {
             + game.decisions.ci[i] - game.data.deprecation[i]
             + game.decisions.mk[i] + game.decisions.rd[i];
         game.data.balance_early[i] = game.data.cash[i] - game.data.loan[i] - game.data.spending[i] * game.delta;
-        game.data.loan_early[i] = Math.max(- game.data.balance_early[i], 0);
+        game.data.loan_early[i] = Math.max(-game.data.balance_early[i], 0);
         game.data.interest[i] = (
-            game.data.balance_early[i] >= 0 ?
-            game.settings.interest_rate_cash : game.settings.interest_rate_loan
+            game.data.balance_early[i] >= 0
+                ? game.settings.interest_rate_cash
+                : game.settings.interest_rate_loan
         ) * game.data.balance_early[i];
 
         game.data.history_mk[i] += game.decisions.mk[i] * game.delta;

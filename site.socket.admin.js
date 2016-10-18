@@ -78,7 +78,10 @@ module.exports = function (socket, session) {
 
         access.users(function (userList) {
             access.games(function (gameList) {
-                socket.emit('admin_list_data', {users: userList, games: gameList});
+                socket.emit('admin_list_data', {
+                    users: userList,
+                    games: gameList,
+                });
             });
         });
     });

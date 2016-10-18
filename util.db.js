@@ -25,7 +25,9 @@ module.exports.init = function (path, lv1s, callback) {
 
 module.exports.get = function (lv1, lv2, callback) {
     collections[lv1]
-        .find({_id: lv2})
+        .find({
+            _id: lv2,
+        })
         .toArray(function (err, docs) {
             if (err) {
                 throw err;
@@ -39,7 +41,9 @@ module.exports.get = function (lv1, lv2, callback) {
 
 module.exports.list = function (lv1, callback) {
     collections[lv1]
-        .find({}, {_id: 1})
+        .find({}, {
+            _id: 1,
+        })
         .toArray(function (err, docs) {
             if (err) {
                 throw err;
@@ -58,9 +62,15 @@ module.exports.list = function (lv1, callback) {
 module.exports.update = function (lv1, lv2, callback) {
     var setter = function (diff, setterCallback) {
         collections[lv1].updateOne(
-            {_id: lv2},
-            {$set: diff},
-            {upsert: true},
+            {
+                _id: lv2,
+            },
+            {
+                $set: diff,
+            },
+            {
+                upsert: true,
+            },
             function (err, upd) {
                 if (err) {
                     throw err;

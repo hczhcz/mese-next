@@ -20,10 +20,10 @@ var execCore = function (args, input, callback, fail) {
     });
 
     proc.on('close', function (status) {
-        if (status !== 0) {
-            fail(status, Buffer.concat(output));
-        } else {
+        if (status === 0) {
             callback(Buffer.concat(output));
+        } else {
+            fail(status, Buffer.concat(output));
         }
     });
 };
@@ -95,6 +95,16 @@ module.exports.submit = function (
                 stdFail(status, output);
             }
         }
+    );
+};
+
+// notice: not supported in public version
+module.exports.ai = function (gameData, player, ai, callback) {
+    execCore(
+        ['ai', player, ai],
+        gameData,
+        dataCallback(callback),
+        stdFail
     );
 };
 

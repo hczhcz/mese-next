@@ -19,7 +19,7 @@ var printSettings = function (game) {
             prod_rate_balanced: game.settings.prod_rate_balanced,
 
             unit_fee: game.settings.unit_fee,
-            deprecation_rate: game.settings.deprecation_rate,
+            depreciation_rate: game.settings.depreciation_rate,
         },
 
         balance: {
@@ -66,7 +66,7 @@ var printData = function (game, i) {
         },
 
         balance: {
-            deprecation: Math.round(game.data.deprecation[i]),
+            depreciation: Math.round(game.data.depreciation[i]),
             capital: Math.round(game.data.capital[i]),
             size: Math.round(game.data.size[i]),
             spending: Math.round(game.data.spending[i]),

@@ -25,7 +25,7 @@ module.exports.init = function (count, ticks, delta) {
             prod_cost_factor_const: 3,
 
             unit_fee: 40,
-            deprecation_rate: 0.05,
+            depreciation_rate: 0.05,
 
             // initial_cash: 1750 * count,
             initial_loan: 7280 * count,
@@ -90,7 +90,7 @@ module.exports.init = function (count, ticks, delta) {
             goods_cost_predicted: [], // notice: special
             goods_max_sales: [],
 
-            deprecation: [],
+            depreciation: [],
             capital: [],
             size: [],
             spending: [],
@@ -153,7 +153,7 @@ module.exports.init = function (count, ticks, delta) {
             game.settings.demand_ref_mk / game.player_count;
         game.decisions.ci[i] =
             game.settings.initial_capital / game.player_count
-            * game.settings.deprecation_rate;
+            * game.settings.depreciation_rate;
         game.decisions.rd[i] =
             game.settings.demand_ref_rd / game.player_count;
 
@@ -270,12 +270,12 @@ module.exports.exec = function (game) {
         game.data.goods_cost_predicted[i] = game.data.goods_cost_inventory[i] + game.data.prod_cost[i];
         game.data.goods_max_sales[i] = game.decisions.price[i] * game.data.goods_predicted[i];
 
-        game.data.deprecation[i] = game.settings.deprecation_rate * game.data.capital[i];
-        game.data.capital[i] += (game.decisions.ci[i] - game.data.deprecation[i]) * game.delta;
+        game.data.depreciation[i] = game.settings.depreciation_rate * game.data.capital[i];
+        game.data.capital[i] += (game.decisions.ci[i] - game.data.depreciation[i]) * game.delta;
         game.data.size[i] = game.data.capital[i] / game.settings.unit_fee;
 
         game.data.spending[i] = game.data.prod_cost[i]
-            + game.decisions.ci[i] - game.data.deprecation[i]
+            + game.decisions.ci[i] - game.data.depreciation[i]
             + game.decisions.mk[i] + game.decisions.rd[i];
         game.data.balance_early[i] = game.data.cash[i] - game.data.loan[i] - game.data.spending[i] * game.delta;
         game.data.loan_early[i] = Math.max(-game.data.balance_early[i], 0);
@@ -365,7 +365,7 @@ module.exports.exec = function (game) {
         );
 
         game.data.cost_before_tax[i] = game.data.goods_cost_sold[i]
-            + game.data.deprecation[i]
+            + game.data.depreciation[i]
             + game.decisions.mk[i] + game.decisions.rd[i]
             - game.data.interest[i] + game.data.inventory_charge[i];
         game.data.profit_before_tax[i] = game.data.sales[i] - game.data.cost_before_tax[i];
@@ -376,7 +376,7 @@ module.exports.exec = function (game) {
             + game.data.loan_early[i]
             + (
                 game.data.profit[i]
-                - game.decisions.ci[i] + game.data.deprecation[i]
+                - game.decisions.ci[i] + game.data.depreciation[i]
                 + game.data.goods_cost_sold[i] - game.data.prod_cost[i]
             ) * game.delta;
         game.data.loan[i] = Math.max(game.data.loan_early[i], game.data.loan_early[i] - game.data.balance[i]);

@@ -91,7 +91,7 @@ The server requires all of:
 
 MESE-Next requires:
 
-* MESE-Next Engine (released in MESE China Group)
+* MESE-Next Engine binary
 
 Installation
 ---
@@ -104,16 +104,19 @@ Before running the server, you may do the following steps:
 2. Install Node.js and MongoDB;
 3. Install NPM (Node.js Package Manager);
 4. Install required NPM packages: `mongodb`, `express`, `compression` and `socket.io`;
-5. Get MESE-Next Engine from our group or by contacting us;
-6. Put MESE-Next Engine under the same directory as MESE-Next Server's, and give it execution permission;
-7. Edit `config.js` if you want to change some configurations;
-8. Now, you could run `main.js` using Node.js.
+5. Make sure MESE-Next Engine is under the same directory as MESE-Next Server's, and give it execution permission (`chmod +x`);
+6. Edit `config.js` if you want to change some configurations;
+7. Now, you could run `main.js` using Node.js.
 
 You could skip step 5 and 6 and run MESE-Realtime only if you like.
 
 License
 ---
 
-MESE-Next and MESE-Realtime - Copyright (C) 2015-2016 hczhcz
+MESE-Next and MESE-Realtime - Copyright (C) 2015-2017 hczhcz
 
-This project is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. As this distribution is not under any public license, commercial use, public use, and redistribution outside GitHub are not allowed. Contact us if you need a licensed version.
+This project is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. This distribution is not under any public license. Commercial use and redistribution outside GitHub are not allowed without the author's permission. Please contact @hczhcz if you need a licensed version.
+
+MESE-Next Engine
+
+MESE-Next Engine in this repository is released **without** any warranty or copyright guarantee. Please use at your own risk.

@@ -108,8 +108,6 @@ Before running the server, you may do the following steps:
 6. Edit `config.js` if you want to change some configurations;
 7. Now, you could run `main.js` using Node.js.
 
-You could skip step 5 and 6 and run MESE-Realtime only if you like.
-
 License
 ---
 

@@ -82,15 +82,15 @@ module.exports = function (socket, session) {
             args.players.length === 0
             || args.players.length > config.rtmeseMaxPlayers
         ) {
-            session.log('player count not supported');
+            session.log('player count exceeded the limit ' + config.rtmeseMaxPlayers);
 
-            socket.emit('admin_rtmese_init_fail_player');
+            socket.emit('admin_rtmese_init_fail_player', config.rtmeseMaxPlayers);
         }
 
         access.gameAction(
             'rtmese', args.game,
             function (players, oldData, setter, next) {
-                session.log('game exists ' + args.game);
+                session.log('game already exists ' + args.game);
 
                 socket.emit('admin_rtmese_init_fail_game');
             },

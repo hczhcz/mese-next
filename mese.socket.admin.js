@@ -129,15 +129,15 @@ module.exports = function (socket, session) {
             args.players.length === 0
             || args.players.length > config.meseMaxPlayers
         ) {
-            session.log('player count not supported');
+            session.log('player count exceeded the limit ' + config.meseMaxPlayers);
 
-            socket.emit('admin_mese_init_fail_player');
+            socket.emit('admin_mese_init_fail_player', config.meseMaxPlayers);
         }
 
         access.gameAction(
             'mese', args.game,
             function (players, oldData, setter, next) {
-                session.log('game exists ' + args.game);
+                session.log('game already exists ' + args.game);
 
                 socket.emit('admin_mese_init_fail_game');
             },

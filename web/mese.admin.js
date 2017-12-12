@@ -62,11 +62,11 @@ define('mese.admin', function (require, module) {
     });
 
     socket.on('admin_mese_init_fail_player', function (data) {
-        message('Player count not supported');
+        message('Player count exceeded the limit ' + data);
     });
 
     socket.on('admin_mese_init_fail_game', function (data) {
-        message('Game exists');
+        message('Game already exists');
     });
 
     socket.on('admin_mese_init_fail_invite', function (data) {

@@ -2,8 +2,8 @@
 
 var db = require('./util.db');
 
-module.exports.init = function (path, callback) {
-    db.init(path, ['users', 'games'], callback);
+module.exports.init = function (path, base, callback) {
+    db.init(path, base, ['users', 'games'], callback);
 };
 
 module.exports.users = function (callback) {

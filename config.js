@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = {
-    db: 'mongodb://localhost/mese',
+    dbPath: 'mongodb://localhost/',
+    dbBase: 'mese',
     port: 63000,
 
     adminUser: 'admin',

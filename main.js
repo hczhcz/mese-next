@@ -11,9 +11,9 @@ process.on('uncaughtException', function (err) {
     util.err(err);
 });
 
-util.log('db init ' + config.db);
+util.log('db init ' + config.dbPath + '#' + config.dbBase);
 
-access.init(config.db, function () {
+access.init(config.dbPath, config.dbBase, function () {
     util.log('server init ' + config.port);
 
     web(config.port, 'mese.html', function (server) {

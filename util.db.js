@@ -6,7 +6,7 @@ var task = require('./util.task');
 
 var collections = {}; // add by init()
 
-module.exports.init = function (path, lv1s, callback) {
+module.exports.init = function (path, base, lv1s, callback) {
     mongodb.connect(
         path,
         function (err, db) {
@@ -14,7 +14,7 @@ module.exports.init = function (path, lv1s, callback) {
                 throw err;
             } else {
                 for (var i in lv1s) {
-                    collections[lv1s[i]] = db.collection(lv1s[i]);
+                    collections[lv1s[i]] = db.db(base).collection(lv1s[i]);
                 }
 
                 callback();

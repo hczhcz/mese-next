@@ -25,7 +25,7 @@ define('mese.game', function (require, module) {
             message('Game: ' + game);
         }
         if (game === currentGame && period !== currentPeriod) {
-            message('Period: ' + period);
+            message('Next period: ' + period);
         }
 
         var updated = game !== currentGame || period !== currentPeriod;

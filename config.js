@@ -10,7 +10,10 @@ module.exports = {
     '\xad\xbd\x18\x3e\x60\xba\x28\x6f'
     + '\x2a\x36\xa4\x3b\xe5\xaf\x11\xfe'
     + '\xa4\x1a\xe9\x9f\x7d\xb4\x35\xfd'
-    + '\x6d\x86\x3c\x30\x4f\xb7\xe1\xfc', // 'echopen',
+    + '\x6d\x86\x3c\x30\x4f\xb7\xe1\xfc', // 'echopen'
+
+    // note: password is hashed by SHA-256 with HMAC='MESE-Next'
+    // see /web/login.js
 
     meseEngine: './mese',
     meseMaxPlayers: 32,

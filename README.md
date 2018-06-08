@@ -11,7 +11,7 @@ MESE was created in the 1980s. It was widely used by JA (Junior Achievement) in 
 MESE-Next
 ---
 
-MESE-Next is a fan-made MESE variant. It is not a strictly equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next Server and compete with other players on the Internet. MESE-Next is created by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
+MESE-Next is a fan-made MESE variant. It is not a strict equivalent of MESE, but an online game based on a similar mathematical model to MESE. Players can sign up on a MESE-Next Server and compete with other players on the Internet. MESE-Next is created by [hczhcz](https://github.com/hczhcz) as a replacement of IMese (Internet-based MESE Platform).
 
 ### Difference between MESE-Next and MESE
 
@@ -78,7 +78,7 @@ The web frontend probably works under:
 The web frontend would not support:
 
 * IE 7-
-* QQ (WeChat) Browser on Android
+* QQ (WeChat) Browser on Android (early versions)
 
 Server Side Requirements
 ---
@@ -111,7 +111,7 @@ Before running the server, you may do the following steps:
 License
 ---
 
-MESE-Next and MESE-Realtime - Copyright (C) 2015-2017 hczhcz
+MESE-Next and MESE-Realtime - Copyright (C) 2015-2018 hczhcz
 
 This project is **only** distributed in GitHub and MESE China Group, and released **without** any warranty. This distribution is not under any public license. Commercial use and redistribution outside GitHub are not allowed without the author's permission. Please contact @hczhcz if you need a licensed version.
 

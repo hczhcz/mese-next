@@ -1,7 +1,5 @@
 'use strict';
 
-var domain = require('domain');
-
 module.exports.log = function (info) {
     var date = new Date();
 
@@ -28,26 +26,4 @@ module.exports.log = function (info) {
 
 module.exports.err = function (err) {
     module.exports.log(err.stack || 'Error ' + typeof err + ': ' + err);
-};
-
-module.exports.domainRun = function (emitters, callback, fail) {
-    var d = domain.create();
-
-    d.on('error', function (err) {
-        fail(err);
-        d.dispose();
-    });
-
-    for (var i in emitters) {
-        d.add(emitters[i]);
-    }
-
-    d.run(callback);
-};
-
-module.exports.domainRunCatched = function (emitters, callback) {
-    module.exports.domainRun(
-        emitters, callback,
-        module.exports.err
-    );
 };
